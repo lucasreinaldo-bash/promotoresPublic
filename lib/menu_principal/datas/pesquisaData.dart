@@ -10,6 +10,7 @@ class PesquisaData {
       nomeLoja,
       nomePromotor,
       observacao,
+      enderecoLoja,
       nomeRede,
       status;
   int dataQuery;
@@ -20,6 +21,7 @@ class PesquisaData {
     dataFinal = snapshot.data["dataFinal"];
     dataInicial = snapshot.data["dataInicial"];
     nomeRede = snapshot.data["nomeRede"];
+    enderecoLoja = snapshot.data["enderecoLoja"];
     empresaResponsavel = snapshot.data["empresaResponsavel"];
     linhaProduto = snapshot.data["linhaProduto"];
     nomeLoja = snapshot.data["nomeLoja"];
@@ -39,7 +41,8 @@ class PesquisaData {
       "nomePromotor": nomePromotor,
       "observacao": observacao,
       "status": status,
-      "nomeRede": nomeRede
+      "nomeRede": nomeRede,
+      "enderecoLoja": enderecoLoja
     };
   }
 }

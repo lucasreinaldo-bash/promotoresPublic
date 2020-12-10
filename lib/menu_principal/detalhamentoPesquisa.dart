@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:nice_button/NiceButton.dart';
 
 import 'datas/pesquisaData.dart';
 
@@ -15,140 +17,197 @@ class DetalhamentoPesquisa extends StatefulWidget {
 class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
   PesquisaData data;
 
+  Color colorButtonVoltar = Color(0xFFF26868);
+  Color colorButtonIniciarPesquisa = Color(0xFF4FCEB6);
+
   _DetalhamentoPesquisaState(this.data);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        title: Text("Detalhamento Pesquisa"),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-          child: Column(
+      body: Stack(
         children: [
-          Card(
-            child: Container(
-              height: 120,
-              width: 450,
-              child: InkWell(
-                child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          child: Center(
-                            child: Transform.scale(
-                                scale: 0.8,
-                                child: Image.asset("assets/cam.png")),
+          Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage("assets/background_detalhamento.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: null /* add child content content here */,
+          ),
+          SingleChildScrollView(
+              child: Padding(
+            padding: const EdgeInsets.only(top: 50.0),
+            child: Column(
+              children: [
+                Text(
+                  "Detalhes",
+                  style: TextStyle(
+                      fontFamily: "QuickSandRegular",
+                      fontSize: 16,
+                      color: Colors.white),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Container(
+                        height: 400,
+                        width: 400,
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Divider(),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Nome da Loja:",
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black87),
+                                  ),
+                                  Text(
+                                    data.nomeLoja,
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black38),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Nome da Rede: ",
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black87),
+                                  ),
+                                  Text(
+                                    data.nomeRede,
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black38),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Endereco:",
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black87),
+                                  ),
+                                  Text(
+                                    data.enderecoLoja,
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black38),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Status:",
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black87),
+                                  ),
+                                  Text(
+                                    data.status,
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black38),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Linha de Produtos:",
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black87),
+                                  ),
+                                  Text(
+                                    data.linhaProduto,
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black38),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Data Agendada:",
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black87),
+                                  ),
+                                  Text(
+                                    data.dataInicial,
+                                    style: TextStyle(
+                                        fontFamily: "QuickSand",
+                                        color: Colors.black38),
+                                  ),
+                                ],
+                              ),
+
+                              //Falta modificar a data de conclusão
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "Fotos",
-                          style: TextStyle(fontFamily: "QuickSand"),
-                        )
-                      ],
-                    )),
-              ),
+                      )),
+                ),
+                Container(
+                  width: 200,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    onPressed: () {},
+                    color: Color(0xFF4FCEB6),
+                    textColor: Colors.white,
+                    child: Text("Iniciar Pesquisa",
+                        style: TextStyle(
+                            fontSize: 14, fontFamily: "QuickSandRegular")),
+                  ),
+                ),
+                Container(
+                  width: 200,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    color: Color(0xFFF26868),
+                    textColor: Colors.white,
+                    child: Text("Voltar",
+                        style: TextStyle(
+                            fontSize: 14, fontFamily: "QuickSandRegular")),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Card(
-              child: Container(
-            height: 400,
-            width: 400,
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Detalhes",
-                    style: TextStyle(fontFamily: "QuickSand", fontSize: 16),
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Text(
-                        "Nome da Loja: ",
-                        style: TextStyle(
-                            fontFamily: "QuickSand", color: Colors.black87),
-                      ),
-                      Text(
-                        data.nomeLoja,
-                        style: TextStyle(
-                            fontFamily: "QuickSand", color: Colors.black38),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Nome da Rede: ",
-                        style: TextStyle(
-                            fontFamily: "QuickSand", color: Colors.black87),
-                      ),
-                      Text(
-                        data.nomeRede,
-                        style: TextStyle(
-                            fontFamily: "QuickSand", color: Colors.black38),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Status: ",
-                        style: TextStyle(
-                            fontFamily: "QuickSand", color: Colors.black87),
-                      ),
-                      Text(
-                        data.status,
-                        style: TextStyle(
-                            fontFamily: "QuickSand", color: Colors.black38),
-                      ),
-                    ],
-                  ),
-
-                  //Falta modificar a data de conclusão
-                  Row(
-                    children: [
-                      Text(
-                        "Data de Conclusão: ",
-                        style: TextStyle(
-                            fontFamily: "QuickSand", color: Colors.black87),
-                      ),
-                      Text(
-                        data.dataFinal,
-                        style: TextStyle(
-                            fontFamily: "QuickSand", color: Colors.black38),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Linha de Produto: ",
-                        style: TextStyle(
-                            fontFamily: "QuickSand", color: Colors.black87),
-                      ),
-                      Text(
-                        data.linhaProduto,
-                        style: TextStyle(
-                            fontFamily: "QuickSand", color: Colors.black38),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ))
+          )),
         ],
-      )),
+      ),
     );
   }
 }
