@@ -102,6 +102,10 @@ flutter:
       fonts:
         - asset: fonts/Roboto-Bold.ttf
 
+    - family: Helvetica
+      fonts:
+        - asset: fonts/HelveticaNeue-Regular.ttf
+
     - family: RobotoBold
       fonts:
         - asset: fonts/Roboto-Bold.ttf

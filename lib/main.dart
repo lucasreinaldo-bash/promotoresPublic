@@ -29,7 +29,6 @@ class Home extends StatelessWidget {
           '/login': (BuildContext context) => new Login(),
           '/splash': (BuildContext context) => new SplashScreen(),
           '/Home': (BuildContext context) => new HomeMenu(),
-          '/criarPesquisa': (BuildContext context) => new CriarPesquisa(),
           '/selecaoPerfil': (BuildContext context) => new SelecaoPerfil(),
         },
         home: SplashScreen(),

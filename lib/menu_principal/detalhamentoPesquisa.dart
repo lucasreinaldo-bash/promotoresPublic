@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:nice_button/NiceButton.dart';
+import 'package:versaoPromotores/menu_principal/criar_pesquisa.dart';
 
 import 'datas/pesquisaData.dart';
 
@@ -98,23 +99,23 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                   ),
                                 ],
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Endereco:",
-                                    style: TextStyle(
-                                        fontFamily: "QuickSand",
-                                        color: Colors.black87),
-                                  ),
-                                  Text(
-                                    data.enderecoLoja,
-                                    style: TextStyle(
-                                        fontFamily: "QuickSand",
-                                        color: Colors.black38),
-                                  ),
-                                ],
-                              ),
+//                              Column(
+//                                crossAxisAlignment: CrossAxisAlignment.start,
+//                                children: [
+//                                  Text(
+//                                    "Endereco:",
+//                                    style: TextStyle(
+//                                        fontFamily: "QuickSand",
+//                                        color: Colors.black87),
+//                                  ),
+//                                  Text(
+//                                    data.enderecoLoja,
+//                                    style: TextStyle(
+//                                        fontFamily: "QuickSand",
+//                                        color: Colors.black38),
+//                                  ),
+//                                ],
+//                              ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -142,7 +143,10 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                         color: Colors.black87),
                                   ),
                                   Text(
-                                    data.linhaProduto,
+                                    data.linhaProduto
+                                        .toString()
+                                        .replaceAll("[", "")
+                                        .replaceAll("]", ""),
                                     style: TextStyle(
                                         fontFamily: "QuickSand",
                                         color: Colors.black38),
@@ -179,7 +183,10 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ResponderPesquisa(data)));
+                    },
                     color: Color(0xFF4FCEB6),
                     textColor: Colors.white,
                     child: Text("Iniciar Pesquisa",

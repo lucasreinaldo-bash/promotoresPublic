@@ -6,7 +6,6 @@ class PesquisaData {
       dataFinal,
       dataInicial,
       empresaResponsavel,
-      linhaProduto,
       nomeLoja,
       nomePromotor,
       observacao,
@@ -14,6 +13,8 @@ class PesquisaData {
       nomeRede,
       status;
   int dataQuery;
+
+  List linhaProduto = new List();
 
   PesquisaData.fromDocument(DocumentSnapshot snapshot) {
     id = snapshot.documentID;
