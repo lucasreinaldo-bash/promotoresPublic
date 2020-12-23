@@ -315,6 +315,7 @@ class _HomeMenuState extends State<HomeMenu> {
                                             snapshot.data.documents[index]);
                                     return InkWell(
                                       onTap: () async {
+                                        print(snapshot);
                                         showDialog(
                                             context: context,
                                             builder: (_) => FlareGiffyDialog(

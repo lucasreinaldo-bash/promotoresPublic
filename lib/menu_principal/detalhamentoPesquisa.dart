@@ -22,6 +22,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
   Color colorButtonIniciarPesquisa = Color(0xFF4FCEB6);
 
   _DetalhamentoPesquisaState(this.data);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -185,7 +186,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                     ),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ResponderPesquisa(data)));
+                          builder: (context) => ResponderPesquisaData(data)));
                     },
                     color: Color(0xFF4FCEB6),
                     textColor: Colors.white,
