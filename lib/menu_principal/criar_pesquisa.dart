@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'dart:ui';
-
+import 'package:path/path.dart' as path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart' as da;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:versaoPromotores/drawer/custom_drawer.dart';
 import 'package:versaoPromotores/menu_principal/datas/LinhaProdutoData.dart';
@@ -18,8 +21,12 @@ import 'package:versaoPromotores/menu_principal/datas/LojaData.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/detalhamentoPesquisa.dart';
 import 'package:versaoPromotores/menu_principal/home_menu.dart';
+import 'package:versaoPromotores/menu_principal/product_tile_ruptura_screen.dart';
+import 'package:versaoPromotores/menu_principal/product_tile_validade_screen.dart';
 import 'package:versaoPromotores/menu_principal/tiles/loja_tile.dart';
 import 'package:versaoPromotores/menu_principal/tiles/produtos_tile.dart';
+import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_antes_reposicao.dart';
+import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_validade.dart';
 import 'package:versaoPromotores/models/user_model.dart';
 import 'package:versaoPromotores/style/style.dart';
 
@@ -464,7 +471,9 @@ class ResponderPesquisaData extends StatelessWidget {
                                                                             (BuildContext
                                                                                 context) {
                                                                           // retorna um objeto do tipo Dialog
-                                                                          return AfterDialogPesquisa();
+                                                                          return AfterDialogPesquisa(
+                                                                              nomeCategoria,
+                                                                              data);
                                                                         },
                                                                       );
                                                                     },
@@ -544,6 +553,153 @@ class ResponderPesquisaData extends StatelessWidget {
                                                                         )),
                                                                   );
                                                                 }),
+                                                            SizedBox(
+                                                                height: 15.0),
+                                                            _currentPage !=
+                                                                    _numPages -
+                                                                        1
+                                                                ? Expanded(
+                                                                    child:
+                                                                        Align(
+                                                                      alignment:
+                                                                          FractionalOffset
+                                                                              .bottomRight,
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          FlatButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetalhamentoPesquisa(data)));
+                                                                            },
+                                                                            child:
+                                                                                Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                                              mainAxisSize: MainAxisSize.min,
+                                                                              children: <Widget>[
+                                                                                Text(
+                                                                                  'Voltar',
+                                                                                  style: TextStyle(
+                                                                                    fontFamily: "Helvetica",
+                                                                                    color: Color(0xFF707070),
+                                                                                    fontSize: 22.0,
+                                                                                  ),
+                                                                                ),
+                                                                                SizedBox(width: 10.0),
+                                                                                Icon(
+                                                                                  Icons.arrow_forward,
+                                                                                  color: Colors.white,
+                                                                                  size: 30.0,
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          FlatButton(
+                                                                            onPressed:
+                                                                                () async {
+                                                                              _pageController.nextPage(
+                                                                                duration: Duration(milliseconds: 500),
+                                                                                curve: Curves.ease,
+                                                                              );
+                                                                            },
+                                                                            child:
+                                                                                Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                                              children: <Widget>[
+                                                                                Text(
+                                                                                  'Avançar',
+                                                                                  textAlign: TextAlign.right,
+                                                                                  style: TextStyle(
+                                                                                    fontFamily: "Helvetica",
+                                                                                    color: Color(0xFF707070),
+                                                                                    fontSize: 22.0,
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                : Text(''),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 50,
+                                                            left: 20,
+                                                            right: 20,
+                                                            bottom: 50),
+                                                    child: Card(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15.0),
+                                                      ),
+                                                      elevation: 15,
+                                                      child: Padding(
+                                                        padding: EdgeInsets.all(
+                                                            10.0),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              "Informe os estoques dos produtos abaixo:",
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      "QuickSand",
+                                                                  color: Color(
+                                                                      0xFF000000)),
+                                                            ),
+                                                            FutureBuilder(
+                                                              future: Firestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      "Empresas")
+                                                                  .document(data
+                                                                      .empresaResponsavel)
+                                                                  .collection(
+                                                                      "Produtos")
+                                                                  .getDocuments(),
+                                                              builder: (context,
+                                                                  snapshotProdutos) {
+                                                                if (!snapshotProdutos
+                                                                    .hasData) {
+                                                                  return LinearProgressIndicator();
+                                                                } else {
+                                                                  return Container(
+                                                                    height: 300,
+                                                                    child: ListView.builder(
+                                                                        shrinkWrap: true,
+                                                                        itemCount: snapshotProdutos.data.documents.length,
+                                                                        itemBuilder: (_, index) {
+                                                                          ProductData
+                                                                              dataProduto =
+                                                                              ProductData.fromDocument(snapshotProdutos.data.documents[index]);
+                                                                          bool
+                                                                              nomeCategoriaBool =
+                                                                              false;
+
+                                                                          return ProdutosTileAntesReposicao(
+                                                                              data,
+                                                                              dataProduto);
+                                                                        }),
+                                                                  );
+                                                                }
+                                                              },
+                                                            ),
                                                             SizedBox(
                                                                 height: 15.0),
                                                             _currentPage !=
@@ -824,256 +980,75 @@ class ResponderPesquisaData extends StatelessWidget {
 }
 
 class AfterDialogPesquisa extends StatefulWidget {
+  String nomeCategoria;
+  PesquisaData data;
+
+  AfterDialogPesquisa(this.nomeCategoria, this.data);
   @override
-  _AfterDialogPesquisaState createState() => _AfterDialogPesquisaState();
+  _AfterDialogPesquisaState createState() =>
+      _AfterDialogPesquisaState(this.nomeCategoria, this.data);
 }
 
 class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
   String textoBtnPontoExtra = "Não";
   String textoBtnValidadeProxima = "Não";
   String textoBtnRuptura = "Não";
+  File _image;
+  PesquisaData data;
+
+  String imagemAntes = "sem imagem";
+  String nomeCategoria;
+
+  _AfterDialogPesquisaState(this.nomeCategoria, this.data);
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: new Text("Foto da Aréa de venda\n(antes da reposição)"),
       content: SingleChildScrollView(
         child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Container(
-                        height: 100,
-                        width: 300,
-                        child: Image.asset(
-                          "assets/cam.png",
-                          height: 50,
-                          width: 50,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            //Temos Ponto Extra ?
-            Padding(
-                padding: EdgeInsets.all(8),
-                child: Text(
-                  "Temos ponto extra ?",
-                  textAlign: TextAlign.left,
-                )),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        textoBtnPontoExtra == "Não"
-                            ? textoBtnPontoExtra = "Não"
-                            : textoBtnPontoExtra = "Não";
-                      });
-                    },
-                    child: Card(
-                      color: textoBtnPontoExtra == "Não"
-                          ? Color(0xFFF26768)
-                          : Color(0xFFFFFFFF),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Container(
-                        height: 50,
-                        width: 100,
-                        child: Center(
-                            child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: Text(
-                            "Não",
-                            style: TextStyle(
-                                color: textoBtnPontoExtra == "Não"
-                                    ? Color(0xFFFFFFFF)
-                                    : Color(0xFF707070)),
-                          ),
-                        )),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        textoBtnPontoExtra == "Não"
-                            ? textoBtnPontoExtra = "Sim"
-                            : textoBtnPontoExtra = "Sim";
-                      });
-                    },
-                    child: Card(
-                      color: textoBtnPontoExtra == "Sim"
-                          ? Color(0xFFF26768)
-                          : Color(0xFFFFFFFF),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Container(
-                        height: 50,
-                        width: 100,
-                        child: Center(
-                            child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: Text(
-                            "Sim",
-                            style: TextStyle(
-                              color: textoBtnPontoExtra == "Sim"
-                                  ? Color(0xFFFFFFFF)
-                                  : Color(0xFF707070),
-                            ),
-                          ),
-                        )),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            //Produtos com validade Proxima
-            Padding(
-                padding: EdgeInsets.all(8),
-                child: Text(
-                  "Existe algum produto com validade próxima?",
-                  textAlign: TextAlign.left,
-                )),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        textoBtnValidadeProxima == "Não"
-                            ? textoBtnValidadeProxima = "Não"
-                            : textoBtnValidadeProxima = "Não";
-                      });
-                    },
-                    child: Card(
-                      color: textoBtnValidadeProxima == "Não"
-                          ? Color(0xFFF26768)
-                          : Color(0xFFFFFFFF),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Container(
-                        height: 50,
-                        width: 100,
-                        child: Center(
-                            child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: Text(
-                            "Não",
-                            style: TextStyle(
-                                color: textoBtnValidadeProxima == "Não"
-                                    ? Color(0xFFFFFFFF)
-                                    : Color(0xFF707070)),
-                          ),
-                        )),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        textoBtnValidadeProxima == "Não"
-                            ? textoBtnValidadeProxima = "Sim"
-                            : textoBtnValidadeProxima = "Sim";
-                      });
-                    },
-                    child: Card(
-                      color: textoBtnValidadeProxima == "Sim"
-                          ? Color(0xFFF26768)
-                          : Color(0xFFFFFFFF),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Container(
-                        height: 50,
-                        width: 100,
-                        child: Center(
-                            child: Padding(
-                          padding: const EdgeInsets.all(1.0),
-                          child: Text(
-                            "Sim",
-                            style: TextStyle(
-                              color: textoBtnValidadeProxima == "Sim"
-                                  ? Color(0xFFFFFFFF)
-                                  : Color(0xFF707070),
-                            ),
-                          ),
-                        )),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            textoBtnValidadeProxima == "Sim"
-                ? Column(
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            "Informe quais e suas respectivas datas",
-                            textAlign: TextAlign.left,
-                          )),
-                      InkWell(
-                        onTap: () {},
-                        child: Card(
-                          color: textoBtnValidadeProxima == "Sim"
-                              ? Color(0xFFFFFFFF)
-                              : Color(0xFFFFFFFF),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Container(
-                            height: 50,
-                            width: 200,
-                            child: Center(
-                                child: Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: Text(
-                                "Adicionar",
-                                style: TextStyle(
-                                    color: textoBtnValidadeProxima == "Não"
-                                        ? Color(0xFFFFFFFF)
-                                        : Color(0xFF707070)),
-                              ),
-                            )),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                : Container(),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                InkWell(
+                  onTap: () {
+                    getImage(false);
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.all(8),
+                              child: imagemAntes == "sem imagem"
+                                  ? Container(
+                                      height: 100,
+                                      width: 300,
+                                      child: Image.asset(
+                                        "assets/cam.png",
+                                        height: 50,
+                                        width: 50,
+                                      ),
+                                    )
+                                  : Image.network(
+                                      imagemAntes,
+                                      height: 100,
+                                      width: 300,
+                                    )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                //Temos Ponto Extra ?
                 Padding(
-                    padding:
-                        EdgeInsets.only(left: 8, right: 8, bottom: 1, top: 8),
+                    padding: EdgeInsets.all(8),
                     child: Text(
-                      "Existe algum produto com poucas unidades na área de venda?",
-                      textAlign: TextAlign.left,
-                    )),
-                Padding(
-                    padding:
-                        EdgeInsets.only(left: 1, right: 8, bottom: 8, top: 1),
-                    child: Text(
-                      "(Produtos com menos de x uni. na área de venda)",
-                      style: TextStyle(
-                          fontFamily: "Helvetica",
-                          fontSize: 10,
-                          color: Colors.black),
+                      "Temos ponto extra ?",
                       textAlign: TextAlign.left,
                     )),
                 SingleChildScrollView(
@@ -1083,13 +1058,13 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                       InkWell(
                         onTap: () {
                           setState(() {
-                            textoBtnRuptura == "Não"
-                                ? textoBtnRuptura = "Não"
-                                : textoBtnRuptura = "Não";
+                            textoBtnPontoExtra == "Não"
+                                ? textoBtnPontoExtra = "Não"
+                                : textoBtnPontoExtra = "Não";
                           });
                         },
                         child: Card(
-                          color: textoBtnRuptura == "Não"
+                          color: textoBtnPontoExtra == "Não"
                               ? Color(0xFFF26768)
                               : Color(0xFFFFFFFF),
                           shape: RoundedRectangleBorder(
@@ -1103,7 +1078,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                               child: Text(
                                 "Não",
                                 style: TextStyle(
-                                    color: textoBtnRuptura == "Não"
+                                    color: textoBtnPontoExtra == "Não"
                                         ? Color(0xFFFFFFFF)
                                         : Color(0xFF707070)),
                               ),
@@ -1114,13 +1089,13 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                       InkWell(
                         onTap: () {
                           setState(() {
-                            textoBtnRuptura == "Não"
-                                ? textoBtnRuptura = "Sim"
-                                : textoBtnRuptura = "Sim";
+                            textoBtnPontoExtra == "Não"
+                                ? textoBtnPontoExtra = "Sim"
+                                : textoBtnPontoExtra = "Sim";
                           });
                         },
                         child: Card(
-                          color: textoBtnRuptura == "Sim"
+                          color: textoBtnPontoExtra == "Sim"
                               ? Color(0xFFF26768)
                               : Color(0xFFFFFFFF),
                           shape: RoundedRectangleBorder(
@@ -1134,7 +1109,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                               child: Text(
                                 "Sim",
                                 style: TextStyle(
-                                  color: textoBtnRuptura == "Sim"
+                                  color: textoBtnPontoExtra == "Sim"
                                       ? Color(0xFFFFFFFF)
                                       : Color(0xFF707070),
                                 ),
@@ -1146,35 +1121,42 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                     ],
                   ),
                 ),
-              ],
-            ),
-            textoBtnRuptura == "Sim"
-                ? Column(
+
+                //Produtos com validade Proxima
+                Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      "Existe algum produto com validade próxima?",
+                      textAlign: TextAlign.left,
+                    )),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
                     children: [
-                      Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Text(
-                            "Informe os produtos com ruptura",
-                            textAlign: TextAlign.left,
-                          )),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            textoBtnValidadeProxima == "Não"
+                                ? textoBtnValidadeProxima = "Não"
+                                : textoBtnValidadeProxima = "Não";
+                          });
+                        },
                         child: Card(
-                          color: textoBtnValidadeProxima == "Sim"
-                              ? Color(0xFFFFFFFF)
+                          color: textoBtnValidadeProxima == "Não"
+                              ? Color(0xFFF26768)
                               : Color(0xFFFFFFFF),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           child: Container(
                             height: 50,
-                            width: 200,
+                            width: 100,
                             child: Center(
                                 child: Padding(
                               padding: const EdgeInsets.all(1.0),
                               child: Text(
-                                "Adicionar",
+                                "Não",
                                 style: TextStyle(
-                                    color: textoBtnRuptura == "Não"
+                                    color: textoBtnValidadeProxima == "Não"
                                         ? Color(0xFFFFFFFF)
                                         : Color(0xFF707070)),
                               ),
@@ -1182,27 +1164,284 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                           ),
                         ),
                       ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            textoBtnValidadeProxima == "Não"
+                                ? textoBtnValidadeProxima = "Sim"
+                                : textoBtnValidadeProxima = "Sim";
+                          });
+                        },
+                        child: Card(
+                          color: textoBtnValidadeProxima == "Sim"
+                              ? Color(0xFFF26768)
+                              : Color(0xFFFFFFFF),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Container(
+                            height: 50,
+                            width: 100,
+                            child: Center(
+                                child: Padding(
+                              padding: const EdgeInsets.all(1.0),
+                              child: Text(
+                                "Sim",
+                                style: TextStyle(
+                                  color: textoBtnValidadeProxima == "Sim"
+                                      ? Color(0xFFFFFFFF)
+                                      : Color(0xFF707070),
+                                ),
+                              ),
+                            )),
+                          ),
+                        ),
+                      )
                     ],
-                  )
-                : Container(),
+                  ),
+                ),
+                textoBtnValidadeProxima == "Sim"
+                    ? Column(
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                "Informe quais e suas respectivas datas",
+                                textAlign: TextAlign.left,
+                              )),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProductTileValidadeScreen(
+                                          data, nomeCategoria)));
+                            },
+                            child: Card(
+                              color: textoBtnValidadeProxima == "Sim"
+                                  ? Color(0xFFFFFFFF)
+                                  : Color(0xFFFFFFFF),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Container(
+                                height: 50,
+                                width: 200,
+                                child: Center(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: Text(
+                                    "Adicionar",
+                                    style: TextStyle(
+                                        color: textoBtnValidadeProxima == "Não"
+                                            ? Color(0xFFFFFFFF)
+                                            : Color(0xFF707070)),
+                                  ),
+                                )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
+                Column(
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.only(
+                            left: 8, right: 8, bottom: 1, top: 8),
+                        child: Text(
+                          "Existe algum produto com poucas unidades na área de venda?",
+                          textAlign: TextAlign.left,
+                        )),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            left: 1, right: 8, bottom: 8, top: 1),
+                        child: Text(
+                          "(Produtos com menos de x uni. na área de venda)",
+                          style: TextStyle(
+                              fontFamily: "Helvetica",
+                              fontSize: 10,
+                              color: Colors.black),
+                          textAlign: TextAlign.left,
+                        )),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                textoBtnRuptura == "Não"
+                                    ? textoBtnRuptura = "Não"
+                                    : textoBtnRuptura = "Não";
+                              });
+                            },
+                            child: Card(
+                              color: textoBtnRuptura == "Não"
+                                  ? Color(0xFFF26768)
+                                  : Color(0xFFFFFFFF),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Container(
+                                height: 50,
+                                width: 100,
+                                child: Center(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: Text(
+                                    "Não",
+                                    style: TextStyle(
+                                        color: textoBtnRuptura == "Não"
+                                            ? Color(0xFFFFFFFF)
+                                            : Color(0xFF707070)),
+                                  ),
+                                )),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                textoBtnRuptura == "Não"
+                                    ? textoBtnRuptura = "Sim"
+                                    : textoBtnRuptura = "Sim";
+                              });
+                            },
+                            child: Card(
+                              color: textoBtnRuptura == "Sim"
+                                  ? Color(0xFFF26768)
+                                  : Color(0xFFFFFFFF),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Container(
+                                height: 50,
+                                width: 100,
+                                child: Center(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: Text(
+                                    "Sim",
+                                    style: TextStyle(
+                                      color: textoBtnRuptura == "Sim"
+                                          ? Color(0xFFFFFFFF)
+                                          : Color(0xFF707070),
+                                    ),
+                                  ),
+                                )),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                textoBtnRuptura == "Sim"
+                    ? Column(
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                "Informe os produtos com ruptura",
+                                textAlign: TextAlign.left,
+                              )),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProductTileRupturaScreen(
+                                          data, nomeCategoria)));
+                            },
+                            child: Card(
+                              color: textoBtnValidadeProxima == "Sim"
+                                  ? Color(0xFFFFFFFF)
+                                  : Color(0xFFFFFFFF),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Container(
+                                height: 50,
+                                width: 200,
+                                child: Center(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: Text(
+                                    "Adicionar",
+                                    style: TextStyle(
+                                        color: textoBtnRuptura == "Não"
+                                            ? Color(0xFFFFFFFF)
+                                            : Color(0xFF707070)),
+                                  ),
+                                )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
+              ],
+            ),
           ],
         ),
       ),
       actions: <Widget>[
         // define os botões na base do dialogo
-//        new FlatButton(
-//          child: new Text("Concluir"),
-//          onPressed: () {
-//            Navigator.of(context).pop();
+        new FlatButton(
+          child: new Text("Salvar"),
+          onPressed: () {
+            Navigator.of(context).pop();
+
+//            DocumentReference documentReference = Firestore.instance
+//                .collection("Empresas")
+//                .document(data.empresaResponsavel)
+//                .collection("pesquisasCriadas")
+//                .document(data.id)
+//                .collection("linhasProdutos")
+//                .document(nomeCategoria);
 //
-//            DocumentReference documentReference = Firestore.instance.collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id).collection("linhasProdutos").document(nomeCategoria);
-//
-//            documentReference.setData({
-//              "concluida": true
-//            }, merge: true);
-//          },
-//        ),
+//            documentReference.setData({"concluida": true}, merge: true);
+          },
+        ),
       ],
     );
+  }
+
+  Future getImage(bool gallery) async {
+    ImagePicker picker = ImagePicker();
+    PickedFile pickedFile;
+    // Let user select photo from gallery
+    if (gallery) {
+      pickedFile = await picker.getImage(
+        source: ImageSource.gallery,
+      );
+    }
+    // Otherwise open camera to get new photo
+    else {
+      pickedFile = await picker.getImage(
+        source: ImageSource.camera,
+      );
+    }
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+
+        print("tem imagem aqui");
+
+        //_image = File(pickedFile.path); // Use if you only need a single picture
+      } else {
+        print('No image selected.');
+      }
+    });
+
+    Future uploadPic(BuildContext context) async {
+      String filName = path.basename(_image.path);
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(filName);
+      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+      String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+      setState(() {
+        print(docUrl);
+        imagemAntes = docUrl;
+      });
+    }
+
+    uploadPic(context);
   }
 }

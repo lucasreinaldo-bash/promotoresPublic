@@ -5,22 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 
-class ProdutosTile extends StatefulWidget {
+class ProdutosTileAntesReposicao extends StatefulWidget {
   ProductData dataProdutos;
   PesquisaData data;
 
-  ProdutosTile(this.data, this.dataProdutos);
+  ProdutosTileAntesReposicao(this.data, this.dataProdutos);
   @override
-  _ProdutosTileState createState() =>
-      _ProdutosTileState(this.data, this.dataProdutos);
+  _ProdutosTileAntesReposicaoState createState() =>
+      _ProdutosTileAntesReposicaoState(this.data, this.dataProdutos);
 }
 
-class _ProdutosTileState extends State<ProdutosTile> {
+class _ProdutosTileAntesReposicaoState
+    extends State<ProdutosTileAntesReposicao> {
   ProductData dataProdutos;
   PesquisaData data;
   final _quantidadeProdutoController = TextEditingController();
 
-  _ProdutosTileState(this.data, this.dataProdutos);
+  _ProdutosTileAntesReposicaoState(this.data, this.dataProdutos);
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -43,14 +44,14 @@ class _ProdutosTileState extends State<ProdutosTile> {
                         .document(data.empresaResponsavel)
                         .collection("pesquisasCriadas")
                         .document(data.id)
-                        .collection("antesReposicao")
+                        .collection("estoqueDeposito")
                         .document(dataProdutos.nomeProduto);
 
                     documentReference.setData(
                       {
                         "linha": dataProdutos.nomeLinha,
                         "produto": dataProdutos.nomeProduto,
-                        "quantidade":
+                        "antesReposicao":
                             int.parse(_quantidadeProdutoController.text),
                       },
                     );

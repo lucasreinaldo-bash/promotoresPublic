@@ -353,7 +353,14 @@ class _HomeMenuState extends State<HomeMenu> {
                                                       Colors.deepPurpleAccent,
                                                   entryAnimation:
                                                       EntryAnimation.DEFAULT,
-                                                  onOkButtonPressed: () {},
+                                                  onOkButtonPressed: () {
+                                                    Navigator.pop(context);
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                DetalhamentoPesquisa(
+                                                                    data)));
+                                                  },
                                                 ));
 
 //

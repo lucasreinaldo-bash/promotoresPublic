@@ -2,33 +2,39 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 
-class ProdutosTile extends StatefulWidget {
+class ProdutosTileRuptura extends StatefulWidget {
   ProductData dataProdutos;
   PesquisaData data;
 
-  ProdutosTile(this.data, this.dataProdutos);
+  ProdutosTileRuptura(this.data, this.dataProdutos);
   @override
-  _ProdutosTileState createState() =>
-      _ProdutosTileState(this.data, this.dataProdutos);
+  _ProdutosTileRupturaState createState() =>
+      _ProdutosTileRupturaState(this.data, this.dataProdutos);
 }
 
-class _ProdutosTileState extends State<ProdutosTile> {
+class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
   ProductData dataProdutos;
   PesquisaData data;
-  final _quantidadeProdutoController = TextEditingController();
+  final _rupturaController = TextEditingController();
+  String dataInicioPesquisa, dataFinalPesquisa, nomeRede;
 
-  _ProdutosTileState(this.data, this.dataProdutos);
+  var dataFormatter =
+      new MaskTextInputFormatter(mask: '####', filter: {"#": RegExp(r'[0-9]')});
+
+  _ProdutosTileRupturaState(this.data, this.dataProdutos);
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
         height: 50,
+        width: 200,
         child: ListTile(
           trailing: Card(
-            elevation: 1,
+            elevation: 10,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
@@ -37,6 +43,7 @@ class _ProdutosTileState extends State<ProdutosTile> {
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: TextField(
+                  inputFormatters: [dataFormatter],
                   onEditingComplete: () {
                     DocumentReference documentReference = Firestore.instance
                         .collection("Empresas")
@@ -46,23 +53,22 @@ class _ProdutosTileState extends State<ProdutosTile> {
                         .collection("antesReposicao")
                         .document(dataProdutos.nomeProduto);
 
-                    documentReference.setData(
+                    documentReference.updateData(
                       {
                         "linha": dataProdutos.nomeLinha,
                         "produto": dataProdutos.nomeProduto,
-                        "quantidade":
-                            int.parse(_quantidadeProdutoController.text),
+                        "ruptura": int.parse(_rupturaController.text),
                       },
                     );
                     FocusScope.of(context).unfocus();
                     Flushbar(
                       title: "Informação respondida com sucesso.",
                       message:
-                          "A quantidade anterior de ${_quantidadeProdutoController.text} ${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                          "O produto ${dataProdutos.nomeProduto} está com ruptura. Apenas ${_rupturaController.text} unidades em estoque.",
                       backgroundGradient:
                           LinearGradient(colors: [Colors.blue, Colors.teal]),
                       backgroundColor: Colors.red,
-                      duration: Duration(seconds: 3),
+                      duration: Duration(seconds: 4),
                       boxShadows: [
                         BoxShadow(
                           color: Colors.blue[800],
@@ -72,11 +78,11 @@ class _ProdutosTileState extends State<ProdutosTile> {
                       ],
                     )..show(context);
                   },
-                  controller: _quantidadeProdutoController,
+                  controller: _rupturaController,
                   keyboardType: TextInputType.number,
                   style: TextStyle(
                       fontFamily: "WorkSansSemiBold",
-                      fontSize: 12,
+                      fontSize: 10,
                       color: Colors.black),
                   decoration: InputDecoration(
                     hintText: "0",
@@ -86,24 +92,27 @@ class _ProdutosTileState extends State<ProdutosTile> {
               ),
             ),
           ),
-          title: Card(
-            elevation: 1,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Container(
-              width: 300,
-              height: 40,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "" + dataProdutos.nomeProduto,
-                  style: TextStyle(
-                      fontFamily: "QuickSand",
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.start,
+          title: InkWell(
+            onTap: () {},
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Container(
+                width: 200,
+                height: 40,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "" + dataProdutos.nomeProduto,
+                    style: TextStyle(
+                        fontFamily: "QuickSand",
+                        fontSize: 8,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                    textAlign: TextAlign.start,
+                  ),
                 ),
               ),
             ),
