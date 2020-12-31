@@ -16,6 +16,16 @@ class UserModel extends Model {
 
   String perfilUsuario, idPromotor;
 
+  String result = "não";
+
+  void setResult(String texto) {
+    this.result = texto;
+  }
+
+  String getResult() {
+    return result;
+  }
+
   static UserModel of(BuildContext context) =>
       ScopedModel.of<UserModel>(context);
 

@@ -5,23 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 
-class ProdutosTileAntesReposicao extends StatefulWidget {
+class ProdutosTileAposReposicao extends StatefulWidget {
   ProductData dataProdutos;
   PesquisaData data;
 
-  ProdutosTileAntesReposicao(this.data, this.dataProdutos);
+  ProdutosTileAposReposicao(this.data, this.dataProdutos);
   @override
-  _ProdutosTileAntesReposicaoState createState() =>
-      _ProdutosTileAntesReposicaoState(this.data, this.dataProdutos);
+  _ProdutosTileAposReposicaoState createState() =>
+      _ProdutosTileAposReposicaoState(this.data, this.dataProdutos);
 }
 
-class _ProdutosTileAntesReposicaoState
-    extends State<ProdutosTileAntesReposicao> {
+class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
   ProductData dataProdutos;
   PesquisaData data;
   final _quantidadeProdutoController = TextEditingController();
 
-  _ProdutosTileAntesReposicaoState(this.data, this.dataProdutos);
+  _ProdutosTileAposReposicaoState(this.data, this.dataProdutos);
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -47,11 +46,9 @@ class _ProdutosTileAntesReposicaoState
                         .collection("estoqueDeposito")
                         .document(dataProdutos.nomeProduto);
 
-                    documentReference.setData(
+                    documentReference.updateData(
                       {
-                        "linha": dataProdutos.nomeLinha,
-                        "produto": dataProdutos.nomeProduto,
-                        "antesReposicao":
+                        "aposReposicao":
                             int.parse(_quantidadeProdutoController.text),
                       },
                     );
@@ -59,7 +56,7 @@ class _ProdutosTileAntesReposicaoState
                     Flushbar(
                       title: "Informação respondida com sucesso.",
                       message:
-                          "A quantidade anterior de ${_quantidadeProdutoController.text} "
+                          "A quantidade atual de ${_quantidadeProdutoController.text} "
                           "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
                       backgroundGradient:
                           LinearGradient(colors: [Colors.blue, Colors.teal]),

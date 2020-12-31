@@ -315,54 +315,11 @@ class _HomeMenuState extends State<HomeMenu> {
                                             snapshot.data.documents[index]);
                                     return InkWell(
                                       onTap: () async {
-                                        print(snapshot);
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) => FlareGiffyDialog(
-                                                  flarePath:
-                                                      'assets/seach_cloud.flr',
-                                                  flareAnimation: 'products',
-                                                  title: Text(
-                                                    'O que deseja fazer ?',
-                                                    style: TextStyle(
-                                                        fontSize: 22.0,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                  description: Text(
-                                                    'Você deseja Iniciar a Pesquisa agora ou apenas ver o detalhamento ?',
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(),
-                                                  ),
-                                                  onCancelButtonPressed: () {
-                                                    Navigator.pop(context);
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                DetalhamentoPesquisa(
-                                                                    data)));
-                                                  },
-                                                  buttonCancelText:
-                                                      Text("Detalhamento"),
-                                                  buttonOkText: Text(
-                                                    "Iniciar",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  buttonOkColor:
-                                                      Colors.deepPurpleAccent,
-                                                  entryAnimation:
-                                                      EntryAnimation.DEFAULT,
-                                                  onOkButtonPressed: () {
-                                                    Navigator.pop(context);
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                DetalhamentoPesquisa(
-                                                                    data)));
-                                                  },
-                                                ));
-
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetalhamentoPesquisa(
+                                                        data)));
 //
                                       },
                                       child: Card(
