@@ -1,9 +1,13 @@
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:nice_button/NiceButton.dart';
 import 'package:versaoPromotores/menu_principal/criar_pesquisa.dart';
+import 'package:versaoPromotores/menu_principal/datas/ProdutoData_ruptura_validade.dart';
+import 'package:versaoPromotores/menu_principal/datas/estoqueDeposito_data.dart';
+import 'package:versaoPromotores/menu_principal/screens/exibirImagem.dart';
 
 import 'datas/pesquisaData.dart';
 
@@ -61,8 +65,6 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
                             child: Container(
-                              height: 400,
-                              width: 400,
                               child: Padding(
                                 padding: EdgeInsets.all(10),
                                 child: Column(
@@ -250,18 +252,12 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
             body: Stack(
               children: [
                 Container(
-                  decoration: new BoxDecoration(
-                    image: new DecorationImage(
-                      image:
-                          new AssetImage("assets/background_detalhamento.png"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  color: Color(0xFFEAECF5),
                   child: null /* add child content content here */,
                 ),
                 SingleChildScrollView(
                     child: Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
+                  padding: const EdgeInsets.only(top: 20.0),
                   child: Column(
                     children: [
                       Padding(
@@ -273,75 +269,287 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                               height: 200,
                               width: 400,
                               child: Padding(
-                                padding: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(1),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
+                                    Text(
+                                      "Fotos Capturadas",
+                                      style: TextStyle(
+                                          fontFamily: "QuickSand",
+                                          fontSize: 15),
+                                    ),
                                     Divider(),
 
                                     SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: [
-                                          Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {},
-                                                child: Card(
-                                                  color: Color(0xFFFFFFFF),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10)),
-                                                  child: Container(
-                                                      height: 100,
-                                                      width: 100,
-                                                      child: StreamBuilder(
-                                                        stream: Firestore
-                                                            .instance
-                                                            .collection(
-                                                                "Empresas")
-                                                            .document(data
-                                                                .empresaResponsavel)
-                                                            .collection(
-                                                                "pesquisasCriadas")
-                                                            .document(data.id)
-                                                            .collection(
-                                                                "BeforeAreaDeVenda")
-                                                            .document(
-                                                                "fotoAntesReposicao")
-                                                            .snapshots(),
-                                                        builder: (context,
-                                                            snapImg1) {
-                                                          if (!snapImg1
-                                                              .hasData) {
-                                                            return Center(
+                                      child: Column(children: <Widget>[
+                                        SizedBox(
+                                            height: 150.0,
+                                            width: 350.0,
+                                            child: Carousel(
+                                              images: [
+                                                Column(
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {},
+                                                      child: Card(
+                                                        elevation: 10,
+                                                        color:
+                                                            Color(0xFFFFFFFF),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                          child: Container(
+                                                              height: 80,
+                                                              width: 80,
                                                               child:
-                                                                  CircularProgressIndicator(),
-                                                            );
-                                                          } else {
-                                                            return Image
-                                                                .network(
-                                                              snapImg1.data[
-                                                                  "imagem"],
-                                                              fit: BoxFit.cover,
-                                                            );
-                                                          }
-                                                        },
-                                                      )),
+                                                                  StreamBuilder(
+                                                                stream: Firestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        "Empresas")
+                                                                    .document(data
+                                                                        .empresaResponsavel)
+                                                                    .collection(
+                                                                        "pesquisasCriadas")
+                                                                    .document(
+                                                                        data.id)
+                                                                    .collection(
+                                                                        "BeforeAreaDeVenda")
+                                                                    .document(
+                                                                        "fotoAntesReposicao")
+                                                                    .snapshots(),
+                                                                builder: (context,
+                                                                    snapImg1) {
+                                                                  if (!snapImg1
+                                                                      .hasData) {
+                                                                    return Center(
+                                                                      child:
+                                                                          CircularProgressIndicator(),
+                                                                    );
+                                                                  } else {
+                                                                    return InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.of(context).push(MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                ExibirImagem(snapImg1.data["imagem"], "1")));
+                                                                      },
+                                                                      child: Image
+                                                                          .network(
+                                                                        snapImg1
+                                                                            .data["imagem"],
+                                                                        fit: BoxFit
+                                                                            .fill,
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                                },
+                                                              )),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "Aréa de Venda\n(antes da reposição)",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              "QuickSandRegular",
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                              Text(
-                                                "Foto da Aréa de venda\n(antes da reposição)",
-                                                style: TextStyle(
-                                                    fontFamily:
-                                                        "QuickSandRegular",
-                                                    fontSize: 12),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                                Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {},
+                                                      child: Card(
+                                                        elevation: 10,
+                                                        color:
+                                                            Color(0xFFFFFFFF),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                          child: Container(
+                                                              height: 100,
+                                                              width: 100,
+                                                              child:
+                                                                  StreamBuilder(
+                                                                stream: Firestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        "Empresas")
+                                                                    .document(data
+                                                                        .empresaResponsavel)
+                                                                    .collection(
+                                                                        "pesquisasCriadas")
+                                                                    .document(
+                                                                        data.id)
+                                                                    .collection(
+                                                                        "BeforeAreaDeVenda")
+                                                                    .document(
+                                                                        "fotoAntesReposicao")
+                                                                    .snapshots(),
+                                                                builder: (context,
+                                                                    snapImg1) {
+                                                                  if (!snapImg1
+                                                                      .hasData) {
+                                                                    return Center(
+                                                                      child:
+                                                                          CircularProgressIndicator(),
+                                                                    );
+                                                                  } else {
+                                                                    return InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.of(context).push(MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                ExibirImagem(snapImg1.data["imagem"], "2")));
+                                                                      },
+                                                                      child: Image
+                                                                          .network(
+                                                                        snapImg1
+                                                                            .data["imagem"],
+                                                                        fit: BoxFit
+                                                                            .fill,
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                                },
+                                                              )),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "Ponto Extra\n",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              "QuickSandRegular",
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 20,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {},
+                                                      child: Card(
+                                                        elevation: 10,
+                                                        color:
+                                                            Color(0xFFFFFFFF),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                          child: Container(
+                                                              height: 100,
+                                                              width: 100,
+                                                              child:
+                                                                  StreamBuilder(
+                                                                stream: Firestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        "Empresas")
+                                                                    .document(data
+                                                                        .empresaResponsavel)
+                                                                    .collection(
+                                                                        "pesquisasCriadas")
+                                                                    .document(
+                                                                        data.id)
+                                                                    .collection(
+                                                                        "BeforeAreaDeVenda")
+                                                                    .document(
+                                                                        "fotoAntesReposicao")
+                                                                    .snapshots(),
+                                                                builder: (context,
+                                                                    snapImg1) {
+                                                                  if (!snapImg1
+                                                                      .hasData) {
+                                                                    return Center(
+                                                                      child:
+                                                                          CircularProgressIndicator(),
+                                                                    );
+                                                                  } else {
+                                                                    return InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .push(MaterialPageRoute(
+                                                                          builder: (context) => ExibirImagem(
+                                                                              snapImg1.data["imagem"],
+                                                                              "3"),
+                                                                        ));
+                                                                      },
+                                                                      child: Image
+                                                                          .network(
+                                                                        snapImg1
+                                                                            .data["imagem"],
+                                                                        fit: BoxFit
+                                                                            .fill,
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                                },
+                                                              )),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "Aréa de Venda\n(após reposição)",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              "QuickSandRegular",
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                              dotSize: 4.0,
+                                              dotSpacing: 15.0,
+                                              animationDuration:
+                                                  Duration(seconds: 2),
+                                              showIndicator: false,
+                                              dotColor: Colors.white,
+                                              indicatorBgPadding: 5.0,
+                                              dotBgColor: Colors.deepPurple
+                                                  .withOpacity(0.5),
+                                              borderRadius: true,
+
+//                                              moveIndicatorFromBottom: 180.0,
+//                                              noRadiusForIndicator: true,
+                                            ))
+                                      ]),
                                     ),
 
                                     //Falta modificar a data de conclusão
@@ -366,6 +574,13 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    Text(
+                                      "Detalhes",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: "QuickSand",
+                                          color: Colors.black87),
+                                    ),
                                     Divider(),
                                     Column(
                                       crossAxisAlignment:
@@ -443,7 +658,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Linha de Produtos:",
+                                          "Linha de Produtos Pesquisadas:",
                                           style: TextStyle(
                                               fontFamily: "QuickSand",
                                               color: Colors.black87),
@@ -483,6 +698,277 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                 ),
                               ),
                             )),
+                      ),
+                      FutureBuilder(
+                        future: Firestore.instance
+                            .collection("Empresas")
+                            .document(data.empresaResponsavel)
+                            .collection("pesquisasCriadas")
+                            .document(data.id)
+                            .collection("antesReposicao")
+                            .getDocuments(),
+                        builder: (context, snapDetalhes) {
+                          if (!snapDetalhes.hasData) {
+                            return Container();
+                          } else {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Container(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Vencimentos Próximos",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontFamily: "QuickSand",
+                                                    color: Colors.black87),
+                                              ),
+                                              Divider(),
+                                              ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapDetalhes
+                                                      .data.documents.length,
+                                                  itemBuilder: (_, index) {
+                                                    ProductDataRupturaValidade
+                                                        data =
+                                                        ProductDataRupturaValidade
+                                                            .fromDocument(
+                                                                snapDetalhes
+                                                                        .data
+                                                                        .documents[
+                                                                    index]);
+
+                                                    if (data.validade !=
+                                                        "00/00/0000") {
+                                                      return ListTile(
+                                                        title: Text(
+                                                          data.produto,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "QuickSandRegular"),
+                                                        ),
+                                                        trailing: Text(
+                                                            data.validade,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "QuickSandRegular")),
+                                                      );
+                                                    }
+                                                  })
+
+                                              //Falta modificar a data de conclusão
+                                            ],
+                                          ),
+                                        ),
+                                      )),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Container(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Em Ruptura",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontFamily: "QuickSand",
+                                                    color: Colors.black87),
+                                              ),
+                                              Divider(),
+                                              ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapDetalhes
+                                                      .data.documents.length,
+                                                  itemBuilder: (_, index) {
+                                                    ProductDataRupturaValidade
+                                                        data =
+                                                        ProductDataRupturaValidade
+                                                            .fromDocument(
+                                                                snapDetalhes
+                                                                        .data
+                                                                        .documents[
+                                                                    index]);
+
+                                                    if (data.ruptura != 0) {
+                                                      return ListTile(
+                                                        title: Text(
+                                                          data.produto,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "QuickSandRegular"),
+                                                        ),
+                                                        trailing: Text(
+                                                            data.ruptura
+                                                                    .toString() +
+                                                                " UN",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "QuickSandRegular")),
+                                                      );
+                                                    }
+                                                  })
+
+                                              //Falta modificar a data de conclusão
+                                            ],
+                                          ),
+                                        ),
+                                      )),
+                                )
+                              ],
+                            );
+                          }
+                        },
+                      ),
+                      FutureBuilder(
+                        future: Firestore.instance
+                            .collection("Empresas")
+                            .document(data.empresaResponsavel)
+                            .collection("pesquisasCriadas")
+                            .document(data.id)
+                            .collection("estoqueDeposito")
+                            .getDocuments(),
+                        builder: (context, snapDetalhes) {
+                          if (!snapDetalhes.hasData) {
+                            return Container();
+                          } else {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Container(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Estoques antes da reposição",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontFamily: "QuickSand",
+                                                    color: Colors.black87),
+                                              ),
+                                              Divider(),
+                                              ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapDetalhes
+                                                      .data.documents.length,
+                                                  itemBuilder: (_, index) {
+                                                    estoqueDepositoData data =
+                                                        estoqueDepositoData
+                                                            .fromDocument(
+                                                                snapDetalhes
+                                                                        .data
+                                                                        .documents[
+                                                                    index]);
+
+                                                    return ListTile(
+                                                      title: Text(
+                                                        data.produto,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "QuickSandRegular"),
+                                                      ),
+                                                      trailing: Text(
+                                                          data.antesReposicao
+                                                                  .toString() +
+                                                              " UN",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "QuickSandRegular")),
+                                                    );
+                                                  })
+
+                                              //Falta modificar a data de conclusão
+                                            ],
+                                          ),
+                                        ),
+                                      )),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Container(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Estoques após reposição",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontFamily: "QuickSand",
+                                                    color: Colors.black87),
+                                              ),
+                                              Divider(),
+                                              ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapDetalhes
+                                                      .data.documents.length,
+                                                  itemBuilder: (_, index) {
+                                                    estoqueDepositoData data =
+                                                        estoqueDepositoData
+                                                            .fromDocument(
+                                                                snapDetalhes
+                                                                        .data
+                                                                        .documents[
+                                                                    index]);
+
+                                                    return ListTile(
+                                                      title: Text(
+                                                        data.produto,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "QuickSandRegular"),
+                                                      ),
+                                                      trailing: Text(
+                                                          data.aposReposicao
+                                                                  .toString() +
+                                                              " UN",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "QuickSandRegular")),
+                                                    );
+                                                  })
+
+                                              //Falta modificar a data de conclusão
+                                            ],
+                                          ),
+                                        ),
+                                      )),
+                                )
+                              ],
+                            );
+                          }
+                        },
                       ),
                       Container(
                         width: 200,

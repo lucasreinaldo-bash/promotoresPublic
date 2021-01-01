@@ -12,6 +12,7 @@ import 'package:versaoPromotores/models/user_model.dart';
 import 'package:versaoPromotores/style/style.dart';
 
 import 'detalhamentoPesquisa.dart';
+import 'exibirPesquisa.dart';
 
 class HomeMenu extends StatefulWidget {
   @override
@@ -318,8 +319,7 @@ class _HomeMenuState extends State<HomeMenu> {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    DetalhamentoPesquisa(
-                                                        data)));
+                                                    ExibirPesquisa(data)));
 //
                                       },
                                       child: Card(

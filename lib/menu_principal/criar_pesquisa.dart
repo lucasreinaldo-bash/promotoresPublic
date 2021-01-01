@@ -1309,6 +1309,21 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                                 ? textoBtnPontoExtra = "Não"
                                 : textoBtnPontoExtra = "Não";
                           });
+                          DocumentReference documentReference = Firestore
+                              .instance
+                              .collection("Empresas")
+                              .document(data.empresaResponsavel)
+                              .collection("pesquisasCriadas")
+                              .document(data.id)
+                              .collection("pontoExtra")
+                              .document("ponto");
+
+                          documentReference.setData(
+                            {
+                              "existe": false,
+                              "imagem": "nenhuma",
+                            },
+                          );
                         },
                         child: Card(
                           color: textoBtnPontoExtra == "Não"
@@ -1340,6 +1355,21 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                                 ? textoBtnPontoExtra = "Sim"
                                 : textoBtnPontoExtra = "Sim";
                           });
+                          DocumentReference documentReference = Firestore
+                              .instance
+                              .collection("Empresas")
+                              .document(data.empresaResponsavel)
+                              .collection("pesquisasCriadas")
+                              .document(data.id)
+                              .collection("pontoExtra")
+                              .document("ponto");
+
+                          documentReference.setData(
+                            {
+                              "existe": true,
+                              "imagem": "nenhuma",
+                            },
+                          );
                         },
                         child: Card(
                           color: textoBtnPontoExtra == "Sim"
