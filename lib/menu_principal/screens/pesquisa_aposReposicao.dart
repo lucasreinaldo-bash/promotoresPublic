@@ -40,7 +40,16 @@ import 'package:versaoPromotores/style/style.dart';
 
 import '../criar_pesquisa.dart';
 
-class PesquisaAposReposicao extends StatelessWidget {
+class PesquisaAposReposicao extends StatefulWidget {
+  PesquisaData data;
+
+  PesquisaAposReposicao(this.data);
+  @override
+  _PesquisaAposReposicaoState createState() =>
+      _PesquisaAposReposicaoState(this.data);
+}
+
+class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
   final int _numPages = 3;
 
   PesquisaData data;
@@ -55,7 +64,7 @@ class PesquisaAposReposicao extends StatelessWidget {
     return list;
   }
 
-  PesquisaAposReposicao(this.data);
+  _PesquisaAposReposicaoState(this.data);
 
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
@@ -70,8 +79,18 @@ class PesquisaAposReposicao extends StatelessWidget {
     );
   }
 
+  String title = "Observações";
+
   @override
   Widget build(BuildContext context) {
+    var lista = new List<int>(data.linhaProduto.length);
+
+    bool pesquisaCompleta() {
+      var resultFirstWhere = lista.every((el) => el == 0);
+
+      return resultFirstWhere;
+    }
+
     return MaterialApp(
       localizationsDelegates: [GlobalMaterialLocalizations.delegate],
       supportedLocales: [const Locale('pt'), const Locale('BR')],
@@ -123,7 +142,8 @@ class PesquisaAposReposicao extends StatelessWidget {
                                           height: 500.0,
                                           child: Expanded(
                                             child: PageView(
-                                              physics: ClampingScrollPhysics(),
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
                                               controller: _pageController,
                                               onPageChanged: (int page) {
                                                 _currentPage = page;
@@ -385,62 +405,62 @@ class PesquisaAposReposicao extends StatelessWidget {
                                                                             MainAxisAlignment.center,
                                                                         children: [
                                                                           FlatButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetalhamentoPesquisa(data)));
-                                                                            },
-                                                                            child:
-                                                                                Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              mainAxisSize: MainAxisSize.min,
-                                                                              children: <Widget>[
-                                                                                Text(
-                                                                                  'Voltar',
-                                                                                  style: TextStyle(
-                                                                                    fontFamily: "Helvetica",
-                                                                                    color: Color(0xFF707070),
-                                                                                    fontSize: 22.0,
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                children: <Widget>[
+                                                                                  Text(
+                                                                                    '      Avançar',
+                                                                                    style: TextStyle(
+                                                                                      fontFamily: "Helvetica",
+                                                                                      color: Color(0xFF707070),
+                                                                                      fontSize: 22.0,
+                                                                                    ),
                                                                                   ),
-                                                                                ),
-                                                                                SizedBox(width: 10.0),
-                                                                                Icon(
-                                                                                  Icons.arrow_forward,
-                                                                                  color: Colors.white,
-                                                                                  size: 30.0,
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                          FlatButton(
-                                                                            child:
-                                                                                Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              mainAxisSize: MainAxisSize.min,
-                                                                              children: <Widget>[
-                                                                                Text(
-                                                                                  ' Avançar',
-                                                                                  style: TextStyle(
-                                                                                    fontFamily: "Helvetica",
-                                                                                    color: Color(0xFF707070),
-                                                                                    fontSize: 22.0,
+                                                                                  SizedBox(width: 10.0),
+                                                                                  Icon(
+                                                                                    Icons.arrow_forward,
+                                                                                    color: Colors.white,
+                                                                                    size: 30.0,
                                                                                   ),
-                                                                                ),
-                                                                                SizedBox(width: 10.0),
-                                                                                Icon(
-                                                                                  Icons.arrow_forward,
-                                                                                  color: Colors.white,
-                                                                                  size: 30.0,
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                            onPressed:
-                                                                                () async {
-                                                                              _pageController.nextPage(
-                                                                                duration: Duration(milliseconds: 500),
-                                                                                curve: Curves.ease,
-                                                                              );
-                                                                            },
-                                                                          )
+                                                                                ],
+                                                                              ),
+                                                                              onPressed: () async {
+                                                                                bool resultado = await pesquisaCompleta();
+
+                                                                                if (resultado == true) {
+                                                                                  print(true);
+                                                                                  setState(() {
+                                                                                    title = "Estoque depósito";
+                                                                                  });
+                                                                                } else {
+                                                                                  showDialog(
+                                                                                      context: context,
+                                                                                      builder: (_) => FlareGiffyDialog(
+                                                                                            flarePath: 'assets/seach_cloud.flr',
+                                                                                            flareAnimation: 'products',
+                                                                                            title: Text(
+                                                                                              'Existe pesquisa não respondida!',
+                                                                                              style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+                                                                                              textAlign: TextAlign.center,
+                                                                                            ),
+                                                                                            description: Text(
+                                                                                              'Você precisa responder todas as pesquisas antes de continuar.',
+                                                                                              textAlign: TextAlign.center,
+                                                                                              style: TextStyle(),
+                                                                                            ),
+                                                                                            onOkButtonPressed: () {
+                                                                                              Navigator.pop(_);
+                                                                                            },
+                                                                                            onlyOkButton: true,
+                                                                                            entryAnimation: EntryAnimation.DEFAULT,
+                                                                                          ));
+                                                                                  _pageController.nextPage(
+                                                                                    duration: Duration(milliseconds: 500),
+                                                                                    curve: Curves.ease,
+                                                                                  );
+                                                                                }
+                                                                              }),
                                                                         ],
                                                                       ),
                                                                     ),
@@ -540,7 +560,13 @@ class PesquisaAposReposicao extends StatelessWidget {
                                                                           FlatButton(
                                                                             onPressed:
                                                                                 () {
-                                                                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetalhamentoPesquisa(data)));
+                                                                              setState(() {
+                                                                                title = "Área de Venda";
+                                                                              });
+                                                                              _pageController.previousPage(
+                                                                                duration: Duration(milliseconds: 500),
+                                                                                curve: Curves.ease,
+                                                                              );
                                                                             },
                                                                             child:
                                                                                 Row(
