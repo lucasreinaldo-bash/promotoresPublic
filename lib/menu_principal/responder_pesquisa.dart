@@ -1104,7 +1104,158 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
                                           ),
-                                          onPressed: () {
+                                          onPressed: () async {
+                                            //Limpar Area de Venda
+
+                                            DocumentReference
+                                                documentReference1 =
+                                                await Firestore.instance
+                                                    .collection("Empresas")
+                                                    .document(
+                                                        data.empresaResponsavel)
+                                                    .collection(
+                                                        "pesquisasCriadas")
+                                                    .document(data.id)
+                                                    .collection(
+                                                        "BeforeAreaDeVenda")
+                                                    .document(
+                                                        "fotoAntesReposicao");
+                                            DocumentReference
+                                                documentReference2 =
+                                                await Firestore.instance
+                                                    .collection("Empresas")
+                                                    .document(
+                                                        data.empresaResponsavel)
+                                                    .collection(
+                                                        "pesquisasCriadas")
+                                                    .document(data.id)
+                                                    .collection(
+                                                        "AfterAreaDeVenda")
+                                                    .document(
+                                                        "fotoDepoisReposicao");
+
+                                            DocumentReference
+                                                documentReference3 =
+                                                await Firestore.instance
+                                                    .collection("Empresas")
+                                                    .document(
+                                                        data.empresaResponsavel)
+                                                    .collection(
+                                                        "pesquisasCriadas")
+                                                    .document(data.id);
+
+                                            await Firestore.instance
+                                              ..collection("Empresas")
+                                                  .document(
+                                                      data.empresaResponsavel)
+                                                  .collection(
+                                                      "pesquisasCriadas")
+                                                  .document(data.id)
+                                                  .collection("antesReposicao")
+                                                  .getDocuments()
+                                                  .then((snapshot) {
+                                                for (DocumentSnapshot ds
+                                                    in snapshot.documents) {
+                                                  ds.reference.delete();
+                                                }
+                                                ;
+                                              });
+
+                                            await Firestore.instance
+                                              ..collection("Empresas")
+                                                  .document(
+                                                      data.empresaResponsavel)
+                                                  .collection(
+                                                      "pesquisasCriadas")
+                                                  .document(data.id)
+                                                  .collection("estoqueDeposito")
+                                                  .getDocuments()
+                                                  .then((snapshot) {
+                                                for (DocumentSnapshot ds
+                                                    in snapshot.documents) {
+                                                  ds.reference.delete();
+                                                }
+                                                ;
+                                              });
+
+                                            await Firestore.instance
+                                              ..collection("Empresas")
+                                                  .document(
+                                                      data.empresaResponsavel)
+                                                  .collection(
+                                                      "pesquisasCriadas")
+                                                  .document(data.id)
+                                                  .collection("pontoExtra")
+                                                  .getDocuments()
+                                                  .then((snapshot) {
+                                                for (DocumentSnapshot ds
+                                                    in snapshot.documents) {
+                                                  ds.reference.delete();
+                                                }
+                                                ;
+                                              });
+
+                                            await Firestore.instance
+                                              ..collection("Empresas")
+                                                  .document(
+                                                      data.empresaResponsavel)
+                                                  .collection(
+                                                      "pesquisasCriadas")
+                                                  .document(data.id)
+                                                  .collection("linhasProdutos")
+                                                  .getDocuments()
+                                                  .then((snapshot) {
+                                                for (DocumentSnapshot ds
+                                                    in snapshot.documents) {
+                                                  ds.reference.updateData(
+                                                      {"concluida": false});
+                                                }
+                                                ;
+                                              });
+
+                                            await Firestore.instance
+                                              ..collection("Empresas")
+                                                  .document(
+                                                      data.empresaResponsavel)
+                                                  .collection(
+                                                      "pesquisasCriadas")
+                                                  .document(data.id)
+                                                  .collection(
+                                                      "linhasProdutosAntesReposicao")
+                                                  .getDocuments()
+                                                  .then((snapshot) {
+                                                for (DocumentSnapshot ds
+                                                    in snapshot.documents) {
+                                                  ds.reference.updateData(
+                                                      {"concluida": false});
+                                                }
+                                                ;
+                                              });
+
+                                            await Firestore.instance
+                                              ..collection("Empresas")
+                                                  .document(
+                                                      data.empresaResponsavel)
+                                                  .collection(
+                                                      "pesquisasCriadas")
+                                                  .document(data.id)
+                                                  .collection(
+                                                      "linhasProdutosAposReposicao")
+                                                  .getDocuments()
+                                                  .then((snapshot) {
+                                                for (DocumentSnapshot ds
+                                                    in snapshot.documents) {
+                                                  ds.reference.updateData(
+                                                      {"concluida": false});
+                                                }
+                                                ;
+                                              });
+
+                                            documentReference1.delete();
+                                            documentReference2.delete();
+                                            documentReference3.updateData({
+                                              "novoPedido": FieldValue.delete()
+                                            });
                                             Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                     builder: (context) =>
@@ -1230,6 +1381,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
   PesquisaData data;
 
   String imagemAntes = "sem imagem";
+  String imagemAntesPontoExtra = "sem imagem";
   String nomeCategoria;
 
   _AfterDialogPesquisaState(this.nomeCategoria, this.data);
@@ -1321,9 +1473,13 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                           documentReference.setData(
                             {
                               "existe": false,
-                              "imagem": "nenhuma",
+                              "imagem": "sem imagem",
                             },
                           );
+
+                          setState(() {
+                            imagemAntesPontoExtra = "sem imagem";
+                          });
                         },
                         child: Card(
                           color: textoBtnPontoExtra == "Não"
@@ -1398,6 +1554,67 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                     ],
                   ),
                 ),
+                textoBtnPontoExtra == "Sim"
+                    ? Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              getImagePontoExtra(false);
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                        padding: EdgeInsets.all(8),
+                                        child: imagemAntesPontoExtra ==
+                                                "sem imagem"
+                                            ? Container(
+                                                height: 100,
+                                                width: 300,
+                                                child: Image.asset(
+                                                  "assets/cam.png",
+                                                  height: 50,
+                                                  width: 50,
+                                                ),
+                                              )
+                                            : imagemAntesPontoExtra ==
+                                                    "carregando"
+                                                ? Container(
+                                                    height: 100,
+                                                    width: 300,
+                                                    child: Column(
+                                                      children: [
+                                                        CircularProgressIndicator(),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Text(
+                                                            "Aguarde, a sua foto está sendo processada!")
+                                                      ],
+                                                    ))
+                                                : Image.network(
+                                                    imagemAntesPontoExtra,
+                                                    height: 100,
+                                                    width: 300,
+                                                  )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "(adicione uma foto do ponto extra)",
+                            style: TextStyle(
+                                fontFamily: "QuickSandRegular", fontSize: 10),
+                            textAlign: TextAlign.left,
+                          )
+                        ],
+                      )
+                    : Container(),
 
                 //Produtos com validade Proxima
                 Padding(
@@ -1738,6 +1955,69 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
             .collection("BeforeAreaDeVenda")
             .document("fotoAntesReposicao");
         documentReference.setData({"imagem": docUrl});
+      });
+    }
+
+    uploadPic(context);
+
+    uploadPic(context);
+  }
+
+  Future getImagePontoExtra(bool gallery) async {
+    ImagePicker picker = ImagePicker();
+    PickedFile pickedFile;
+    // Let user select photo from gallery
+    if (gallery) {
+      pickedFile = await picker.getImage(
+        source: ImageSource.gallery,
+      );
+    }
+    // Otherwise open camera to get new photo
+    else {
+      pickedFile =
+          await picker.getImage(source: ImageSource.camera, imageQuality: 80);
+    }
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+
+        print("tem imagem aqui");
+
+        //_image = File(pickedFile.path); // Use if you only need a single picture
+      } else {
+        print('No image selected.');
+      }
+    });
+
+    Future uploadPic(BuildContext context) async {
+      String filName = path.basename(_image.path);
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(filName);
+      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+      setState(() {
+        imagemAntesPontoExtra = "carregando";
+      });
+      String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+
+      setState(() {
+        print(docUrl);
+        imagemAntesPontoExtra = docUrl;
+
+        DocumentReference documentReference = Firestore.instance
+            .collection("Empresas")
+            .document(data.empresaResponsavel)
+            .collection("pesquisasCriadas")
+            .document(data.id)
+            .collection("pontoExtra")
+            .document("ponto");
+
+        documentReference.setData(
+          {
+            "existe": true,
+            "imagem": docUrl,
+          },
+        );
       });
     }
 

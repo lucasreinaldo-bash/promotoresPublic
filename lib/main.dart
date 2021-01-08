@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:versaoPromotores/menu_principal/criar_pesquisa.dart';
+import 'package:versaoPromotores/menu_principal/responder_pesquisa.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 import 'package:versaoPromotores/menu_principal/detalhamentoPesquisa.dart';
 import 'package:versaoPromotores/menu_principal/selecao_perfil.dart';

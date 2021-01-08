@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:nice_button/NiceButton.dart';
-import 'package:versaoPromotores/menu_principal/criar_pesquisa.dart';
+import 'package:versaoPromotores/menu_principal/responder_pesquisa.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData_ruptura_validade.dart';
 import 'package:versaoPromotores/menu_principal/datas/estoqueDeposito_data.dart';
 import 'package:versaoPromotores/menu_principal/screens/exibirImagem.dart';
