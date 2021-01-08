@@ -401,105 +401,6 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
 
                                                                             return InkWell(
                                                                               onTap: () {
-//                                                                      showDialog(
-//                                                                        context:
-//                                                                            context,
-//                                                                        builder:
-//                                                                            (BuildContext
-//                                                                                context) {
-//                                                                          // retorna um objeto do tipo Dialog
-//                                                                          return AlertDialog(
-//                                                                            title:
-//                                                                                new Text("Informe os estoques dos produtos abaixo\n(antes da reposição)"),
-//                                                                            content:
-//                                                                                new Column(
-//                                                                              children: [
-//                                                                                FutureBuilder(
-//                                                                                  future: Firestore.instance.collection("Empresas").document("ydj6RHQ8g1ahwDABJHM9ipb0Wnu1").collection("Produtos").where("nomeLinha", isEqualTo: nomeCategoria).getDocuments(),
-//                                                                                  builder: (context, snapshotProdutos) {
-//                                                                                    if (!snapshotProdutos.hasData) {
-//                                                                                      return LinearProgressIndicator();
-//                                                                                    } else {
-//                                                                                      return ListView.builder(
-//                                                                                          shrinkWrap: true,
-//                                                                                          itemCount: snapshotProdutos.data.documents.length,
-//                                                                                          itemBuilder: (_, indexProduto) {
-//                                                                                            ProductData dataProdutos = ProductData.fromDocument(snapshotProdutos.data.documents[indexProduto]);
-//
-//                                                                                            return ProdutosTile(data, dataProdutos);
-//                                                                                          });
-//                                                                                    }
-//                                                                                  },
-//                                                                                )
-//                                                                              ],
-//                                                                            ),
-//                                                                            actions: <Widget>[
-//                                                                              // define os botões na base do dialogo
-//                                                                              new FlatButton(
-//                                                                                child: new Text("Avançar"),
-//                                                                                onPressed: () {
-//                                                                                  Navigator.of(context).pop();
-//                                                                                  showDialog(
-//                                                                                    context: context,
-//                                                                                    builder: (BuildContext context) {
-//                                                                                      // retorna um objeto do tipo Dialog
-//                                                                                      return AlertDialog(
-//                                                                                        title: new Text("Instrução"),
-//                                                                                        content: new Card(
-//                                                                                          shape: RoundedRectangleBorder(
-//                                                                                            borderRadius: BorderRadius.circular(10.0),
-//                                                                                          ),
-//                                                                                          child: Padding(
-//                                                                                            padding: EdgeInsets.all(8),
-//                                                                                            child: Container(
-//                                                                                              height: 250,
-//                                                                                              child: TextField(
-//                                                                                                focusNode: myFocusObservacao,
-//                                                                                                enabled: true,
-//                                                                                                maxLines: 10,
-//                                                                                                controller: _instrucaoController,
-//                                                                                                keyboardType: TextInputType.text,
-//                                                                                                style: TextStyle(fontFamily: "WorkSansSemiBold", fontSize: 13.0, color: Colors.black),
-//                                                                                                decoration: InputDecoration(
-//                                                                                                  enabledBorder: UnderlineInputBorder(
-//                                                                                                    borderSide: BorderSide(color: Colors.white),
-//                                                                                                  ),
-//                                                                                                  focusedBorder: UnderlineInputBorder(
-//                                                                                                    borderSide: BorderSide(color: Colors.white),
-//                                                                                                  ),
-//                                                                                                  border: UnderlineInputBorder(
-//                                                                                                    borderSide: BorderSide(color: Colors.white),
-//                                                                                                  ),
-//                                                                                                  hintStyle: TextStyle(fontFamily: "Georgia", fontSize: 10.0),
-//                                                                                                ),
-//                                                                                              ),
-//                                                                                            ),
-//                                                                                          ),
-//                                                                                        ),
-//                                                                                        actions: <Widget>[
-//                                                                                          // define os botões na base do dialogo
-//                                                                                          new FlatButton(
-//                                                                                            child: new Text("Concluir"),
-//                                                                                            onPressed: () {
-//                                                                                              Navigator.of(context).pop();
-//
-//                                                                                              DocumentReference documentReference = Firestore.instance.collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id).collection("linhasProdutos").document(nomeCategoria);
-//
-//                                                                                              documentReference.setData({
-//                                                                                                "concluida": true
-//                                                                                              }, merge: true);
-//                                                                                            },
-//                                                                                          ),
-//                                                                                        ],
-//                                                                                      );
-//                                                                                    },
-//                                                                                  );
-//                                                                                },
-//                                                                              ),
-//                                                                            ],
-//                                                                          );
-//                                                                        },
-//                                                                      );
                                                                                 showDialog(
                                                                                   context: context,
                                                                                   builder: (BuildContext context) {
@@ -1190,7 +1091,11 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                   .then((snapshot) {
                                                 for (DocumentSnapshot ds
                                                     in snapshot.documents) {
-                                                  ds.reference.delete();
+                                                  ds.reference.updateData({
+                                                    "existe": false,
+                                                    "imagemAntes": "nenhuma",
+                                                    "imagemDepois": "nenhuma"
+                                                  });
                                                 }
                                                 ;
                                               });
@@ -1468,7 +1373,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                               .collection("pesquisasCriadas")
                               .document(data.id)
                               .collection("pontoExtra")
-                              .document("ponto");
+                              .document(nomeCategoria);
 
                           documentReference.setData(
                             {
@@ -1518,7 +1423,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                               .collection("pesquisasCriadas")
                               .document(data.id)
                               .collection("pontoExtra")
-                              .document("ponto");
+                              .document(nomeCategoria);
 
                           documentReference.setData(
                             {
@@ -2010,12 +1915,12 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
             .collection("pesquisasCriadas")
             .document(data.id)
             .collection("pontoExtra")
-            .document("ponto");
+            .document(nomeCategoria);
 
         documentReference.setData(
           {
             "existe": true,
-            "imagem": docUrl,
+            "imagemAntes": docUrl,
           },
         );
       });

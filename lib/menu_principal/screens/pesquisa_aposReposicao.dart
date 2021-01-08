@@ -174,7 +174,7 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                   .start,
                                                           children: <Widget>[
                                                             Text(
-                                                              "Faça a pesquisa para cada linha de produto abaixo antes de iniciar a reposição.",
+                                                              "Faça a pesquisa para cada linha de produto abaixo.",
                                                               style: TextStyle(
                                                                   fontFamily:
                                                                       "QuickSand",
@@ -200,105 +200,6 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
 
                                                                   return InkWell(
                                                                     onTap: () {
-//                                                                      showDialog(
-//                                                                        context:
-//                                                                            context,
-//                                                                        builder:
-//                                                                            (BuildContext
-//                                                                                context) {
-//                                                                          // retorna um objeto do tipo Dialog
-//                                                                          return AlertDialog(
-//                                                                            title:
-//                                                                                new Text("Informe os estoques dos produtos abaixo\n(antes da reposição)"),
-//                                                                            content:
-//                                                                                new Column(
-//                                                                              children: [
-//                                                                                FutureBuilder(
-//                                                                                  future: Firestore.instance.collection("Empresas").document("ydj6RHQ8g1ahwDABJHM9ipb0Wnu1").collection("Produtos").where("nomeLinha", isEqualTo: nomeCategoria).getDocuments(),
-//                                                                                  builder: (context, snapshotProdutos) {
-//                                                                                    if (!snapshotProdutos.hasData) {
-//                                                                                      return LinearProgressIndicator();
-//                                                                                    } else {
-//                                                                                      return ListView.builder(
-//                                                                                          shrinkWrap: true,
-//                                                                                          itemCount: snapshotProdutos.data.documents.length,
-//                                                                                          itemBuilder: (_, indexProduto) {
-//                                                                                            ProductData dataProdutos = ProductData.fromDocument(snapshotProdutos.data.documents[indexProduto]);
-//
-//                                                                                            return ProdutosTile(data, dataProdutos);
-//                                                                                          });
-//                                                                                    }
-//                                                                                  },
-//                                                                                )
-//                                                                              ],
-//                                                                            ),
-//                                                                            actions: <Widget>[
-//                                                                              // define os botões na base do dialogo
-//                                                                              new FlatButton(
-//                                                                                child: new Text("Avançar"),
-//                                                                                onPressed: () {
-//                                                                                  Navigator.of(context).pop();
-//                                                                                  showDialog(
-//                                                                                    context: context,
-//                                                                                    builder: (BuildContext context) {
-//                                                                                      // retorna um objeto do tipo Dialog
-//                                                                                      return AlertDialog(
-//                                                                                        title: new Text("Instrução"),
-//                                                                                        content: new Card(
-//                                                                                          shape: RoundedRectangleBorder(
-//                                                                                            borderRadius: BorderRadius.circular(10.0),
-//                                                                                          ),
-//                                                                                          child: Padding(
-//                                                                                            padding: EdgeInsets.all(8),
-//                                                                                            child: Container(
-//                                                                                              height: 250,
-//                                                                                              child: TextField(
-//                                                                                                focusNode: myFocusObservacao,
-//                                                                                                enabled: true,
-//                                                                                                maxLines: 10,
-//                                                                                                controller: _instrucaoController,
-//                                                                                                keyboardType: TextInputType.text,
-//                                                                                                style: TextStyle(fontFamily: "WorkSansSemiBold", fontSize: 13.0, color: Colors.black),
-//                                                                                                decoration: InputDecoration(
-//                                                                                                  enabledBorder: UnderlineInputBorder(
-//                                                                                                    borderSide: BorderSide(color: Colors.white),
-//                                                                                                  ),
-//                                                                                                  focusedBorder: UnderlineInputBorder(
-//                                                                                                    borderSide: BorderSide(color: Colors.white),
-//                                                                                                  ),
-//                                                                                                  border: UnderlineInputBorder(
-//                                                                                                    borderSide: BorderSide(color: Colors.white),
-//                                                                                                  ),
-//                                                                                                  hintStyle: TextStyle(fontFamily: "Georgia", fontSize: 10.0),
-//                                                                                                ),
-//                                                                                              ),
-//                                                                                            ),
-//                                                                                          ),
-//                                                                                        ),
-//                                                                                        actions: <Widget>[
-//                                                                                          // define os botões na base do dialogo
-//                                                                                          new FlatButton(
-//                                                                                            child: new Text("Concluir"),
-//                                                                                            onPressed: () {
-//                                                                                              Navigator.of(context).pop();
-//
-//                                                                                              DocumentReference documentReference = Firestore.instance.collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id).collection("linhasProdutos").document(nomeCategoria);
-//
-//                                                                                              documentReference.setData({
-//                                                                                                "concluida": true
-//                                                                                              }, merge: true);
-//                                                                                            },
-//                                                                                          ),
-//                                                                                        ],
-//                                                                                      );
-//                                                                                    },
-//                                                                                  );
-//                                                                                },
-//                                                                              ),
-//                                                                            ],
-//                                                                          );
-//                                                                        },
-//                                                                      );
                                                                       showDialog(
                                                                         context:
                                                                             context,
@@ -336,6 +237,12 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                             if (!snapshotLinhas.hasData) {
                                                                               return Container();
                                                                             } else {
+                                                                              if (snapshotLinhas.data["concluida"] == false) {
+                                                                                lista[index] = 1;
+                                                                              } else {
+                                                                                lista[index] = 0;
+                                                                              }
+
                                                                               return snapshotLinhas.data["concluida"] == true
                                                                                   ? ListTile(
                                                                                       trailing: Card(
@@ -432,6 +339,10 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                                   print(true);
                                                                                   setState(() {
                                                                                     title = "Estoque depósito";
+                                                                                    _pageController.nextPage(
+                                                                                      duration: Duration(milliseconds: 500),
+                                                                                      curve: Curves.ease,
+                                                                                    );
                                                                                   });
                                                                                 } else {
                                                                                   showDialog(
@@ -455,10 +366,6 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                                             onlyOkButton: true,
                                                                                             entryAnimation: EntryAnimation.DEFAULT,
                                                                                           ));
-                                                                                  _pageController.nextPage(
-                                                                                    duration: Duration(milliseconds: 500),
-                                                                                    curve: Curves.ease,
-                                                                                  );
                                                                                 }
                                                                               }),
                                                                         ],
@@ -1046,69 +953,91 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
                 ),
               ],
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () {
-                    getImagePontoExtra(false, data);
-                  },
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Foto do ponto extra:"),
-                              Text(
-                                "(Após a reposição)",
-                                style: TextStyle(fontSize: 10),
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: imagemPontoExtra == "sem imagem"
-                                      ? Container(
-                                          height: 100,
-                                          width: 300,
-                                          child: Image.asset(
-                                            "assets/cam.png",
-                                            height: 50,
-                                            width: 50,
+            StreamBuilder(
+              stream: Firestore.instance
+                  .collection("Empresas")
+                  .document(data.empresaResponsavel)
+                  .collection("pesquisasCriadas")
+                  .document(data.id)
+                  .collection("pontoExtra")
+                  .document(nomeCategoria)
+                  .snapshots(),
+              builder: (context, snapPonto) {
+                if (!snapPonto.hasData) {
+                  return Container();
+                } else {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      snapPonto.data["existe"] == false
+                          ? Container()
+                          : InkWell(
+                              onTap: () {
+                                getImagePontoExtra(false, data);
+                              },
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Foto do ponto extra:"),
+                                          Text(
+                                            "(Após a reposição)",
+                                            style: TextStyle(fontSize: 10),
                                           ),
-                                        )
-                                      : imagemPontoExtra == "carregando"
-                                          ? Container(
-                                              height: 100,
-                                              width: 300,
-                                              child: Column(
-                                                children: [
-                                                  CircularProgressIndicator(),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                      "Aguarde, a sua foto está sendo processada!")
-                                                ],
-                                              ))
-                                          : Image.network(
-                                              imagemPontoExtra,
-                                              height: 100,
-                                              width: 300,
-                                            )),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                                          Padding(
+                                              padding: EdgeInsets.all(8),
+                                              child: imagemPontoExtra ==
+                                                      "sem imagem"
+                                                  ? Container(
+                                                      height: 100,
+                                                      width: 300,
+                                                      child: Image.asset(
+                                                        "assets/cam.png",
+                                                        height: 50,
+                                                        width: 50,
+                                                      ),
+                                                    )
+                                                  : imagemPontoExtra ==
+                                                          "carregando"
+                                                      ? Container(
+                                                          height: 100,
+                                                          width: 300,
+                                                          child: Column(
+                                                            children: [
+                                                              CircularProgressIndicator(),
+                                                              SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                              Text(
+                                                                  "Aguarde, a sua foto está sendo processada!")
+                                                            ],
+                                                          ))
+                                                      : Image.network(
+                                                          imagemPontoExtra,
+                                                          height: 100,
+                                                          width: 300,
+                                                        )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ],
+                  );
+                }
+              },
+            )
           ],
         ),
       ),
@@ -1116,17 +1045,20 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
         // define os botões na base do dialogo
         new FlatButton(
           child: new Text("Salvar"),
-          onPressed: () {
-            DocumentReference reference = Firestore.instance
-                .collection("Empresas")
-                .document(data.empresaResponsavel)
-                .collection("pesquisasCriadas")
-                .document(data.id)
-                .collection("linhasProdutosAposReposicao")
-                .document(nomeCategoria);
+          onPressed: imagemAntes != "sem imagem" &&
+                  imagemPontoExtra != "sem imagem"
+              ? () {
+                  DocumentReference reference = Firestore.instance
+                      .collection("Empresas")
+                      .document(data.empresaResponsavel)
+                      .collection("pesquisasCriadas")
+                      .document(data.id)
+                      .collection("linhasProdutosAposReposicao")
+                      .document(nomeCategoria);
 
-            reference.setData({"concluida": true, "nomeLinha": nomeCategoria});
-            Navigator.of(context).pop();
+                  reference
+                      .setData({"concluida": true, "nomeLinha": nomeCategoria});
+                  Navigator.of(context).pop();
 
 //            DocumentReference documentReference = Firestore.instance
 //                .collection("Empresas")
@@ -1137,7 +1069,8 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
 //                .document(nomeCategoria);
 //
 //            documentReference.setData({"concluida": true}, merge: true);
-          },
+                }
+              : null,
         ),
       ],
     );
@@ -1239,8 +1172,8 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
                 .collection("pesquisasCriadas")
                 .document(data.id)
                 .collection("pontoExtra")
-                .document("ponto");
-            documentReference.updateData({"imagem": docUrl});
+                .document(nomeCategoria);
+            documentReference.updateData({"imagemDepois": docUrl});
           });
         }
 
