@@ -1101,22 +1101,21 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                               });
 
                                             await Firestore.instance
-                                              ..collection("Empresas")
-                                                  .document(
-                                                      data.empresaResponsavel)
-                                                  .collection(
-                                                      "pesquisasCriadas")
-                                                  .document(data.id)
-                                                  .collection("linhasProdutos")
-                                                  .getDocuments()
-                                                  .then((snapshot) {
-                                                for (DocumentSnapshot ds
-                                                    in snapshot.documents) {
-                                                  ds.reference.updateData(
-                                                      {"concluida": false});
-                                                }
-                                                ;
-                                              });
+                                                .collection("Empresas")
+                                                .document(
+                                                    data.empresaResponsavel)
+                                                .collection("pesquisasCriadas")
+                                                .document(data.id)
+                                                .collection("linhasProdutos")
+                                                .getDocuments()
+                                                .then((snapshot) {
+                                              for (DocumentSnapshot ds
+                                                  in snapshot.documents) {
+                                                ds.reference.updateData(
+                                                    {"concluida": false});
+                                              }
+                                              ;
+                                            });
 
                                             await Firestore.instance
                                               ..collection("Empresas")

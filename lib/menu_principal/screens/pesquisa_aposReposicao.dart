@@ -595,10 +595,9 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                           "status":
                                                                               "A APROVAR"
                                                                         });
-                                                                        _pageController.nextPage(
-                                                                            duration:
-                                                                                Duration(milliseconds: 500),
-                                                                            curve: Curves.ease);
+                                                                        Navigator.of(context).push(MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                SplashScreenPesquisaRespondida()));
                                                                       },
                                                                       color: Color(
                                                                           0xFFF26868),
@@ -780,7 +779,136 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      //Limpar Area de Venda
+
+                                      DocumentReference documentReference1 =
+                                          await Firestore.instance
+                                              .collection("Empresas")
+                                              .document(data.empresaResponsavel)
+                                              .collection("pesquisasCriadas")
+                                              .document(data.id)
+                                              .collection("BeforeAreaDeVenda")
+                                              .document("fotoAntesReposicao");
+                                      DocumentReference documentReference2 =
+                                          await Firestore.instance
+                                              .collection("Empresas")
+                                              .document(data.empresaResponsavel)
+                                              .collection("pesquisasCriadas")
+                                              .document(data.id)
+                                              .collection("AfterAreaDeVenda")
+                                              .document("fotoDepoisReposicao");
+
+                                      DocumentReference documentReference3 =
+                                          await Firestore.instance
+                                              .collection("Empresas")
+                                              .document(data.empresaResponsavel)
+                                              .collection("pesquisasCriadas")
+                                              .document(data.id);
+
+                                      await Firestore.instance
+                                        ..collection("Empresas")
+                                            .document(data.empresaResponsavel)
+                                            .collection("pesquisasCriadas")
+                                            .document(data.id)
+                                            .collection("antesReposicao")
+                                            .getDocuments()
+                                            .then((snapshot) {
+                                          for (DocumentSnapshot ds
+                                              in snapshot.documents) {
+                                            ds.reference.delete();
+                                          }
+                                          ;
+                                        });
+
+                                      await Firestore.instance
+                                        ..collection("Empresas")
+                                            .document(data.empresaResponsavel)
+                                            .collection("pesquisasCriadas")
+                                            .document(data.id)
+                                            .collection("estoqueDeposito")
+                                            .getDocuments()
+                                            .then((snapshot) {
+                                          for (DocumentSnapshot ds
+                                              in snapshot.documents) {
+                                            ds.reference.delete();
+                                          }
+                                          ;
+                                        });
+
+                                      await Firestore.instance
+                                        ..collection("Empresas")
+                                            .document(data.empresaResponsavel)
+                                            .collection("pesquisasCriadas")
+                                            .document(data.id)
+                                            .collection("pontoExtra")
+                                            .getDocuments()
+                                            .then((snapshot) {
+                                          for (DocumentSnapshot ds
+                                              in snapshot.documents) {
+                                            ds.reference.updateData({
+                                              "existe": false,
+                                              "imagemAntes": "nenhuma",
+                                              "imagemDepois": "nenhuma"
+                                            });
+                                          }
+                                          ;
+                                        });
+
+                                      await Firestore.instance
+                                          .collection("Empresas")
+                                          .document(data.empresaResponsavel)
+                                          .collection("pesquisasCriadas")
+                                          .document(data.id)
+                                          .collection("linhasProdutos")
+                                          .getDocuments()
+                                          .then((snapshot) {
+                                        for (DocumentSnapshot ds
+                                            in snapshot.documents) {
+                                          ds.reference
+                                              .updateData({"concluida": false});
+                                        }
+                                        ;
+                                      });
+
+                                      await Firestore.instance
+                                        ..collection("Empresas")
+                                            .document(data.empresaResponsavel)
+                                            .collection("pesquisasCriadas")
+                                            .document(data.id)
+                                            .collection(
+                                                "linhasProdutosAntesReposicao")
+                                            .getDocuments()
+                                            .then((snapshot) {
+                                          for (DocumentSnapshot ds
+                                              in snapshot.documents) {
+                                            ds.reference.updateData(
+                                                {"concluida": false});
+                                          }
+                                          ;
+                                        });
+
+                                      await Firestore.instance
+                                        ..collection("Empresas")
+                                            .document(data.empresaResponsavel)
+                                            .collection("pesquisasCriadas")
+                                            .document(data.id)
+                                            .collection(
+                                                "linhasProdutosAposReposicao")
+                                            .getDocuments()
+                                            .then((snapshot) {
+                                          for (DocumentSnapshot ds
+                                              in snapshot.documents) {
+                                            ds.reference.updateData(
+                                                {"concluida": false});
+                                          }
+                                          ;
+                                        });
+
+                                      documentReference1.delete();
+                                      documentReference2.delete();
+                                      documentReference3.updateData(
+                                          {"novoPedido": FieldValue.delete()});
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -966,6 +1094,10 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
                 if (!snapPonto.hasData) {
                   return Container();
                 } else {
+                  String teste;
+                  snapPonto.data["existe"] == false
+                      ? imagemPontoExtra = "sem ponto"
+                      : teste = "sem imagem";
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -1132,6 +1264,9 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
   }
 
   Future getImagePontoExtra(bool gallery, PesquisaData data) async {
+    setState(() {
+      imagemPontoExtra = "sem imagem";
+    });
     ImagePicker picker = ImagePicker();
     PickedFile pickedFile;
     // Let user select photo from gallery
