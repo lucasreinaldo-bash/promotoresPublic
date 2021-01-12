@@ -317,7 +317,64 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                                 mainAxisSize: MainAxisSize.min,
                                                                                 children: <Widget>[
                                                                                   Text(
-                                                                                    '      Avançar',
+                                                                                    '      Voltar',
+                                                                                    style: TextStyle(
+                                                                                      fontFamily: "Helvetica",
+                                                                                      color: Color(0xFF707070),
+                                                                                      fontSize: 22.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(width: 10.0),
+                                                                                  Icon(
+                                                                                    Icons.arrow_forward,
+                                                                                    color: Colors.white,
+                                                                                    size: 30.0,
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              onPressed: () async {
+                                                                                bool resultado = await pesquisaCompleta();
+
+                                                                                if (resultado == true) {
+                                                                                  print(true);
+                                                                                  setState(() {
+                                                                                    title = "Estoque depósito";
+                                                                                    _pageController.nextPage(
+                                                                                      duration: Duration(milliseconds: 500),
+                                                                                      curve: Curves.ease,
+                                                                                    );
+                                                                                  });
+                                                                                } else {
+                                                                                  showDialog(
+                                                                                      context: context,
+                                                                                      builder: (_) => FlareGiffyDialog(
+                                                                                            flarePath: 'assets/seach_cloud.flr',
+                                                                                            flareAnimation: 'products',
+                                                                                            title: Text(
+                                                                                              'Existe pesquisa não respondida!',
+                                                                                              style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+                                                                                              textAlign: TextAlign.center,
+                                                                                            ),
+                                                                                            description: Text(
+                                                                                              'Você precisa responder todas as pesquisas antes de continuar.',
+                                                                                              textAlign: TextAlign.center,
+                                                                                              style: TextStyle(),
+                                                                                            ),
+                                                                                            onOkButtonPressed: () {
+                                                                                              Navigator.pop(_);
+                                                                                            },
+                                                                                            onlyOkButton: true,
+                                                                                            entryAnimation: EntryAnimation.DEFAULT,
+                                                                                          ));
+                                                                                }
+                                                                              }),
+                                                                          FlatButton(
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                children: <Widget>[
+                                                                                  Text(
+                                                                                    'Avançar',
                                                                                     style: TextStyle(
                                                                                       fontFamily: "Helvetica",
                                                                                       color: Color(0xFF707070),

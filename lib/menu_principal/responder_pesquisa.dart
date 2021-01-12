@@ -2,36 +2,26 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:path/path.dart' as path;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_format/date_format.dart' as da;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:versaoPromotores/drawer/custom_drawer.dart';
-import 'package:versaoPromotores/menu_principal/datas/LinhaProdutoData.dart';
-import 'package:versaoPromotores/menu_principal/datas/LojaData.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/detalhamentoPesquisa.dart';
-import 'package:versaoPromotores/menu_principal/home_menu.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_ruptura_screen.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_validade_screen.dart';
 import 'package:versaoPromotores/menu_principal/screens/pesquisa_aposReposicao.dart';
-import 'package:versaoPromotores/menu_principal/tiles/loja_tile.dart';
-import 'package:versaoPromotores/menu_principal/tiles/produtos_tile.dart';
 import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_antes_reposicao.dart';
-import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_validade.dart';
 import 'package:versaoPromotores/models/user_model.dart';
 import 'package:versaoPromotores/style/style.dart';
 
-import 'datas/PromotorData.dart';
 import 'datas/pesquisaData.dart';
 
 class ResponderPesquisaData extends StatefulWidget {
@@ -94,10 +84,6 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
   }
 
   _ResponderPesquisaDataState(this.data);
-
-//  String textoBtnPontoExtra,
-//      textoBtnProdutoValidade,
-//      textoBtnProdutoPoucasUnidades = "sem informacao";
 
   List<String> avancarAntesReposicao;
 
@@ -1782,29 +1768,25 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
         // define os botões na base do dialogo
         new FlatButton(
           child: new Text("Salvar"),
-          onPressed: () {
-            DocumentReference reference = Firestore.instance
-                .collection("Empresas")
-                .document(data.empresaResponsavel)
-                .collection("pesquisasCriadas")
-                .document(data.id)
-                .collection("linhasProdutosAntesReposicao")
-                .document(nomeCategoria);
+          onPressed: imagemAntes != "sem imagem" &&
+                  (textoBtnPontoExtra == "Sim"
+                      ? imagemAntesPontoExtra != "sem imagem"
+                      : textoBtnPontoExtra == "Não")
+              ? () {
+                  DocumentReference reference = Firestore.instance
+                      .collection("Empresas")
+                      .document(data.empresaResponsavel)
+                      .collection("pesquisasCriadas")
+                      .document(data.id)
+                      .collection("linhasProdutosAntesReposicao")
+                      .document(nomeCategoria);
 
-            reference.setData({"concluida": true, "nomeLinha": nomeCategoria});
+                  reference
+                      .setData({"concluida": true, "nomeLinha": nomeCategoria});
 
-            Navigator.of(context).pop();
-
-//            DocumentReference documentReference = Firestore.instance
-//                .collection("Empresas")
-//                .document(data.empresaResponsavel)
-//                .collection("pesquisasCriadas")
-//                .document(data.id)
-//                .collection("linhasProdutos")
-//                .document(nomeCategoria);
-//
-//            documentReference.setData({"concluida": true}, merge: true);
-          },
+                  Navigator.of(context).pop();
+                }
+              : null,
         ),
       ],
     );
