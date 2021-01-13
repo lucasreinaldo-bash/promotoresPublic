@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ExibirImagem extends StatelessWidget {
-  String url, descricao;
+  String url, descricao, nomeLinha;
 
-  ExibirImagem(this.url, this.descricao);
+  ExibirImagem(this.url, this.descricao, this.nomeLinha);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +23,7 @@ class ExibirImagem extends StatelessWidget {
               : descricao == "2"
                   ? Column(children: [
                       Text(
-                        "Ponto Extra",
+                        "Ponto Extra ${nomeLinha}",
                         style: TextStyle(fontFamily: "QuickSandRegular"),
                       ),
                     ])

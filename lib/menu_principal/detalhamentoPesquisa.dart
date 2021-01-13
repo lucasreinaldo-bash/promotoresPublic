@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:nice_button/NiceButton.dart';
+import 'package:versaoPromotores/menu_principal/datas/pontoExtraImagemData.dart';
 import 'package:versaoPromotores/menu_principal/responder_pesquisa.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData_ruptura_validade.dart';
 import 'package:versaoPromotores/menu_principal/datas/estoqueDeposito_data.dart';
@@ -339,8 +341,10 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                                                       onTap:
                                                                           () {
                                                                         Navigator.of(context).push(MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                ExibirImagem(snapImg1.data["imagem"], "1")));
+                                                                            builder: (context) => ExibirImagem(
+                                                                                snapImg1.data["imagem"],
+                                                                                "1",
+                                                                                "1")));
                                                                       },
                                                                       child: Image
                                                                           .network(
@@ -404,9 +408,9 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                                                     .document(
                                                                         data.id)
                                                                     .collection(
-                                                                        "BeforeAreaDeVenda")
+                                                                        "AfterAreaDeVenda")
                                                                     .document(
-                                                                        "fotoAntesReposicao")
+                                                                        "fotoDepoisReposicao")
                                                                     .snapshots(),
                                                                 builder: (context,
                                                                     snapImg1) {
@@ -421,8 +425,10 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                                                       onTap:
                                                                           () {
                                                                         Navigator.of(context).push(MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                ExibirImagem(snapImg1.data["imagem"], "2")));
+                                                                            builder: (context) => ExibirImagem(
+                                                                                snapImg1.data["imagem"],
+                                                                                "1",
+                                                                                "1")));
                                                                       },
                                                                       child: Image
                                                                           .network(
@@ -439,7 +445,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      "Ponto Extra\n",
+                                                      "Aréa de Venda\n(após a reposição)",
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
@@ -449,90 +455,121 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                                     ),
                                                   ],
                                                 ),
-                                                Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 20,
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {},
-                                                      child: Card(
-                                                        elevation: 10,
-                                                        color:
-                                                            Color(0xFFFFFFFF),
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                          child: Container(
-                                                              height: 100,
-                                                              width: 100,
-                                                              child:
-                                                                  StreamBuilder(
-                                                                stream: Firestore
-                                                                    .instance
-                                                                    .collection(
-                                                                        "Empresas")
-                                                                    .document(data
-                                                                        .empresaResponsavel)
-                                                                    .collection(
-                                                                        "pesquisasCriadas")
-                                                                    .document(
-                                                                        data.id)
-                                                                    .collection(
-                                                                        "BeforeAreaDeVenda")
-                                                                    .document(
-                                                                        "fotoAntesReposicao")
-                                                                    .snapshots(),
-                                                                builder: (context,
-                                                                    snapImg1) {
-                                                                  if (!snapImg1
-                                                                      .hasData) {
-                                                                    return Center(
-                                                                      child:
-                                                                          CircularProgressIndicator(),
-                                                                    );
-                                                                  } else {
-                                                                    return InkWell(
-                                                                      onTap:
-                                                                          () {
-                                                                        Navigator.of(context)
-                                                                            .push(MaterialPageRoute(
-                                                                          builder: (context) => ExibirImagem(
-                                                                              snapImg1.data["imagem"],
-                                                                              "3"),
-                                                                        ));
-                                                                      },
-                                                                      child: Image
-                                                                          .network(
-                                                                        snapImg1
-                                                                            .data["imagem"],
-                                                                        fit: BoxFit
-                                                                            .fill,
+                                                FutureBuilder(
+                                                  future: Firestore.instance
+                                                      .collection("Empresas")
+                                                      .document(data
+                                                          .empresaResponsavel)
+                                                      .collection(
+                                                          "pesquisasCriadas")
+                                                      .document(data.id)
+                                                      .collection("pontoExtra")
+                                                      .getDocuments(),
+                                                  builder: (context,
+                                                      snapPontoExtra) {
+                                                    if (!snapPontoExtra
+                                                        .hasData) {
+                                                      return Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      );
+                                                    } else {
+                                                      return ListView.builder(
+                                                          shrinkWrap: true,
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          itemCount:
+                                                              snapPontoExtra
+                                                                  .data
+                                                                  .documents
+                                                                  .length,
+                                                          itemBuilder: (_,
+                                                              indexProduto) {
+                                                            PontoExtraData
+                                                                pontoExtraData =
+                                                                PontoExtraData.fromDocument(
+                                                                    snapPontoExtra
+                                                                            .data
+                                                                            .documents[
+                                                                        indexProduto]);
+
+                                                            return pontoExtraData
+                                                                        .existe ==
+                                                                    false
+                                                                ? Container()
+                                                                : Column(
+                                                                    children: [
+                                                                      Row(
+                                                                        children: [
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ExibirImagem(pontoExtraData.imagemAntes, "2", "${pontoExtraData.id} " + "\n(antes da reposição)")));
+                                                                            },
+                                                                            child:
+                                                                                Card(
+                                                                              elevation: 10,
+                                                                              color: Color(0xFFFFFFFF),
+                                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                                              child: ClipRRect(
+                                                                                borderRadius: BorderRadius.circular(8.0),
+                                                                                child: Container(
+                                                                                  height: 100,
+                                                                                  width: 100,
+                                                                                  child: Image.network(
+                                                                                    pontoExtraData.imagemAntes,
+                                                                                    fit: BoxFit.fill,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ExibirImagem(pontoExtraData.imagemAntes, "2", "${pontoExtraData.id} " + "\n(depois da reposição)")));
+                                                                            },
+                                                                            child:
+                                                                                Card(
+                                                                              elevation: 10,
+                                                                              color: Color(0xFFFFFFFF),
+                                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                                              child: ClipRRect(
+                                                                                borderRadius: BorderRadius.circular(8.0),
+                                                                                child: Container(
+                                                                                  height: 100,
+                                                                                  width: 100,
+                                                                                  child: Image.network(
+                                                                                    pontoExtraData.imagemDepois,
+                                                                                    fit: BoxFit.fill,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width:
+                                                                                30,
+                                                                          )
+                                                                        ],
                                                                       ),
-                                                                    );
-                                                                  }
-                                                                },
-                                                              )),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "Aréa de Venda\n(após reposição)",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "QuickSandRegular",
-                                                          fontSize: 12),
-                                                    ),
-                                                  ],
+                                                                      Text(
+                                                                        "Ponto Extra ${pontoExtraData.id}\n " +
+                                                                            "(imagem antes e depois)",
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style: TextStyle(
+                                                                            fontFamily:
+                                                                                "QuickSandRegular",
+                                                                            fontSize:
+                                                                                12),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                          });
+                                                      ;
+                                                    }
+                                                  },
                                                 ),
                                               ],
                                               dotSize: 4.0,
