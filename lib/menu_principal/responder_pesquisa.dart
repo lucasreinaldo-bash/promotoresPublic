@@ -152,366 +152,158 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                             children: <Widget>[
                                               Container(
                                                 height: 500.0,
-                                                child: Expanded(
-                                                  child: PageView(
-                                                    allowImplicitScrolling:
-                                                        false,
-                                                    physics:
-                                                        NeverScrollableScrollPhysics(),
-                                                    controller: _pageController,
-                                                    onPageChanged: (int page) {
-                                                      _currentPage = page;
-                                                    },
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 50,
-                                                                  left: 20,
-                                                                  right: 20,
-                                                                  bottom: 50),
-                                                          child: Card(
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                            ),
-                                                            elevation: 15,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(
-                                                                          10.0),
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: <
-                                                                    Widget>[
-                                                                  SizedBox(
-                                                                      height:
-                                                                          30.0),
-                                                                  SizedBox(
-                                                                      height:
-                                                                          15.0),
-                                                                  Card(
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              15.0),
-                                                                    ),
-                                                                    elevation:
-                                                                        10,
-                                                                    child:
-                                                                        Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              8.0),
-                                                                      child:
-                                                                          Container(
+                                                child: PageView(
+                                                  allowImplicitScrolling: false,
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  controller: _pageController,
+                                                  onPageChanged: (int page) {
+                                                    _currentPage = page;
+                                                  },
+                                                  children: <Widget>[
+                                                    Flex(
+                                                      direction:
+                                                          Axis.horizontal,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 50,
+                                                                    left: 20,
+                                                                    right: 20,
+                                                                    bottom: 50),
+                                                            child: Card(
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15.0),
+                                                              ),
+                                                              elevation: 15,
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            10.0),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: <
+                                                                      Widget>[
+                                                                    SizedBox(
                                                                         height:
-                                                                            250,
+                                                                            30.0),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            15.0),
+                                                                    Card(
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(15.0),
+                                                                      ),
+                                                                      elevation:
+                                                                          10,
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(8.0),
                                                                         child:
-                                                                            TextField(
-                                                                          focusNode:
-                                                                              myFocusObservacao,
-                                                                          enabled:
-                                                                              true,
-                                                                          maxLines:
-                                                                              10,
-                                                                          controller:
-                                                                              _observacaoController,
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          style: TextStyle(
-                                                                              fontFamily: "WorkSansSemiBold",
-                                                                              fontSize: 13.0,
-                                                                              color: Colors.black),
-                                                                          decoration:
-                                                                              InputDecoration(
-                                                                            enabledBorder:
-                                                                                UnderlineInputBorder(
-                                                                              borderSide: BorderSide(color: Colors.white),
+                                                                            Container(
+                                                                          height:
+                                                                              250,
+                                                                          child:
+                                                                              TextField(
+                                                                            focusNode:
+                                                                                myFocusObservacao,
+                                                                            enabled:
+                                                                                true,
+                                                                            maxLines:
+                                                                                10,
+                                                                            controller:
+                                                                                _observacaoController,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            style: TextStyle(
+                                                                                fontFamily: "WorkSansSemiBold",
+                                                                                fontSize: 13.0,
+                                                                                color: Colors.black),
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              enabledBorder: UnderlineInputBorder(
+                                                                                borderSide: BorderSide(color: Colors.white),
+                                                                              ),
+                                                                              focusedBorder: UnderlineInputBorder(
+                                                                                borderSide: BorderSide(color: Colors.white),
+                                                                              ),
+                                                                              border: UnderlineInputBorder(
+                                                                                borderSide: BorderSide(color: Colors.white),
+                                                                              ),
+                                                                              hintStyle: TextStyle(fontFamily: "Georgia", fontSize: 10.0),
                                                                             ),
-                                                                            focusedBorder:
-                                                                                UnderlineInputBorder(
-                                                                              borderSide: BorderSide(color: Colors.white),
-                                                                            ),
-                                                                            border:
-                                                                                UnderlineInputBorder(
-                                                                              borderSide: BorderSide(color: Colors.white),
-                                                                            ),
-                                                                            hintStyle:
-                                                                                TextStyle(fontFamily: "Georgia", fontSize: 10.0),
                                                                           ),
                                                                         ),
                                                                       ),
                                                                     ),
-                                                                  ),
-                                                                  _currentPage !=
-                                                                          _numPages -
-                                                                              1
-                                                                      ? Expanded(
-                                                                          child:
-                                                                              Align(
-                                                                            alignment:
-                                                                                FractionalOffset.bottomRight,
+                                                                    _currentPage !=
+                                                                            _numPages -
+                                                                                1
+                                                                        ? Expanded(
                                                                             child:
-                                                                                Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              children: [
-                                                                                FlatButton(
-                                                                                  onPressed: () {
-                                                                                    setState(() {
-                                                                                      title = "Observações";
-                                                                                    });
-                                                                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetalhamentoPesquisa(data)));
-                                                                                  },
-                                                                                  child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    mainAxisSize: MainAxisSize.min,
-                                                                                    children: <Widget>[
-                                                                                      Text(
-                                                                                        'Voltar',
-                                                                                        style: TextStyle(
-                                                                                          fontFamily: "Helvetica",
-                                                                                          color: Color(0xFF707070),
-                                                                                          fontSize: 22.0,
-                                                                                        ),
-                                                                                      ),
-                                                                                      SizedBox(width: 10.0),
-                                                                                      Icon(
-                                                                                        Icons.arrow_forward,
-                                                                                        color: Colors.white,
-                                                                                        size: 30.0,
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                                FlatButton(
-                                                                                  onPressed: () async {
-                                                                                    _pageController.nextPage(
-                                                                                      duration: Duration(milliseconds: 2000),
-                                                                                      curve: Curves.fastOutSlowIn,
-                                                                                    );
-
-                                                                                    setState(() {
-                                                                                      title = "Área de Venda";
-                                                                                    });
-                                                                                  },
-                                                                                  child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    children: <Widget>[
-                                                                                      Text(
-                                                                                        'Avançar',
-                                                                                        textAlign: TextAlign.right,
-                                                                                        style: TextStyle(
-                                                                                          fontFamily: "Helvetica",
-                                                                                          color: Color(0xFF707070),
-                                                                                          fontSize: 22.0,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      : Text(
-                                                                          ''),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 50,
-                                                                  left: 20,
-                                                                  right: 20,
-                                                                  bottom: 50),
-                                                          child: Card(
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                            ),
-                                                            elevation: 15,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(
-                                                                          10.0),
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: <
-                                                                    Widget>[
-                                                                  Text(
-                                                                    "Faça a pesquisa para cada linha de produto abaixo antes de iniciar a reposição.",
-                                                                    style: TextStyle(
-                                                                        fontFamily:
-                                                                            "QuickSand",
-                                                                        color: Color(
-                                                                            0xFF000000)),
-                                                                  ),
-                                                                  ListView
-                                                                      .builder(
-                                                                          shrinkWrap:
-                                                                              true,
-                                                                          itemCount: data
-                                                                              .linhaProduto
-                                                                              .length,
-                                                                          itemBuilder:
-                                                                              (_, index) {
-                                                                            String
-                                                                                nomeCategoria =
-                                                                                data.linhaProduto[index];
-
-                                                                            bool
-                                                                                nomeCategoriaBool =
-                                                                                false;
-
-                                                                            return InkWell(
-                                                                              onTap: () {
-                                                                                showDialog(
-                                                                                  context: context,
-                                                                                  builder: (BuildContext context) {
-                                                                                    // retorna um objeto do tipo Dialog
-                                                                                    return AfterDialogPesquisa(nomeCategoria, data);
-                                                                                  },
-                                                                                );
-                                                                              },
-                                                                              child: Card(
-                                                                                  elevation: 2,
-                                                                                  shape: RoundedRectangleBorder(
-                                                                                    borderRadius: BorderRadius.circular(15.0),
-                                                                                  ),
-                                                                                  child: StreamBuilder(
-                                                                                    stream: Firestore.instance.collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id).collection("linhasProdutosAntesReposicao").document(nomeCategoria).snapshots(),
-                                                                                    builder: (context, snapshotLinhas) {
-                                                                                      if (!snapshotLinhas.hasData) {
-                                                                                        return Container();
-                                                                                      } else {
-                                                                                        if (snapshotLinhas.data["concluida"] == false) {
-                                                                                          lista[index] = 1;
-                                                                                        } else {
-                                                                                          lista[index] = 0;
-                                                                                        }
-
-                                                                                        return snapshotLinhas.data["concluida"] == true
-                                                                                            ? ListTile(
-                                                                                                trailing: Card(
-                                                                                                  color: Color(0xFF4FCEB6),
-                                                                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                                                                  child: Padding(
-                                                                                                    padding: EdgeInsets.all(10),
-                                                                                                    child: Text(
-                                                                                                      "Concluída",
-                                                                                                      style: TextStyle(color: Colors.white, fontFamily: "QuickSandRegular"),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ),
-                                                                                                title: Text(
-                                                                                                  "" + nomeCategoria,
-                                                                                                  style: TextStyle(fontFamily: "QuickSand", fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                                  textAlign: TextAlign.start,
-                                                                                                ),
-                                                                                                subtitle: Text(
-                                                                                                  "Toque para editar a pesquisa",
-                                                                                                  style: TextStyle(fontFamily: "QuickSandRegular", fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black54),
-                                                                                                  textAlign: TextAlign.start,
-                                                                                                ),
-                                                                                              )
-                                                                                            : ListTile(
-                                                                                                trailing: Card(
-                                                                                                  color: Color(0xFFF26868),
-                                                                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                                                                  child: Padding(
-                                                                                                    padding: EdgeInsets.all(10),
-                                                                                                    child: Text(
-                                                                                                      "A Iniciar",
-                                                                                                      style: TextStyle(color: Colors.white, fontFamily: "QuickSandRegular"),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ),
-                                                                                                title: Text(
-                                                                                                  "" + nomeCategoria,
-                                                                                                  style: TextStyle(fontFamily: "QuickSand", fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                                  textAlign: TextAlign.start,
-                                                                                                ),
-                                                                                                subtitle: Text(
-                                                                                                  "Toque para editar a pesquisa",
-                                                                                                  style: TextStyle(fontFamily: "QuickSandRegular", fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black54),
-                                                                                                  textAlign: TextAlign.start,
-                                                                                                ),
-                                                                                              );
-                                                                                      }
+                                                                                Align(
+                                                                              alignment: FractionalOffset.bottomRight,
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: [
+                                                                                  FlatButton(
+                                                                                    onPressed: () {
+                                                                                      setState(() {
+                                                                                        title = "Observações";
+                                                                                      });
+                                                                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetalhamentoPesquisa(data)));
                                                                                     },
-                                                                                  )),
-                                                                            );
-                                                                          }),
-                                                                  SizedBox(
-                                                                      height:
-                                                                          15.0),
-                                                                  _currentPage !=
-                                                                          _numPages -
-                                                                              1
-                                                                      ? Expanded(
-                                                                          child:
-                                                                              Align(
-                                                                            alignment:
-                                                                                FractionalOffset.bottomRight,
-                                                                            child:
-                                                                                Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              children: [
-                                                                                FlatButton(
-                                                                                  onPressed: () {
-                                                                                    setState(() {
-                                                                                      title = "Observações";
-                                                                                    });
-                                                                                    _pageController.previousPage(
-                                                                                      duration: Duration(milliseconds: 2000),
-                                                                                      curve: Curves.fastOutSlowIn,
-                                                                                    );
-                                                                                  },
-                                                                                  child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    mainAxisSize: MainAxisSize.min,
-                                                                                    children: <Widget>[
-                                                                                      Text(
-                                                                                        'Voltar',
-                                                                                        style: TextStyle(
-                                                                                          fontFamily: "Helvetica",
-                                                                                          color: Color(0xFF707070),
-                                                                                          fontSize: 22.0,
-                                                                                        ),
-                                                                                      ),
-                                                                                      SizedBox(width: 10.0),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                                FlatButton(
                                                                                     child: Row(
                                                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                                                       mainAxisSize: MainAxisSize.min,
                                                                                       children: <Widget>[
                                                                                         Text(
-                                                                                          ' Avançar',
+                                                                                          'Voltar',
+                                                                                          style: TextStyle(
+                                                                                            fontFamily: "Helvetica",
+                                                                                            color: Color(0xFF707070),
+                                                                                            fontSize: 22.0,
+                                                                                          ),
+                                                                                        ),
+                                                                                        SizedBox(width: 10.0),
+                                                                                        Icon(
+                                                                                          Icons.arrow_forward,
+                                                                                          color: Colors.white,
+                                                                                          size: 30.0,
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  FlatButton(
+                                                                                    onPressed: () async {
+                                                                                      _pageController.nextPage(
+                                                                                        duration: Duration(milliseconds: 2000),
+                                                                                        curve: Curves.fastOutSlowIn,
+                                                                                      );
+
+                                                                                      setState(() {
+                                                                                        title = "Área de Venda";
+                                                                                      });
+                                                                                    },
+                                                                                    child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                                      children: <Widget>[
+                                                                                        Text(
+                                                                                          'Avançar',
+                                                                                          textAlign: TextAlign.right,
                                                                                           style: TextStyle(
                                                                                             fontFamily: "Helvetica",
                                                                                             color: Color(0xFF707070),
@@ -520,459 +312,665 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                                         ),
                                                                                       ],
                                                                                     ),
-                                                                                    onPressed: () async {
-                                                                                      bool resultado = await pesquisaCompleta();
-
-                                                                                      if (resultado == true) {
-                                                                                        print(true);
-                                                                                        setState(() {
-                                                                                          title = "Estoque depósito";
-                                                                                        });
-                                                                                        _pageController.nextPage(
-                                                                                          duration: Duration(milliseconds: 500),
-                                                                                          curve: Curves.ease,
-                                                                                        );
-                                                                                      } else {
-                                                                                        showDialog(
-                                                                                            context: context,
-                                                                                            builder: (_) => FlareGiffyDialog(
-                                                                                                  flarePath: 'assets/seach_cloud.flr',
-                                                                                                  flareAnimation: 'products',
-                                                                                                  title: Text(
-                                                                                                    'Existe pesquisa não respondida!',
-                                                                                                    style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
-                                                                                                    textAlign: TextAlign.center,
-                                                                                                  ),
-                                                                                                  description: Text(
-                                                                                                    'Você precisa responder todas as pesquisas antes de continuar.',
-                                                                                                    textAlign: TextAlign.center,
-                                                                                                    style: TextStyle(),
-                                                                                                  ),
-                                                                                                  onOkButtonPressed: () {
-                                                                                                    Navigator.pop(_);
-                                                                                                  },
-                                                                                                  onlyOkButton: true,
-                                                                                                  entryAnimation: EntryAnimation.DEFAULT,
-                                                                                                ));
-                                                                                      }
-                                                                                    })
-                                                                              ],
+                                                                                  ),
+                                                                                ],
+                                                                              ),
                                                                             ),
-                                                                          ),
-                                                                        )
-                                                                      : Text(
-                                                                          ''),
-                                                                ],
+                                                                          )
+                                                                        : Text(
+                                                                            ''),
+                                                                  ],
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Expanded(
+                                                      ],
+                                                    ),
+                                                    Flex(
+                                                      direction:
+                                                          Axis.horizontal,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 50,
+                                                                    left: 20,
+                                                                    right: 20,
+                                                                    bottom: 50),
+                                                            child: Card(
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15.0),
+                                                              ),
+                                                              elevation: 15,
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            10.0),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Text(
+                                                                      "Faça a pesquisa para cada linha de produto abaixo antes de iniciar a reposição.",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "QuickSand",
+                                                                          color:
+                                                                              Color(0xFF000000)),
+                                                                    ),
+                                                                    ListView.builder(
+                                                                        shrinkWrap: true,
+                                                                        itemCount: data.linhaProduto.length,
+                                                                        itemBuilder: (_, index) {
+                                                                          String
+                                                                              nomeCategoria =
+                                                                              data.linhaProduto[index];
+
+                                                                          bool
+                                                                              nomeCategoriaBool =
+                                                                              false;
+
+                                                                          return InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              showDialog(
+                                                                                context: context,
+                                                                                builder: (BuildContext context) {
+                                                                                  // retorna um objeto do tipo Dialog
+                                                                                  return AfterDialogPesquisa(nomeCategoria, data);
+                                                                                },
+                                                                              );
+                                                                            },
+                                                                            child: Card(
+                                                                                elevation: 2,
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.circular(15.0),
+                                                                                ),
+                                                                                child: StreamBuilder(
+                                                                                  stream: Firestore.instance.collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id).collection("linhasProdutosAntesReposicao").document(nomeCategoria).snapshots(),
+                                                                                  builder: (context, snapshotLinhas) {
+                                                                                    if (!snapshotLinhas.hasData) {
+                                                                                      return Container();
+                                                                                    } else {
+                                                                                      if (snapshotLinhas.data["concluida"] == false) {
+                                                                                        lista[index] = 1;
+                                                                                      } else {
+                                                                                        lista[index] = 0;
+                                                                                      }
+
+                                                                                      return snapshotLinhas.data["concluida"] == true
+                                                                                          ? ListTile(
+                                                                                              trailing: Card(
+                                                                                                color: Color(0xFF4FCEB6),
+                                                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                                                                child: Padding(
+                                                                                                  padding: EdgeInsets.all(10),
+                                                                                                  child: Text(
+                                                                                                    "Concluída",
+                                                                                                    style: TextStyle(color: Colors.white, fontFamily: "QuickSandRegular"),
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ),
+                                                                                              title: Text(
+                                                                                                "" + nomeCategoria,
+                                                                                                style: TextStyle(fontFamily: "QuickSand", fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                textAlign: TextAlign.start,
+                                                                                              ),
+                                                                                              subtitle: Text(
+                                                                                                "Toque para editar a pesquisa",
+                                                                                                style: TextStyle(fontFamily: "QuickSandRegular", fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black54),
+                                                                                                textAlign: TextAlign.start,
+                                                                                              ),
+                                                                                            )
+                                                                                          : ListTile(
+                                                                                              trailing: Card(
+                                                                                                color: Color(0xFFF26868),
+                                                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                                                                child: Padding(
+                                                                                                  padding: EdgeInsets.all(10),
+                                                                                                  child: Text(
+                                                                                                    "A Iniciar",
+                                                                                                    style: TextStyle(color: Colors.white, fontFamily: "QuickSandRegular"),
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ),
+                                                                                              title: Text(
+                                                                                                "" + nomeCategoria,
+                                                                                                style: TextStyle(fontFamily: "QuickSand", fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                textAlign: TextAlign.start,
+                                                                                              ),
+                                                                                              subtitle: Text(
+                                                                                                "Toque para editar a pesquisa",
+                                                                                                style: TextStyle(fontFamily: "QuickSandRegular", fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black54),
+                                                                                                textAlign: TextAlign.start,
+                                                                                              ),
+                                                                                            );
+                                                                                    }
+                                                                                  },
+                                                                                )),
+                                                                          );
+                                                                        }),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            15.0),
+                                                                    _currentPage !=
+                                                                            _numPages -
+                                                                                1
+                                                                        ? Expanded(
+                                                                            child:
+                                                                                Align(
+                                                                              alignment: FractionalOffset.bottomRight,
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: [
+                                                                                  FlatButton(
+                                                                                    onPressed: () {
+                                                                                      setState(() {
+                                                                                        title = "Observações";
+                                                                                      });
+                                                                                      _pageController.previousPage(
+                                                                                        duration: Duration(milliseconds: 2000),
+                                                                                        curve: Curves.fastOutSlowIn,
+                                                                                      );
+                                                                                    },
+                                                                                    child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                                      mainAxisSize: MainAxisSize.min,
+                                                                                      children: <Widget>[
+                                                                                        Text(
+                                                                                          'Voltar',
+                                                                                          style: TextStyle(
+                                                                                            fontFamily: "Helvetica",
+                                                                                            color: Color(0xFF707070),
+                                                                                            fontSize: 22.0,
+                                                                                          ),
+                                                                                        ),
+                                                                                        SizedBox(width: 10.0),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  FlatButton(
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                                        mainAxisSize: MainAxisSize.min,
+                                                                                        children: <Widget>[
+                                                                                          Text(
+                                                                                            ' Avançar',
+                                                                                            style: TextStyle(
+                                                                                              fontFamily: "Helvetica",
+                                                                                              color: Color(0xFF707070),
+                                                                                              fontSize: 22.0,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                      onPressed: () async {
+                                                                                        bool resultado = await pesquisaCompleta();
+
+                                                                                        if (resultado == true) {
+                                                                                          print(true);
+                                                                                          setState(() {
+                                                                                            title = "Estoque depósito";
+                                                                                          });
+                                                                                          _pageController.nextPage(
+                                                                                            duration: Duration(milliseconds: 500),
+                                                                                            curve: Curves.ease,
+                                                                                          );
+                                                                                        } else {
+                                                                                          showDialog(
+                                                                                              context: context,
+                                                                                              builder: (_) => FlareGiffyDialog(
+                                                                                                    flarePath: 'assets/seach_cloud.flr',
+                                                                                                    flareAnimation: 'products',
+                                                                                                    title: Text(
+                                                                                                      'Existe pesquisa não respondida!',
+                                                                                                      style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+                                                                                                      textAlign: TextAlign.center,
+                                                                                                    ),
+                                                                                                    description: Text(
+                                                                                                      'Você precisa responder todas as pesquisas antes de continuar.',
+                                                                                                      textAlign: TextAlign.center,
+                                                                                                      style: TextStyle(),
+                                                                                                    ),
+                                                                                                    onOkButtonPressed: () {
+                                                                                                      Navigator.pop(_);
+                                                                                                    },
+                                                                                                    onlyOkButton: true,
+                                                                                                    entryAnimation: EntryAnimation.DEFAULT,
+                                                                                                  ));
+                                                                                        }
+                                                                                      })
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                        : Text(
+                                                                            ''),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Flex(
+                                                      direction:
+                                                          Axis.horizontal,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    top: 50,
+                                                                    left: 20,
+                                                                    right: 20,
+                                                                    bottom: 50),
+                                                            child: Card(
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15.0),
+                                                              ),
+                                                              elevation: 15,
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            10.0),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Text(
+                                                                      "Informe os estoques dos produtos abaixo:",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "QuickSand",
+                                                                          color:
+                                                                              Color(0xFF000000)),
+                                                                    ),
+                                                                    FutureBuilder(
+                                                                      future: Firestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              "Empresas")
+                                                                          .document(data
+                                                                              .empresaResponsavel)
+                                                                          .collection(
+                                                                              "Produtos")
+                                                                          .getDocuments(),
+                                                                      builder:
+                                                                          (context,
+                                                                              snapshotProdutos) {
+                                                                        if (!snapshotProdutos
+                                                                            .hasData) {
+                                                                          return LinearProgressIndicator();
+                                                                        } else {
+                                                                          return Container(
+                                                                            height:
+                                                                                300,
+                                                                            child: ListView.builder(
+                                                                                shrinkWrap: true,
+                                                                                itemCount: snapshotProdutos.data.documents.length,
+                                                                                itemBuilder: (_, index) {
+                                                                                  ProductData dataProduto = ProductData.fromDocument(snapshotProdutos.data.documents[index]);
+                                                                                  bool nomeCategoriaBool = false;
+
+                                                                                  return ProdutosTileAntesReposicao(data, dataProduto);
+                                                                                }),
+                                                                          );
+                                                                        }
+                                                                      },
+                                                                    ),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            15.0),
+                                                                    _currentPage !=
+                                                                            _numPages -
+                                                                                1
+                                                                        ? Expanded(
+                                                                            child:
+                                                                                Align(
+                                                                              alignment: FractionalOffset.bottomRight,
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: [
+                                                                                  FlatButton(
+                                                                                    onPressed: () {
+                                                                                      setState(() {
+                                                                                        title = "Área de Venda";
+                                                                                      });
+                                                                                      _pageController.previousPage(
+                                                                                        duration: Duration(milliseconds: 500),
+                                                                                        curve: Curves.ease,
+                                                                                      );
+                                                                                    },
+                                                                                    child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                                      mainAxisSize: MainAxisSize.min,
+                                                                                      children: <Widget>[
+                                                                                        Text(
+                                                                                          'Voltar',
+                                                                                          style: TextStyle(
+                                                                                            fontFamily: "Helvetica",
+                                                                                            color: Color(0xFF707070),
+                                                                                            fontSize: 22.0,
+                                                                                          ),
+                                                                                        ),
+                                                                                        SizedBox(width: 10.0),
+                                                                                        Icon(
+                                                                                          Icons.arrow_forward,
+                                                                                          color: Colors.white,
+                                                                                          size: 30.0,
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  FlatButton(
+                                                                                    onPressed: () async {
+                                                                                      _pageController.nextPage(
+                                                                                        duration: Duration(milliseconds: 500),
+                                                                                        curve: Curves.ease,
+                                                                                      );
+                                                                                      setState(() {
+                                                                                        title = "Instruções de Reposição";
+                                                                                      });
+                                                                                    },
+                                                                                    child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                                      children: <Widget>[
+                                                                                        Text(
+                                                                                          'Avançar',
+                                                                                          textAlign: TextAlign.right,
+                                                                                          style: TextStyle(
+                                                                                            fontFamily: "Helvetica",
+                                                                                            color: Color(0xFF707070),
+                                                                                            fontSize: 22.0,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                        : Text(
+                                                                            ''),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    StreamBuilder(
+                                                      stream: Firestore.instance
+                                                          .collection(
+                                                              "Empresas")
+                                                          .document(data
+                                                              .empresaResponsavel)
+                                                          .snapshots(),
+                                                      builder: (context,
+                                                          snapInstrucao) {
+                                                        if (!snapInstrucao
+                                                            .hasData) {
+                                                          return CircularProgressIndicator();
+                                                        } else {
+                                                          _instrucaoController
+                                                                  .text =
+                                                              snapInstrucao
+                                                                      .data[
+                                                                  "instrução"];
+                                                          return Flex(
+                                                            direction:
+                                                                Axis.horizontal,
+                                                            children: [
+                                                              Expanded(
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      top: 50,
+                                                                      left: 20,
+                                                                      right: 20,
+                                                                      bottom:
+                                                                          50),
+                                                                  child: Card(
+                                                                    shape:
+                                                                        RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              15.0),
+                                                                    ),
+                                                                    elevation:
+                                                                        15,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          EdgeInsets.all(
+                                                                              10.0),
+                                                                      child:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: <
+                                                                            Widget>[
+                                                                          SizedBox(
+                                                                              height: 30.0),
+                                                                          SizedBox(
+                                                                              height: 15.0),
+                                                                          Card(
+                                                                            shape:
+                                                                                RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.circular(15.0),
+                                                                            ),
+                                                                            elevation:
+                                                                                10,
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                height: 250,
+                                                                                child: TextField(
+                                                                                  focusNode: myFocusInstrucao,
+                                                                                  enabled: true,
+                                                                                  maxLines: 10,
+                                                                                  controller: _instrucaoController,
+                                                                                  keyboardType: TextInputType.text,
+                                                                                  style: TextStyle(fontFamily: "WorkSansSemiBold", fontSize: 13.0, color: Colors.black),
+                                                                                  decoration: InputDecoration(
+                                                                                    enabledBorder: UnderlineInputBorder(
+                                                                                      borderSide: BorderSide(color: Colors.white),
+                                                                                    ),
+                                                                                    focusedBorder: UnderlineInputBorder(
+                                                                                      borderSide: BorderSide(color: Colors.white),
+                                                                                    ),
+                                                                                    border: UnderlineInputBorder(
+                                                                                      borderSide: BorderSide(color: Colors.white),
+                                                                                    ),
+                                                                                    hintStyle: TextStyle(fontFamily: "Georgia", fontSize: 10.0),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          _currentPage != _numPages - 1
+                                                                              ? Expanded(
+                                                                                  child: Align(
+                                                                                    alignment: FractionalOffset.bottomRight,
+                                                                                    child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                                      children: [
+                                                                                        FlatButton(
+                                                                                          onPressed: () {
+                                                                                            setState(() {
+                                                                                              title = "Estoque Depósito";
+                                                                                            });
+                                                                                            _pageController.previousPage(
+                                                                                              duration: Duration(milliseconds: 500),
+                                                                                              curve: Curves.ease,
+                                                                                            );
+                                                                                          },
+                                                                                          child: Row(
+                                                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                                                            mainAxisSize: MainAxisSize.min,
+                                                                                            children: <Widget>[
+                                                                                              Text(
+                                                                                                'Voltar',
+                                                                                                style: TextStyle(
+                                                                                                  fontFamily: "Helvetica",
+                                                                                                  color: Color(0xFF707070),
+                                                                                                  fontSize: 22.0,
+                                                                                                ),
+                                                                                              ),
+                                                                                              SizedBox(width: 10.0),
+                                                                                              Icon(
+                                                                                                Icons.arrow_forward,
+                                                                                                color: Colors.white,
+                                                                                                size: 30.0,
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                        FlatButton(
+                                                                                          onPressed: () async {
+                                                                                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => PesquisaAposReposicao(data)));
+                                                                                          },
+                                                                                          child: Row(
+                                                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                                                            children: <Widget>[
+                                                                                              Text(
+                                                                                                'Avançar',
+                                                                                                textAlign: TextAlign.right,
+                                                                                                style: TextStyle(
+                                                                                                  fontFamily: "Helvetica",
+                                                                                                  color: Color(0xFF707070),
+                                                                                                  fontSize: 22.0,
+                                                                                                ),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                )
+                                                                              : Text(''),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          );
+                                                        }
+                                                      },
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 10,
+                                                              left: 10,
+                                                              right: 10,
+                                                              bottom: 100),
+                                                      child: Card(
+                                                        elevation: 15,
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 50,
-                                                                  left: 20,
-                                                                  right: 20,
-                                                                  bottom: 50),
-                                                          child: Card(
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15.0),
-                                                            ),
-                                                            elevation: 15,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(
-                                                                          10.0),
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: <
-                                                                    Widget>[
-                                                                  Text(
-                                                                    "Informe os estoques dos produtos abaixo:",
-                                                                    style: TextStyle(
-                                                                        fontFamily:
-                                                                            "QuickSand",
-                                                                        color: Color(
-                                                                            0xFF000000)),
-                                                                  ),
-                                                                  FutureBuilder(
-                                                                    future: Firestore
-                                                                        .instance
-                                                                        .collection(
-                                                                            "Empresas")
-                                                                        .document(data
-                                                                            .empresaResponsavel)
-                                                                        .collection(
-                                                                            "Produtos")
-                                                                        .getDocuments(),
-                                                                    builder:
-                                                                        (context,
-                                                                            snapshotProdutos) {
-                                                                      if (!snapshotProdutos
-                                                                          .hasData) {
-                                                                        return LinearProgressIndicator();
-                                                                      } else {
-                                                                        return Container(
-                                                                          height:
-                                                                              300,
-                                                                          child: ListView.builder(
-                                                                              shrinkWrap: true,
-                                                                              itemCount: snapshotProdutos.data.documents.length,
-                                                                              itemBuilder: (_, index) {
-                                                                                ProductData dataProduto = ProductData.fromDocument(snapshotProdutos.data.documents[index]);
-                                                                                bool nomeCategoriaBool = false;
-
-                                                                                return ProdutosTileAntesReposicao(data, dataProduto);
-                                                                              }),
-                                                                        );
-                                                                      }
-                                                                    },
-                                                                  ),
-                                                                  SizedBox(
-                                                                      height:
-                                                                          15.0),
-                                                                  _currentPage !=
-                                                                          _numPages -
-                                                                              1
-                                                                      ? Expanded(
+                                                              EdgeInsets.all(
+                                                                  10.0),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: <Widget>[
+//
+                                                              SizedBox(
+                                                                  height: 60.0),
+                                                              Text(
+                                                                'Pesquisa Criada',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style:
+                                                                    kTitleStyle,
+                                                              ),
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            30,
+                                                                        right:
+                                                                            30,
+                                                                        top:
+                                                                            20),
+                                                                child:
+                                                                    Container(
+                                                                  width: 100,
+                                                                  height: 100,
+                                                                  child: Center(
+                                                                      child: FlareActor(
+                                                                          "assets/success_check.flr",
+                                                                          alignment: Alignment
+                                                                              .center,
+                                                                          fit: BoxFit
+                                                                              .contain,
+                                                                          animation:
+                                                                              "Untitled")),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 15.0),
+                                                              _currentPage !=
+                                                                      _numPages -
+                                                                          2
+                                                                  ? Flex(
+                                                                      direction:
+                                                                          Axis.horizontal,
+                                                                      children: [
+                                                                        Expanded(
                                                                           child:
                                                                               Align(
                                                                             alignment:
                                                                                 FractionalOffset.bottomRight,
                                                                             child:
-                                                                                Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              children: [
                                                                                 FlatButton(
-                                                                                  onPressed: () {
-                                                                                    setState(() {
-                                                                                      title = "Área de Venda";
-                                                                                    });
-                                                                                    _pageController.previousPage(
-                                                                                      duration: Duration(milliseconds: 500),
-                                                                                      curve: Curves.ease,
-                                                                                    );
-                                                                                  },
-                                                                                  child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    mainAxisSize: MainAxisSize.min,
-                                                                                    children: <Widget>[
-                                                                                      Text(
-                                                                                        'Voltar',
-                                                                                        style: TextStyle(
-                                                                                          fontFamily: "Helvetica",
-                                                                                          color: Color(0xFF707070),
-                                                                                          fontSize: 22.0,
-                                                                                        ),
-                                                                                      ),
-                                                                                      SizedBox(width: 10.0),
-                                                                                      Icon(
-                                                                                        Icons.arrow_forward,
-                                                                                        color: Colors.white,
-                                                                                        size: 30.0,
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                                FlatButton(
-                                                                                  onPressed: () async {
-                                                                                    _pageController.nextPage(
-                                                                                      duration: Duration(milliseconds: 500),
-                                                                                      curve: Curves.ease,
-                                                                                    );
-                                                                                    setState(() {
-                                                                                      title = "Instruções de Reposição";
-                                                                                    });
-                                                                                  },
-                                                                                  child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    children: <Widget>[
-                                                                                      Text(
-                                                                                        'Avançar',
-                                                                                        textAlign: TextAlign.right,
-                                                                                        style: TextStyle(
-                                                                                          fontFamily: "Helvetica",
-                                                                                          color: Color(0xFF707070),
-                                                                                          fontSize: 22.0,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              ],
+                                                                              onPressed: () {
+                                                                                _pageController.nextPage(
+                                                                                  duration: Duration(milliseconds: 500),
+                                                                                  curve: Curves.ease,
+                                                                                );
+                                                                              },
                                                                             ),
                                                                           ),
                                                                         )
-                                                                      : Text(
-                                                                          ''),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      StreamBuilder(
-                                                        stream: Firestore
-                                                            .instance
-                                                            .collection(
-                                                                "Empresas")
-                                                            .document(data
-                                                                .empresaResponsavel)
-                                                            .snapshots(),
-                                                        builder: (context,
-                                                            snapInstrucao) {
-                                                          if (!snapInstrucao
-                                                              .hasData) {
-                                                            return CircularProgressIndicator();
-                                                          } else {
-                                                            _instrucaoController
-                                                                    .text =
-                                                                snapInstrucao
-                                                                        .data[
-                                                                    "instrução"];
-                                                            return Expanded(
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        top: 50,
-                                                                        left:
-                                                                            20,
-                                                                        right:
-                                                                            20,
-                                                                        bottom:
-                                                                            50),
-                                                                child: Card(
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            15.0),
-                                                                  ),
-                                                                  elevation: 15,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        EdgeInsets.all(
-                                                                            10.0),
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: <
-                                                                          Widget>[
-                                                                        SizedBox(
-                                                                            height:
-                                                                                30.0),
-                                                                        SizedBox(
-                                                                            height:
-                                                                                15.0),
-                                                                        Card(
-                                                                          shape:
-                                                                              RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(15.0),
-                                                                          ),
-                                                                          elevation:
-                                                                              10,
-                                                                          child:
-                                                                              Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                            child:
-                                                                                Container(
-                                                                              height: 250,
-                                                                              child: TextField(
-                                                                                focusNode: myFocusInstrucao,
-                                                                                enabled: true,
-                                                                                maxLines: 10,
-                                                                                controller: _instrucaoController,
-                                                                                keyboardType: TextInputType.text,
-                                                                                style: TextStyle(fontFamily: "WorkSansSemiBold", fontSize: 13.0, color: Colors.black),
-                                                                                decoration: InputDecoration(
-                                                                                  enabledBorder: UnderlineInputBorder(
-                                                                                    borderSide: BorderSide(color: Colors.white),
-                                                                                  ),
-                                                                                  focusedBorder: UnderlineInputBorder(
-                                                                                    borderSide: BorderSide(color: Colors.white),
-                                                                                  ),
-                                                                                  border: UnderlineInputBorder(
-                                                                                    borderSide: BorderSide(color: Colors.white),
-                                                                                  ),
-                                                                                  hintStyle: TextStyle(fontFamily: "Georgia", fontSize: 10.0),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        _currentPage !=
-                                                                                _numPages - 1
-                                                                            ? Expanded(
-                                                                                child: Align(
-                                                                                  alignment: FractionalOffset.bottomRight,
-                                                                                  child: Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                                                    children: [
-                                                                                      FlatButton(
-                                                                                        onPressed: () {
-                                                                                          setState(() {
-                                                                                            title = "Estoque Depósito";
-                                                                                          });
-                                                                                          _pageController.previousPage(
-                                                                                            duration: Duration(milliseconds: 500),
-                                                                                            curve: Curves.ease,
-                                                                                          );
-                                                                                        },
-                                                                                        child: Row(
-                                                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                                                          mainAxisSize: MainAxisSize.min,
-                                                                                          children: <Widget>[
-                                                                                            Text(
-                                                                                              'Voltar',
-                                                                                              style: TextStyle(
-                                                                                                fontFamily: "Helvetica",
-                                                                                                color: Color(0xFF707070),
-                                                                                                fontSize: 22.0,
-                                                                                              ),
-                                                                                            ),
-                                                                                            SizedBox(width: 10.0),
-                                                                                            Icon(
-                                                                                              Icons.arrow_forward,
-                                                                                              color: Colors.white,
-                                                                                              size: 30.0,
-                                                                                            ),
-                                                                                          ],
-                                                                                        ),
-                                                                                      ),
-                                                                                      FlatButton(
-                                                                                        onPressed: () async {
-                                                                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => PesquisaAposReposicao(data)));
-                                                                                        },
-                                                                                        child: Row(
-                                                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                                                          children: <Widget>[
-                                                                                            Text(
-                                                                                              'Avançar',
-                                                                                              textAlign: TextAlign.right,
-                                                                                              style: TextStyle(
-                                                                                                fontFamily: "Helvetica",
-                                                                                                color: Color(0xFF707070),
-                                                                                                fontSize: 22.0,
-                                                                                              ),
-                                                                                            ),
-                                                                                          ],
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              )
-                                                                            : Text(''),
                                                                       ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          }
-                                                        },
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                top: 10,
-                                                                left: 10,
-                                                                right: 10,
-                                                                bottom: 100),
-                                                        child: Card(
-                                                          elevation: 15,
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10.0),
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: <
-                                                                  Widget>[
-//
-                                                                SizedBox(
-                                                                    height:
-                                                                        60.0),
-                                                                Text(
-                                                                  'Pesquisa Criada',
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style:
-                                                                      kTitleStyle,
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsets
-                                                                      .only(
-                                                                          left:
-                                                                              30,
-                                                                          right:
-                                                                              30,
-                                                                          top:
-                                                                              20),
-                                                                  child:
-                                                                      Container(
-                                                                    width: 100,
-                                                                    height: 100,
-                                                                    child: Center(
-                                                                        child: FlareActor(
-                                                                            "assets/success_check.flr",
-                                                                            alignment:
-                                                                                Alignment.center,
-                                                                            fit: BoxFit.contain,
-                                                                            animation: "Untitled")),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                    height:
-                                                                        15.0),
-                                                                _currentPage !=
-                                                                        _numPages -
-                                                                            2
-                                                                    ? Expanded(
-                                                                        child:
-                                                                            Align(
-                                                                          alignment:
-                                                                              FractionalOffset.bottomRight,
-                                                                          child:
-                                                                              FlatButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              _pageController.nextPage(
-                                                                                duration: Duration(milliseconds: 500),
-                                                                                curve: Curves.ease,
-                                                                              );
-                                                                            },
-                                                                          ),
-                                                                        ),
-                                                                      )
-                                                                    : Text(''),
-                                                              ],
-                                                            ),
+                                                                    )
+                                                                  : Text(''),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                               Row(

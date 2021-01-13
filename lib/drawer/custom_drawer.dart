@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:versaoPromotores/models/user_model.dart';
-import 'package:versaoPromotores/telas_drawer/perfil_empresa/PerfilEmpresa.dart';
+import 'package:versaoPromotores/telas_drawer/perfil_empresa/PerfilPromotor.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -48,20 +48,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         text: 'Perfil do Promotor',
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PerfilEmpresa()));
+                              builder: (context) => PerfilPromotor()));
                         }),
                     _createDrawerItem(
                       icon: Icons.library_books,
                       text: 'Instruções de Reposição',
                     ),
-                    _createDrawerItem(
-                      icon: Icons.picture_as_pdf,
-                      text: 'Pesquisas',
-                    ),
-                    _createDrawerItem(
-                      icon: Icons.pie_chart,
-                      text: 'Relatórios',
-                    ),
+//                    _createDrawerItem(
+//                      icon: Icons.picture_as_pdf,
+//                      text: 'Pesquisas',
+//                    ),
+//                    _createDrawerItem(
+//                      icon: Icons.pie_chart,
+//                      text: 'Relatórios',
+//                    ),
                     _createDrawerItem(
                         onTap: () {
                           _desconectar(context);

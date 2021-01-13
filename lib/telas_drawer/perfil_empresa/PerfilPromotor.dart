@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:path/path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,25 +10,31 @@ import 'package:image_picker/image_picker.dart';
 import 'package:versaoPromotores/models/user_model.dart';
 
 // ignore: must_be_immutable
-class PerfilEmpresa extends StatefulWidget {
+class PerfilPromotor extends StatefulWidget {
   String uid;
 
-  PerfilEmpresa();
+  PerfilPromotor();
   @override
-  _PerfilEmpresaState createState() => _PerfilEmpresaState();
+  _PerfilPromotorState createState() => _PerfilPromotorState();
 }
 
-class _PerfilEmpresaState extends State<PerfilEmpresa> {
+class _PerfilPromotorState extends State<PerfilPromotor> {
   File _image;
   String uid;
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  _PerfilEmpresaState();
+  _PerfilPromotorState();
 
   //Controllers que serão utilizados para exibir as informações do perfil
   final controllerNome = TextEditingController();
-  final controllerApelido = TextEditingController();
+  final controllerEmpresaVinculada = TextEditingController();
+  final controllerTipoContrato = TextEditingController();
+  final controllerEndereco = TextEditingController();
   final controllerTelefone = TextEditingController();
   bool alterar;
+
+  var telefoneFormatter = new MaskTextInputFormatter(
+      mask: '## # ####-####', filter: {"#": RegExp(r'[0-9]')});
+
   @override
   Widget build(BuildContext context) {
     Future getImage() async {
@@ -48,7 +55,7 @@ class _PerfilEmpresaState extends State<PerfilEmpresa> {
             print(docUrl);
           });
           DocumentReference documentReference = Firestore.instance
-              .collection("Empresas")
+              .collection("Promotores")
               .document(UserModel.of(context).firebaseUser.uid);
 
           documentReference.updateData({"imagem": docUrl});
@@ -61,7 +68,7 @@ class _PerfilEmpresaState extends State<PerfilEmpresa> {
     if (UserModel.of(context).isLoggedIn()) {
       return StreamBuilder(
         stream: Firestore.instance
-            .collection("Empresas")
+            .collection("Promotores")
             .document(UserModel.of(context).firebaseUser.uid)
             .snapshots(),
         builder: (context, snapshot) {
@@ -70,9 +77,18 @@ class _PerfilEmpresaState extends State<PerfilEmpresa> {
               child: CircularProgressIndicator(),
             );
           else {
-            controllerNome.text = snapshot.data["empresa"].toString();
-            controllerApelido.text = snapshot.data["cnpj"].toString();
+            String idEmpresa = snapshot.data["empresaVinculada"].toString();
+            controllerNome.text = snapshot.data["nomePromotor"].toString();
             controllerTelefone.text = snapshot.data["telefone"].toString();
+            controllerTipoContrato.text =
+                snapshot.data["tipoContrato"].toString();
+            controllerEndereco.text = snapshot.data["endereco"].toString() +
+                "\n" +
+                snapshot.data["cidade"].toString() +
+                "-" +
+                snapshot.data["estado"].toString();
+            controllerEmpresaVinculada.text =
+                snapshot.data["empresaVinculada"].toString();
             return Scaffold(
                 key: _scaffoldKey,
                 appBar: AppBar(
@@ -126,12 +142,12 @@ class _PerfilEmpresaState extends State<PerfilEmpresa> {
                                                                 fit: BoxFit
                                                                     .cover,
                                                                 image: new NetworkImage(snapshot.data[
-                                                                            "photo"] !=
+                                                                            "imagem"] !=
                                                                         null
                                                                     ? snapshot
                                                                             .data[
-                                                                        "photo"]
-                                                                    : ""),
+                                                                        "imagem"]
+                                                                    : "https://ml7u4cm4jjmy.i.optimole.com/CaABJw-JFJSbi1T/w:auto/h:auto/q:auto/https://bmsenergiasolar.com.br/wp-content/uploads/2020/02/default-user-1.png"),
                                                               ))),
                                                 ],
                                               )),
@@ -149,35 +165,58 @@ class _PerfilEmpresaState extends State<PerfilEmpresa> {
                                         child: Column(
                                           children: <Widget>[
                                             TextField(
+                                              enabled: false,
                                               autofocus: false,
                                               onTap: () {
                                                 alterar = true;
                                               },
                                               controller: controllerNome,
                                               decoration: InputDecoration(
-                                                labelText: "Nome da Empresa",
+                                                labelText: "Seu nome",
                                                 border: InputBorder.none,
                                                 icon: Icon(Icons.person),
                                               ),
                                             ),
-                                            TextField(
-                                              onChanged: (text) {
-                                                alterar = true;
+                                            StreamBuilder(
+                                              stream: Firestore.instance
+                                                  .collection("Empresas")
+                                                  .document(idEmpresa)
+                                                  .snapshots(),
+                                              builder: (context, snapEmpresa) {
+                                                if (!snapEmpresa.hasData) {
+                                                  return LinearProgressIndicator();
+                                                } else {
+                                                  controllerEmpresaVinculada
+                                                          .text =
+                                                      snapEmpresa
+                                                          .data["empresa"];
+                                                  return TextField(
+                                                    enabled: false,
+                                                    onChanged: (text) {
+                                                      alterar = true;
+                                                    },
+                                                    autofocus: false,
+                                                    controller:
+                                                        controllerEmpresaVinculada,
+                                                    decoration: InputDecoration(
+                                                      labelText:
+                                                          "Empresa Vinculada",
+                                                      border: InputBorder.none,
+                                                      icon:
+                                                          Icon(Icons.business),
+                                                    ),
+                                                  );
+                                                }
                                               },
-                                              autofocus: false,
-                                              controller: controllerApelido,
-                                              decoration: InputDecoration(
-                                                labelText: "CNPJ",
-                                                border: InputBorder.none,
-                                                icon:
-                                                    Icon(Icons.person_outline),
-                                              ),
                                             ),
                                             TextField(
                                               onChanged: (text) {
                                                 alterar = true;
                                               },
                                               autofocus: false,
+                                              inputFormatters: [
+                                                telefoneFormatter
+                                              ],
                                               controller: controllerTelefone,
                                               decoration: InputDecoration(
                                                   labelText:
@@ -186,6 +225,34 @@ class _PerfilEmpresaState extends State<PerfilEmpresa> {
                                                   icon: Icon(Icons.phone),
                                                   hintText:
                                                       'Informe o Telefone'),
+                                            ),
+                                            TextField(
+                                              enabled: false,
+                                              onChanged: (text) {
+                                                alterar = true;
+                                              },
+                                              autofocus: false,
+                                              maxLines: 4,
+                                              controller: controllerEndereco,
+                                              decoration: InputDecoration(
+                                                  labelText: "Endereço",
+                                                  border: InputBorder.none,
+                                                  icon: Icon(Icons.pin_drop),
+                                                  hintText: 'Seu Endereço'),
+                                            ),
+                                            TextField(
+                                              enabled: false,
+                                              onChanged: (text) {
+                                                alterar = true;
+                                              },
+                                              autofocus: false,
+                                              controller:
+                                                  controllerTipoContrato,
+                                              decoration: InputDecoration(
+                                                  labelText: "Tipo de Contrato",
+                                                  border: InputBorder.none,
+                                                  icon: Icon(Icons.event_note),
+                                                  hintText: 'Tipo de Contrato'),
                                             ),
                                             OutlineButton(
                                               hoverColor: Colors.white,
@@ -204,7 +271,7 @@ class _PerfilEmpresaState extends State<PerfilEmpresa> {
                                                       documentReference =
                                                       Firestore.instance
                                                           .collection(
-                                                              "Empresas")
+                                                              "Promotores")
                                                           .document(
                                                               firebaseUser.uid);
 
@@ -213,10 +280,7 @@ class _PerfilEmpresaState extends State<PerfilEmpresa> {
                                                     "empresa":
                                                         controllerNome.text
                                                   });
-                                                  documentReference.updateData({
-                                                    "cnpj":
-                                                        controllerApelido.text
-                                                  });
+
                                                   documentReference.updateData({
                                                     "telefone":
                                                         controllerTelefone.text
