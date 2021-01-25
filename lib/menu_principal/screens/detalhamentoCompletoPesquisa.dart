@@ -5,30 +5,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nice_button/NiceButton.dart';
+import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 import 'package:versaoPromotores/menu_principal/datas/pontoExtraImagemData.dart';
 import 'package:versaoPromotores/menu_principal/responder_pesquisa/responder_pesquisa.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData_ruptura_validade.dart';
 import 'package:versaoPromotores/menu_principal/datas/estoqueDeposito_data.dart';
 import 'package:versaoPromotores/menu_principal/screens/exibirImagem.dart';
 
-import 'datas/pesquisaData.dart';
-
-class DetalhamentoPesquisa extends StatefulWidget {
+class DetalhamentoCompletoPesquisa extends StatefulWidget {
   PesquisaData data;
 
-  DetalhamentoPesquisa(this.data);
+  DetalhamentoCompletoPesquisa(this.data);
   @override
-  _DetalhamentoPesquisaState createState() =>
-      _DetalhamentoPesquisaState(this.data);
+  _DetalhamentoCompletoPesquisaState createState() =>
+      _DetalhamentoCompletoPesquisaState(this.data);
 }
 
-class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
+class _DetalhamentoCompletoPesquisaState
+    extends State<DetalhamentoCompletoPesquisa> {
   PesquisaData data;
 
   Color colorButtonVoltar = Color(0xFFF26868);
   Color colorButtonIniciarPesquisa = Color(0xFF4FCEB6);
 
-  _DetalhamentoPesquisaState(this.data);
+  _DetalhamentoCompletoPesquisaState(this.data);
 
   @override
   Widget build(BuildContext context) {

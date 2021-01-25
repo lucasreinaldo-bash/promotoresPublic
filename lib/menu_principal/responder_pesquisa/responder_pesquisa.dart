@@ -17,12 +17,14 @@ import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/detalhamentoPesquisa.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_ruptura_screen.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_validade_screen.dart';
+import 'package:versaoPromotores/menu_principal/responder_pesquisa/responder_presquisa_widget.dart';
 import 'package:versaoPromotores/menu_principal/screens/pesquisa_aposReposicao.dart';
 import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_antes_reposicao.dart';
 import 'package:versaoPromotores/models/user_model.dart';
 import 'package:versaoPromotores/style/style.dart';
+import 'package:versaoPromotores/style/theme.dart' as Theme;
 
-import 'datas/pesquisaData.dart';
+import '../datas/pesquisaData.dart';
 
 class ResponderPesquisaData extends StatefulWidget {
   PesquisaData data;
@@ -35,6 +37,7 @@ class ResponderPesquisaData extends StatefulWidget {
 }
 
 class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
+  //Instanciar a classe modelo para recuperar as informações da pesquisa
   PesquisaData data;
   final _linhaProdutoController = TextEditingController();
   final _observacaoController = TextEditingController();
@@ -47,8 +50,9 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
   final FocusNode myFocusObservacao = FocusNode();
   final FocusNode myFocusInstrucao = FocusNode();
 
-  String idPromotor;
-  final int _numPages = 5;
+  final int _numPages =
+      5; //Numero total de telas para responder a pesquisa antes da reposição
+
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
@@ -59,17 +63,17 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
     }
     return list;
   }
-
-  //Cores
-
-  Color colorCard = Color(0xFF365BE5);
-
   //Pesquisa
 
   String dataInicioPesquisa, dataFinalPesquisa, nomeRede;
 
-  //Metodo para setar os buttons
+  List<String> avancarAntesReposicao;
 
+  String title = "Observações";
+  String concluido = "não";
+
+  _ResponderPesquisaDataState(this.data);
+  //Metodo para setar os buttons
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 150),
@@ -82,13 +86,6 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
       ),
     );
   }
-
-  _ResponderPesquisaDataState(this.data);
-
-  List<String> avancarAntesReposicao;
-
-  String title = "Observações";
-  String concluido = "não";
 
   mudarTitulo(String texto) async {
     title = texto;
@@ -133,17 +130,7 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                             return SingleChildScrollView(
                               child: Stack(
                                 children: [
-                                  Container(
-                                    decoration: new BoxDecoration(
-                                      image: new DecorationImage(
-                                        image: new AssetImage(
-                                            "assets/fundo_colors.png"),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    child:
-                                        null /* add child content content here */,
-                                  ),
+                                  backgroundContainer(),
                                   Column(
                                     children: [
                                       Container(
@@ -368,98 +355,101 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                           color:
                                                                               Color(0xFF000000)),
                                                                     ),
-                                                                    ListView.builder(
-                                                                        shrinkWrap: true,
-                                                                        itemCount: data.linhaProduto.length,
-                                                                        itemBuilder: (_, index) {
-                                                                          String
-                                                                              nomeCategoria =
-                                                                              data.linhaProduto[index];
+                                                                    Container(
+                                                                      height:
+                                                                          200,
+                                                                      child: ListView.builder(
+                                                                          shrinkWrap: true,
+                                                                          itemCount: data.linhaProduto.length,
+                                                                          itemBuilder: (_, index) {
+                                                                            String
+                                                                                nomeCategoria =
+                                                                                data.linhaProduto[index];
 
-                                                                          bool
-                                                                              nomeCategoriaBool =
-                                                                              false;
+                                                                            bool
+                                                                                nomeCategoriaBool =
+                                                                                false;
 
-                                                                          return InkWell(
-                                                                            onTap:
-                                                                                () {
-                                                                              showDialog(
-                                                                                context: context,
-                                                                                builder: (BuildContext context) {
-                                                                                  // retorna um objeto do tipo Dialog
-                                                                                  return AfterDialogPesquisa(nomeCategoria, data);
-                                                                                },
-                                                                              );
-                                                                            },
-                                                                            child: Card(
-                                                                                elevation: 2,
-                                                                                shape: RoundedRectangleBorder(
-                                                                                  borderRadius: BorderRadius.circular(15.0),
-                                                                                ),
-                                                                                child: StreamBuilder(
-                                                                                  stream: Firestore.instance.collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id).collection("linhasProdutosAntesReposicao").document(nomeCategoria).snapshots(),
-                                                                                  builder: (context, snapshotLinhas) {
-                                                                                    if (!snapshotLinhas.hasData) {
-                                                                                      return Container();
-                                                                                    } else {
-                                                                                      if (snapshotLinhas.data["concluida"] == false) {
-                                                                                        lista[index] = 1;
-                                                                                      } else {
-                                                                                        lista[index] = 0;
-                                                                                      }
-
-                                                                                      return snapshotLinhas.data["concluida"] == true
-                                                                                          ? ListTile(
-                                                                                              trailing: Card(
-                                                                                                color: Color(0xFF4FCEB6),
-                                                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                                                                child: Padding(
-                                                                                                  padding: EdgeInsets.all(10),
-                                                                                                  child: Text(
-                                                                                                    "Concluída",
-                                                                                                    style: TextStyle(color: Colors.white, fontFamily: "QuickSandRegular"),
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                              title: Text(
-                                                                                                "" + nomeCategoria,
-                                                                                                style: TextStyle(fontFamily: "QuickSand", fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                                textAlign: TextAlign.start,
-                                                                                              ),
-                                                                                              subtitle: Text(
-                                                                                                "Toque para editar a pesquisa",
-                                                                                                style: TextStyle(fontFamily: "QuickSandRegular", fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black54),
-                                                                                                textAlign: TextAlign.start,
-                                                                                              ),
-                                                                                            )
-                                                                                          : ListTile(
-                                                                                              trailing: Card(
-                                                                                                color: Color(0xFFF26868),
-                                                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                                                                child: Padding(
-                                                                                                  padding: EdgeInsets.all(10),
-                                                                                                  child: Text(
-                                                                                                    "A Iniciar",
-                                                                                                    style: TextStyle(color: Colors.white, fontFamily: "QuickSandRegular"),
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                              title: Text(
-                                                                                                "" + nomeCategoria,
-                                                                                                style: TextStyle(fontFamily: "QuickSand", fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                                                textAlign: TextAlign.start,
-                                                                                              ),
-                                                                                              subtitle: Text(
-                                                                                                "Toque para editar a pesquisa",
-                                                                                                style: TextStyle(fontFamily: "QuickSandRegular", fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black54),
-                                                                                                textAlign: TextAlign.start,
-                                                                                              ),
-                                                                                            );
-                                                                                    }
+                                                                            return InkWell(
+                                                                              onTap: () {
+                                                                                showDialog(
+                                                                                  context: context,
+                                                                                  builder: (BuildContext context) {
+                                                                                    // retorna um objeto do tipo Dialog
+                                                                                    return AfterDialogPesquisa(nomeCategoria, data);
                                                                                   },
-                                                                                )),
-                                                                          );
-                                                                        }),
+                                                                                );
+                                                                              },
+                                                                              child: Card(
+                                                                                  elevation: 2,
+                                                                                  shape: RoundedRectangleBorder(
+                                                                                    borderRadius: BorderRadius.circular(15.0),
+                                                                                  ),
+                                                                                  child: StreamBuilder(
+                                                                                    stream: Firestore.instance.collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id).collection("linhasProdutosAntesReposicao").document(nomeCategoria).snapshots(),
+                                                                                    builder: (context, snapshotLinhas) {
+                                                                                      if (!snapshotLinhas.hasData) {
+                                                                                        return Container();
+                                                                                      } else {
+                                                                                        if (snapshotLinhas.data["concluida"] == false) {
+                                                                                          lista[index] = 1;
+                                                                                        } else {
+                                                                                          lista[index] = 0;
+                                                                                        }
+
+                                                                                        return snapshotLinhas.data["concluida"] == true
+                                                                                            ? ListTile(
+                                                                                                trailing: Card(
+                                                                                                  color: Color(0xFF4FCEB6),
+                                                                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                                                                  child: Padding(
+                                                                                                    padding: EdgeInsets.all(10),
+                                                                                                    child: Text(
+                                                                                                      "Concluída",
+                                                                                                      style: TextStyle(color: Colors.white, fontFamily: "QuickSandRegular"),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                ),
+                                                                                                title: Text(
+                                                                                                  "" + nomeCategoria,
+                                                                                                  style: TextStyle(fontFamily: "QuickSand", fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                  textAlign: TextAlign.start,
+                                                                                                ),
+                                                                                                subtitle: Text(
+                                                                                                  "Toque para editar a pesquisa",
+                                                                                                  style: TextStyle(fontFamily: "QuickSandRegular", fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black54),
+                                                                                                  textAlign: TextAlign.start,
+                                                                                                ),
+                                                                                              )
+                                                                                            : ListTile(
+                                                                                                trailing: Card(
+                                                                                                  color: Color(0xFFF26868),
+                                                                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                                                                  child: Padding(
+                                                                                                    padding: EdgeInsets.all(10),
+                                                                                                    child: Text(
+                                                                                                      "A Iniciar",
+                                                                                                      style: TextStyle(color: Colors.white, fontFamily: "QuickSandRegular"),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                ),
+                                                                                                title: Text(
+                                                                                                  "" + nomeCategoria,
+                                                                                                  style: TextStyle(fontFamily: "QuickSand", fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                                                  textAlign: TextAlign.start,
+                                                                                                ),
+                                                                                                subtitle: Text(
+                                                                                                  "Toque para editar a pesquisa",
+                                                                                                  style: TextStyle(fontFamily: "QuickSandRegular", fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black54),
+                                                                                                  textAlign: TextAlign.start,
+                                                                                                ),
+                                                                                              );
+                                                                                      }
+                                                                                    },
+                                                                                  )),
+                                                                            );
+                                                                          }),
+                                                                    ),
                                                                     SizedBox(
                                                                         height:
                                                                             15.0),
@@ -612,6 +602,10 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                               "Empresas")
                                                                           .document(data
                                                                               .empresaResponsavel)
+                                                                          .collection(
+                                                                              "Lojas")
+                                                                          .document(
+                                                                              "-MKev6Ql80x0R9kl-865")
                                                                           .collection(
                                                                               "Produtos")
                                                                           .getDocuments(),
@@ -1256,6 +1250,7 @@ class AfterDialogPesquisa extends StatefulWidget {
   PesquisaData data;
 
   AfterDialogPesquisa(this.nomeCategoria, this.data);
+
   @override
   _AfterDialogPesquisaState createState() =>
       _AfterDialogPesquisaState(this.nomeCategoria, this.data);
@@ -1273,6 +1268,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
   String nomeCategoria;
 
   _AfterDialogPesquisaState(this.nomeCategoria, this.data);
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

@@ -38,7 +38,7 @@ import 'package:versaoPromotores/models/user_model.dart';
 import 'package:versaoPromotores/splash_screen_pesquisaRespondida.dart';
 import 'package:versaoPromotores/style/style.dart';
 
-import '../responder_pesquisa.dart';
+import '../responder_pesquisa/responder_pesquisa.dart';
 
 class PesquisaAposReposicao extends StatefulWidget {
   PesquisaData data;
