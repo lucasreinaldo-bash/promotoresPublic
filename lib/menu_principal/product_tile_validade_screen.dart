@@ -67,8 +67,7 @@ class ProductTileValidadeScreen extends StatelessWidget {
                                     child: FutureBuilder(
                                       future: Firestore.instance
                                           .collection("Empresas")
-                                          .document(
-                                              "ydj6RHQ8g1ahwDABJHM9ipb0Wnu1")
+                                          .document(data.empresaResponsavel)
                                           .collection("Produtos")
                                           .where("nomeLinha",
                                               isEqualTo: nomeCategoria)

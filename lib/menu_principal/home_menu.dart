@@ -61,15 +61,6 @@ class _HomeMenuState extends State<HomeMenu> {
     return ScopedModelDescendant<UserModel>(
       builder: (context, child, model) {
         return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            child: Icon(
-              Icons.add,
-            ),
-            backgroundColor: colorFloating,
-            onPressed: () {
-              Navigator.pushNamed(context, "/criarPesquisa");
-            },
-          ),
           drawer: CustomDrawer(),
           appBar: AppBar(
             backgroundColor: Colors.deepPurple,

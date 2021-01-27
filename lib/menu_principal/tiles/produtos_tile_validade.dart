@@ -50,10 +50,12 @@ class _ProdutosTileValidadeState extends State<ProdutosTileValidade> {
                         .document(data.empresaResponsavel)
                         .collection("pesquisasCriadas")
                         .document(data.id)
-                        .collection("antesReposicao")
+                        .collection("linhasProdutosAntesReposicao")
+                        .document(dataProdutos.nomeLinha)
+                        .collection("Produtos")
                         .document(dataProdutos.nomeProduto);
 
-                    documentReference.updateData(
+                    documentReference.setData(
                       {
                         "linha": dataProdutos.nomeLinha,
                         "produto": dataProdutos.nomeProduto,

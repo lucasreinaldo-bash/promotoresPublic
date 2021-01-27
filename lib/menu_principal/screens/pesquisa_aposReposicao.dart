@@ -856,8 +856,14 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                               .document(data.empresaResponsavel)
                                               .collection("pesquisasCriadas")
                                               .document(data.id)
-                                              .collection("BeforeAreaDeVenda")
-                                              .document("fotoAntesReposicao");
+                                              .collection("imagensLinhas")
+                                              .getDocuments()
+                                              .then((snapshot) {
+                                        for (DocumentSnapshot ds
+                                            in snapshot.documents) {
+                                          ds.reference.delete();
+                                        }
+                                      });
                                       DocumentReference documentReference2 =
                                           await Firestore.instance
                                               .collection("Empresas")
@@ -1313,15 +1319,17 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
         imagemAntes = "carregando";
       });
       String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-      setState(() {
+      setState(() async {
         print(docUrl);
         imagemAntes = docUrl;
 
-        DocumentReference documentReference = Firestore.instance
+        DocumentReference documentReference = await Firestore.instance
             .collection("Empresas")
             .document(data.empresaResponsavel)
             .collection("pesquisasCriadas")
             .document(data.id)
+            .collection("imagensLinhas")
+            .document(nomeCategoria)
             .collection("AfterAreaDeVenda")
             .document("fotoDepoisReposicao");
         documentReference.setData({"imagem": docUrl});
@@ -1365,11 +1373,11 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
           });
           String docUrl =
               await (await uploadTask.onComplete).ref.getDownloadURL();
-          setState(() {
+          setState(() async {
             print(docUrl);
             imagemPontoExtra = docUrl;
 
-            DocumentReference documentReference = Firestore.instance
+            DocumentReference documentReference = await Firestore.instance
                 .collection("Empresas")
                 .document(data.empresaResponsavel)
                 .collection("pesquisasCriadas")

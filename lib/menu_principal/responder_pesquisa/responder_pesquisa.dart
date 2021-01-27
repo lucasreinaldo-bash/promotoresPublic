@@ -516,6 +516,16 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                                             duration: Duration(milliseconds: 500),
                                                                                             curve: Curves.ease,
                                                                                           );
+
+                                                                                          await Firestore.instance
+                                                                                            ..collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id).collection("linhasProdutosAposReposicao").getDocuments().then((snapshot) {
+                                                                                              for (DocumentSnapshot ds in snapshot.documents) {
+                                                                                                ds.reference.setData({
+                                                                                                  "concluida": false
+                                                                                                });
+                                                                                              }
+                                                                                              ;
+                                                                                            });
                                                                                         } else {
                                                                                           showDialog(
                                                                                               context: context,
@@ -604,8 +614,8 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                               .empresaResponsavel)
                                                                           .collection(
                                                                               "Lojas")
-                                                                          .document(
-                                                                              "-MKev6Ql80x0R9kl-865")
+                                                                          .document(data
+                                                                              .nomeLoja)
                                                                           .collection(
                                                                               "Produtos")
                                                                           .getDocuments(),
@@ -995,24 +1005,14 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                     .collection(
                                                         "pesquisasCriadas")
                                                     .document(data.id)
-                                                    .collection(
-                                                        "BeforeAreaDeVenda")
-                                                    .document(
-                                                        "fotoAntesReposicao");
-                                            DocumentReference
-                                                documentReference2 =
-                                                await Firestore.instance
-                                                    .collection("Empresas")
-                                                    .document(
-                                                        data.empresaResponsavel)
-                                                    .collection(
-                                                        "pesquisasCriadas")
-                                                    .document(data.id)
-                                                    .collection(
-                                                        "AfterAreaDeVenda")
-                                                    .document(
-                                                        "fotoDepoisReposicao");
-
+                                                    .collection("imagensLinhas")
+                                                    .getDocuments()
+                                                    .then((snapshot) {
+                                              for (DocumentSnapshot ds
+                                                  in snapshot.documents) {
+                                                ds.reference.delete();
+                                              }
+                                            });
                                             DocumentReference
                                                 documentReference3 =
                                                 await Firestore.instance
@@ -1134,7 +1134,6 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                               });
 
                                             documentReference1.delete();
-                                            documentReference2.delete();
                                             documentReference3.updateData({
                                               "novoPedido": FieldValue.delete()
                                             });
@@ -1281,7 +1280,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
               children: [
                 InkWell(
                   onTap: () {
-                    getImage(false);
+                    getImage(false, nomeCategoria);
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -1354,10 +1353,11 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                               .collection("pontoExtra")
                               .document(nomeCategoria);
 
-                          documentReference.setData(
+                          documentReference.updateData(
                             {
                               "existe": false,
-                              "imagem": "sem imagem",
+                              "imagemAntes": "nenhuma",
+                              "imagemDepois": "nenhuma",
                             },
                           );
 
@@ -1404,7 +1404,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                               .collection("pontoExtra")
                               .document(nomeCategoria);
 
-                          documentReference.setData(
+                          documentReference.updateData(
                             {
                               "existe": true,
                               "imagem": "nenhuma",
@@ -1443,7 +1443,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
                         children: [
                           InkWell(
                             onTap: () {
-                              getImagePontoExtra(false);
+                              getImagePontoExtra(false, nomeCategoria);
                             },
                             child: Card(
                               shape: RoundedRectangleBorder(
@@ -1786,7 +1786,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
     );
   }
 
-  Future getImage(bool gallery) async {
+  Future getImage(bool gallery, String categoria) async {
     ImagePicker picker = ImagePicker();
     PickedFile pickedFile;
     // Let user select photo from gallery
@@ -1823,15 +1823,17 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
       });
       String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
 
-      setState(() {
+      setState(() async {
         print(docUrl);
         imagemAntes = docUrl;
 
-        DocumentReference documentReference = Firestore.instance
+        DocumentReference documentReference = await Firestore.instance
             .collection("Empresas")
             .document(data.empresaResponsavel)
             .collection("pesquisasCriadas")
             .document(data.id)
+            .collection("imagensLinhas")
+            .document(categoria)
             .collection("BeforeAreaDeVenda")
             .document("fotoAntesReposicao");
         documentReference.setData({"imagem": docUrl});
@@ -1843,7 +1845,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
     uploadPic(context);
   }
 
-  Future getImagePontoExtra(bool gallery) async {
+  Future getImagePontoExtra(bool gallery, String categoria) async {
     ImagePicker picker = ImagePicker();
     PickedFile pickedFile;
     // Let user select photo from gallery
@@ -1880,11 +1882,11 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
       });
       String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
 
-      setState(() {
+      setState(() async {
         print(docUrl);
         imagemAntesPontoExtra = docUrl;
 
-        DocumentReference documentReference = Firestore.instance
+        DocumentReference documentReference = await Firestore.instance
             .collection("Empresas")
             .document(data.empresaResponsavel)
             .collection("pesquisasCriadas")
@@ -1892,7 +1894,7 @@ class _AfterDialogPesquisaState extends State<AfterDialogPesquisa> {
             .collection("pontoExtra")
             .document(nomeCategoria);
 
-        documentReference.setData(
+        documentReference.updateData(
           {
             "existe": true,
             "imagemAntes": docUrl,

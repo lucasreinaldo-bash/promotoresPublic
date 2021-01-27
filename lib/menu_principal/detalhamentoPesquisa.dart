@@ -9,6 +9,7 @@ import 'package:versaoPromotores/menu_principal/datas/pontoExtraImagemData.dart'
 import 'package:versaoPromotores/menu_principal/responder_pesquisa/responder_pesquisa.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData_ruptura_validade.dart';
 import 'package:versaoPromotores/menu_principal/datas/estoqueDeposito_data.dart';
+import 'package:versaoPromotores/menu_principal/screens/detalhamento_linha.dart';
 import 'package:versaoPromotores/menu_principal/screens/exibirImagem.dart';
 
 import 'datas/pesquisaData.dart';
@@ -701,14 +702,48 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                               color: Colors.black87),
                                         ),
                                         Text(
-                                          data.linhaProduto
-                                              .toString()
-                                              .replaceAll("[", "")
-                                              .replaceAll("]", ""),
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black38),
-                                        ),
+                                            "Clique na linha desejada para ver o detalhamento",
+                                            style: TextStyle(
+                                                fontFamily: "Helvetica",
+                                                fontSize: 12)),
+                                        Container(
+                                          height: 40,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: data.linhaProduto.length,
+                                            itemBuilder: (_, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DetalhamentoLinha(
+                                                                  data.linhaProduto[
+                                                                      index],
+                                                                  data)));
+                                                },
+                                                child: Card(
+                                                  elevation: 4,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      data.linhaProduto[index],
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              "QuickSand",
+                                                          color:
+                                                              Colors.black38),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        )
                                       ],
                                     ),
                                     Column(
