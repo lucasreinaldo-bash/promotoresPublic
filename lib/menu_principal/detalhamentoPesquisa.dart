@@ -150,20 +150,54 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Linha de Produtos:",
+                                          "Linha de Produtos Pesquisadas:",
                                           style: TextStyle(
                                               fontFamily: "QuickSand",
                                               color: Colors.black87),
                                         ),
                                         Text(
-                                          data.linhaProduto
-                                              .toString()
-                                              .replaceAll("[", "")
-                                              .replaceAll("]", ""),
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black38),
-                                        ),
+                                            "Clique na linha desejada para ver o detalhamento",
+                                            style: TextStyle(
+                                                fontFamily: "Helvetica",
+                                                fontSize: 12)),
+                                        Container(
+                                          height: 40,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: data.linhaProduto.length,
+                                            itemBuilder: (_, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DetalhamentoLinha(
+                                                                  data.linhaProduto[
+                                                                      index],
+                                                                  data)));
+                                                },
+                                                child: Card(
+                                                  elevation: 4,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      data.linhaProduto[index],
+                                                      style: TextStyle(
+                                                          fontFamily:
+                                                              "QuickSand",
+                                                          color:
+                                                              Colors.black38),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        )
                                       ],
                                     ),
                                     Column(

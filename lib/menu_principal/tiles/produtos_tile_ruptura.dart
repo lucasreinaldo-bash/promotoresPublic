@@ -9,23 +9,24 @@ import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 class ProdutosTileRuptura extends StatefulWidget {
   ProductData dataProdutos;
   PesquisaData data;
+  String nomeCategoria;
 
-  ProdutosTileRuptura(this.data, this.dataProdutos);
+  ProdutosTileRuptura(this.data, this.dataProdutos, this.nomeCategoria);
   @override
-  _ProdutosTileRupturaState createState() =>
-      _ProdutosTileRupturaState(this.data, this.dataProdutos);
+  _ProdutosTileRupturaState createState() => _ProdutosTileRupturaState(
+      this.data, this.dataProdutos, this.nomeCategoria);
 }
 
 class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
   ProductData dataProdutos;
   PesquisaData data;
   final _rupturaController = TextEditingController();
-  String dataInicioPesquisa, dataFinalPesquisa, nomeRede;
+  String dataInicioPesquisa, dataFinalPesquisa, nomeRede, nomeCategoria;
 
   var dataFormatter =
       new MaskTextInputFormatter(mask: '####', filter: {"#": RegExp(r'[0-9]')});
 
-  _ProdutosTileRupturaState(this.data, this.dataProdutos);
+  _ProdutosTileRupturaState(this.data, this.dataProdutos, this.nomeCategoria);
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -50,10 +51,12 @@ class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
                         .document(data.empresaResponsavel)
                         .collection("pesquisasCriadas")
                         .document(data.id)
-                        .collection("antesReposicao")
+                        .collection("ruptura")
+                        .document(nomeCategoria)
+                        .collection("Produtos")
                         .document(dataProdutos.nomeProduto);
 
-                    documentReference.updateData(
+                    documentReference.setData(
                       {
                         "linha": dataProdutos.nomeLinha,
                         "produto": dataProdutos.nomeProduto,

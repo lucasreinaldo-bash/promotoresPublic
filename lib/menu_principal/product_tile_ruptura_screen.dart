@@ -68,8 +68,10 @@ class ProductTileRupturaScreen extends StatelessWidget {
                                     child: FutureBuilder(
                                       future: Firestore.instance
                                           .collection("Empresas")
-                                          .document(
-                                              "ydj6RHQ8g1ahwDABJHM9ipb0Wnu1")
+                                          .document(data.empresaResponsavel)
+                                          .collection(
+                                              "linhasProdutosAntesReposicao")
+                                          .document(nomeCategoria)
                                           .collection("Produtos")
                                           .where("nomeLinha",
                                               isEqualTo: nomeCategoria)
@@ -90,7 +92,9 @@ class ProductTileRupturaScreen extends StatelessWidget {
                                                             indexProduto]);
 
                                                 return ProdutosTileRuptura(
-                                                    data, dataProdutos);
+                                                    data,
+                                                    dataProdutos,
+                                                    nomeCategoria);
                                               });
                                         }
                                       },
