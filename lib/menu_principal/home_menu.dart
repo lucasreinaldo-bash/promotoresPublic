@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:versaoPromotores/drawer/custom_drawer.dart';
@@ -43,6 +49,8 @@ class _HomeMenuState extends State<HomeMenu> {
   Color verdeClaro = Color(0xFF4FCEB6);
 
   String filtro = "Todas";
+  String termoBusca = "nenhum";
+  String tipoDeBusca = "nomeLoja";
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 150),
@@ -54,6 +62,63 @@ class _HomeMenuState extends State<HomeMenu> {
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
     );
+  }
+
+  void configFCM(BuildContext context) {
+    if (Platform.isIOS) {
+      final fcm = FirebaseMessaging();
+
+      fcm.requestNotificationPermissions(
+          const IosNotificationSettings(provisional: true));
+
+      fcm.configure(
+        onLaunch: (Map<String, dynamic> message) async {
+          print('onLaunch $message');
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print('onResume $message');
+        },
+        onMessage: (Map<String, dynamic> message) async {
+          showNotification(message['notification']['title'] as String,
+              message['notification']['body'] as String);
+        },
+      );
+    } else {
+      final fcm = FirebaseMessaging();
+
+      fcm.configure(
+        onLaunch: (Map<String, dynamic> message) async {
+          print('onLaunch $message');
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print('onResume $message');
+        },
+        onMessage: (Map<String, dynamic> message) async {
+          print("Recebi alguma mensagem");
+          showNotification(message['notification']['title'] as String,
+              message['notification']['body'] as String);
+        },
+      );
+    }
+  }
+
+  void showNotification(String title, String message) {
+    Flushbar(
+        title: title,
+        message: message,
+        flushbarPosition: FlushbarPosition.TOP,
+        flushbarStyle: FlushbarStyle.GROUNDED,
+        isDismissible: true,
+        backgroundColor: Colors.deepPurpleAccent,
+        duration: const Duration(seconds: 6),
+        icon: Card(
+          child: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Image.asset("assets/logo.png"),
+              )),
+        )).show(context);
   }
 
   @override
@@ -115,7 +180,160 @@ class _HomeMenuState extends State<HomeMenu> {
                               ),
                               suffixIcon: (InkWell(
                                   onTap: () {
-                                    Dialog();
+                                    showAnimatedDialog(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      builder: (BuildContext context) {
+                                        return CustomDialogWidget(
+                                            title: Container(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(5),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Configurar Busca",
+                                                  style: TextStyle(
+                                                      fontFamily: "QuickSand",
+                                                      fontSize: 16),
+                                                ),
+                                                Text(
+                                                  "(Selecione o Parâmetro a ser utilizado)",
+                                                  style: TextStyle(
+                                                      fontFamily: "Helvetica",
+                                                      fontSize: 12),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      tipoDeBusca = "nomeLoja";
+                                                    });
+                                                    Navigator.pop(context);
+
+                                                    Flushbar(
+                                                      title:
+                                                          "Filtro de Busca alterado",
+                                                      message:
+                                                          "O parâmetro da busca será o Nome da Loja",
+                                                      flushbarPosition:
+                                                          FlushbarPosition
+                                                              .BOTTOM,
+                                                      flushbarStyle:
+                                                          FlushbarStyle
+                                                              .GROUNDED,
+                                                      isDismissible: true,
+                                                      backgroundColor: Colors
+                                                          .deepPurpleAccent,
+                                                      duration: const Duration(
+                                                          seconds: 6),
+                                                    ).show(context);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Card(
+                                                    child: ListTile(
+                                                      leading: Icon(
+                                                          FontAwesomeIcons
+                                                              .store),
+                                                      title: Text(
+                                                          "Nome da Loja",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Helvetica",
+                                                              fontSize: 14)),
+                                                    ),
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      tipoDeBusca = "nomeRede";
+                                                    });
+                                                    Navigator.pop(context);
+
+                                                    Flushbar(
+                                                      title:
+                                                          "Filtro de Busca alterado",
+                                                      message:
+                                                          "O parâmetro da busca será o Nome da Rede",
+                                                      flushbarPosition:
+                                                          FlushbarPosition
+                                                              .BOTTOM,
+                                                      flushbarStyle:
+                                                          FlushbarStyle
+                                                              .GROUNDED,
+                                                      isDismissible: true,
+                                                      backgroundColor: Colors
+                                                          .deepPurpleAccent,
+                                                      duration: const Duration(
+                                                          seconds: 6),
+                                                    ).show(context);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Card(
+                                                    child: ListTile(
+                                                      leading:
+                                                          Icon(Icons.store),
+                                                      title: Text(
+                                                          "Nome da Rede",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Helvetica",
+                                                              fontSize: 14)),
+                                                    ),
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      tipoDeBusca =
+                                                          "nomePromotor";
+                                                    });
+                                                    Navigator.pop(context);
+
+                                                    Flushbar(
+                                                      title:
+                                                          "Filtro de Busca alterado",
+                                                      message:
+                                                          "O parâmetro da busca será o Nome do Promotor",
+                                                      flushbarPosition:
+                                                          FlushbarPosition
+                                                              .BOTTOM,
+                                                      flushbarStyle:
+                                                          FlushbarStyle
+                                                              .GROUNDED,
+                                                      isDismissible: true,
+                                                      backgroundColor: Colors
+                                                          .deepPurpleAccent,
+                                                      duration: const Duration(
+                                                          seconds: 6),
+                                                    ).show(context);
+                                                  },
+                                                  child: Card(
+                                                    child: ListTile(
+                                                      leading: Icon(
+                                                          FontAwesomeIcons
+                                                              .user),
+                                                      title: Text(
+                                                          "Nome do Promotor",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Helvetica",
+                                                              fontSize: 14)),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ));
+                                      },
+                                      animationType:
+                                          DialogTransitionType.slideFromTop,
+                                      curve: Curves.fastOutSlowIn,
+                                      duration: Duration(seconds: 1),
+                                    );
                                   },
                                   child: Image.asset(
                                     "assets/config_icon.png",

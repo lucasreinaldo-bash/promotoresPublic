@@ -48,7 +48,7 @@ dependencies:
   cloud_firestore: ^0.11.0
   scoped_model: ^1.0.1
   firebase_auth: ^0.15.3
-
+  firebase_messaging:
   flutter_animated_dialog: ^1.1.0
   nice_button:
   firebase_core:
