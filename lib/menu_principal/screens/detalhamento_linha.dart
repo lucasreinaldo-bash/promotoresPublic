@@ -238,7 +238,7 @@ class DetalhamentoLinha extends StatelessWidget {
                                                         MaterialPageRoute(
                                                             builder: (context) => ExibirImagem(
                                                                 pontoExtraData
-                                                                    .imagemAntes,
+                                                                    .imagemDepois,
                                                                 "2",
                                                                 "${pontoExtraData.id} " +
                                                                     "\n(depois da reposição)")));
@@ -309,7 +309,7 @@ class DetalhamentoLinha extends StatelessWidget {
                       .document(data.empresaResponsavel)
                       .collection("pesquisasCriadas")
                       .document(data.id)
-                      .collection("linhasProdutosAntesReposicao")
+                      .collection("vencimentosProximos")
                       .document(nomeLinha)
                       .collection("Produtos")
                       .where("linha", isEqualTo: nomeLinha)
@@ -374,6 +374,28 @@ class DetalhamentoLinha extends StatelessWidget {
                                   ),
                                 )),
                           ),
+                        ],
+                      );
+                    }
+                  },
+                ),
+                FutureBuilder(
+                  future: Firestore.instance
+                      .collection("Empresas")
+                      .document(data.empresaResponsavel)
+                      .collection("pesquisasCriadas")
+                      .document(data.id)
+                      .collection("ruptura")
+                      .document(nomeLinha)
+                      .collection("Produtos")
+                      .where("linha", isEqualTo: nomeLinha)
+                      .getDocuments(),
+                  builder: (context, snapDetalhes) {
+                    if (!snapDetalhes.hasData) {
+                      return Container();
+                    } else {
+                      return Column(
+                        children: [
                           Padding(
                             padding: const EdgeInsets.all(15.0),
                             child: Card(
@@ -441,6 +463,7 @@ class DetalhamentoLinha extends StatelessWidget {
                       .collection("pesquisasCriadas")
                       .document(data.id)
                       .collection("estoqueDeposito")
+                      .where("linha", isEqualTo: nomeLinha)
                       .getDocuments(),
                   builder: (context, snapDetalhes) {
                     if (!snapDetalhes.hasData) {

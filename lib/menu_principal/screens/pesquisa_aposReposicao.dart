@@ -309,7 +309,7 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                                   mainAxisSize: MainAxisSize.min,
                                                                                   children: <Widget>[
                                                                                     Text(
-                                                                                      '      Voltar',
+                                                                                      'Voltar',
                                                                                       style: TextStyle(
                                                                                         fontFamily: "Helvetica",
                                                                                         color: Color(0xFF707070),
@@ -474,6 +474,10 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                         "Empresas")
                                                                     .document(data
                                                                         .empresaResponsavel)
+                                                                    .collection(
+                                                                        "Lojas")
+                                                                    .document(data
+                                                                        .nomeLoja)
                                                                     .collection(
                                                                         "Produtos")
                                                                     .getDocuments(),

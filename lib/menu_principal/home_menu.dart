@@ -14,6 +14,7 @@ import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:versaoPromotores/drawer/custom_drawer.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
+import 'package:versaoPromotores/menu_principal/tiles/pesquisa_tile.dart';
 import 'package:versaoPromotores/models/user_model.dart';
 import 'package:versaoPromotores/style/style.dart';
 
@@ -163,6 +164,11 @@ class _HomeMenuState extends State<HomeMenu> {
                         child: Padding(
                           padding: const EdgeInsets.all(3.0),
                           child: TextField(
+                            onEditingComplete: () {
+                              setState(() {
+                                termoBusca = _pesquisaController.text;
+                              });
+                            },
                             focusNode: myFocusPesquisa,
                             controller: _pesquisaController,
                             keyboardType: TextInputType.text,
@@ -340,7 +346,11 @@ class _HomeMenuState extends State<HomeMenu> {
                                     height: 2,
                                   ))),
                               border: InputBorder.none,
-                              hintText: "Digite um termo",
+                              hintText: tipoDeBusca == "nomeLoja"
+                                  ? "Digite o nome da Loja"
+                                  : tipoDeBusca == "nomeRede"
+                                      ? "Digite o nome da Rede"
+                                      : "Digite o nome do Promotor",
                               hintStyle: TextStyle(
                                   fontFamily: "Georgia", fontSize: 10.0),
                             ),
@@ -380,6 +390,7 @@ class _HomeMenuState extends State<HomeMenu> {
                       onTap: () {
                         setState(() {
                           filtro = "Todas";
+                          termoBusca = "nenhum";
                         });
                         initState();
                       },
@@ -409,6 +420,7 @@ class _HomeMenuState extends State<HomeMenu> {
                       onTap: () {
                         setState(() {
                           filtro = "ABERTA";
+                          termoBusca = "nenhum";
                         });
 
                         initState();
@@ -440,6 +452,7 @@ class _HomeMenuState extends State<HomeMenu> {
                       onTap: () {
                         setState(() {
                           filtro = "A APROVAR";
+                          termoBusca = "nenhum";
                         });
 
                         initState();
@@ -490,182 +503,107 @@ class _HomeMenuState extends State<HomeMenu> {
                     if (!snapshotPromotor.hasData) {
                       return Center(child: CircularProgressIndicator());
                     } else {
-                      return FutureBuilder(
-                        future: Firestore.instance
-                            .collection("Empresas")
-                            .document(snapshotPromotor.data["empresaVinculada"])
-                            .collection("pesquisasCriadas")
-                            .where(
-                                filtro == "Todas"
-                                    ? "empresaResponsavel"
-                                    : "status",
-                                isEqualTo: filtro == "Todas"
-                                    ? snapshotPromotor.data["empresaVinculada"]
-                                    : filtro.toString().toUpperCase())
-                            .where("idPromotor",
-                                isEqualTo:
-                                    UserModel.of(context).firebaseUser.uid)
-                            .getDocuments(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          } else {
-                            bool corApertou = false;
-                            return Container(
-                              height: 300,
-                              width: 400,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data.documents.length,
-                                  itemBuilder: (_, index) {
-                                    PesquisaData data =
-                                        PesquisaData.fromDocument(
-                                            snapshot.data.documents[index]);
-                                    return InkWell(
-                                      onTap: () async {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ExibirPesquisa(data)));
-//
-                                      },
-                                      child: Card(
-                                        elevation: 2,
-                                        color: corApertou == true
-                                            ? Colors.white70
-                                            : Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                        child: Stack(
-                                          children: <Widget>[
-                                            Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsets.all(10),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: <Widget>[
-                                                          Align(
-                                                            alignment: Alignment
-                                                                .topLeft,
-                                                            child: Text(
-                                                              "" +
-                                                                  data.nomeLoja
-                                                                      .toUpperCase() +
-                                                                  "\n" +
-                                                                  data.nomeRede +
-                                                                  "\n" +
-                                                                  data.nomePromotor,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "QuickSand",
-                                                                  fontSize: 10,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color: Colors
-                                                                      .black),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .start,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsets.all(10),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: <Widget>[
-                                                          Align(
-                                                            alignment: Alignment
-                                                                .topLeft,
-                                                            child: Card(
-                                                                color:
-                                                                    verdeClaro,
-                                                                child: Padding(
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .all(5),
-                                                                    child: Row(
-                                                                      children: [
-                                                                        SizedBox(
-                                                                          width:
-                                                                              10,
-                                                                        ),
-                                                                        Text(
-                                                                          "TAG",
-                                                                          style: TextStyle(
-                                                                              fontFamily: "QuickSand",
-                                                                              fontSize: 12,
-                                                                              color: Colors.white),
-                                                                        ),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              10,
-                                                                        ),
-                                                                      ],
-                                                                    ))),
-                                                          ),
-                                                          Align(
-                                                            alignment: Alignment
-                                                                .topLeft,
-                                                            child: Text(
-                                                              "" +
-                                                                  data.dataInicial,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "QuickSand",
-                                                                  fontSize: 10,
-                                                                  color: Colors
-                                                                      .black54),
-                                                            ),
-                                                          ),
-                                                          Align(
-                                                            alignment: Alignment
-                                                                .topLeft,
-                                                            child: Text(
-                                                              "" + data.status,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "QuickSand",
-                                                                  fontSize: 10,
-                                                                  color: Colors
-                                                                      .black54),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
+                      return termoBusca != "nenhum"
+                          ? FutureBuilder(
+                              future: Firestore.instance
+                                  .collection("Empresas")
+                                  .document(
+                                      snapshotPromotor.data["empresaVinculada"])
+                                  .collection("pesquisasCriadas")
+                                  .where(
+                                      filtro == "Todas"
+                                          ? "empresaResponsavel"
+                                          : "status",
+                                      isEqualTo: filtro == "Todas"
+                                          ? snapshotPromotor
+                                              .data["empresaVinculada"]
+                                          : filtro)
+                                  .where("idPromotor",
+                                      isEqualTo: UserModel.of(context)
+                                          .firebaseUser
+                                          .uid)
+                                  .where(tipoDeBusca, isEqualTo: termoBusca)
+                                  .getDocuments(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else {
+                                  bool corApertou = false;
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 300,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                snapshot.data.documents.length,
+                                            itemBuilder: (_, index) {
+                                              PesquisaData data =
+                                                  PesquisaData.fromDocument(
+                                                      snapshot.data
+                                                          .documents[index]);
+                                              return PesquisaTile(
+                                                  data, context);
+                                            }),
                                       ),
-                                    );
-                                  }),
+                                    ],
+                                  );
+                                }
+                              },
+                            )
+                          : FutureBuilder(
+                              future: Firestore.instance
+                                  .collection("Empresas")
+                                  .document(
+                                      snapshotPromotor.data["empresaVinculada"])
+                                  .collection("pesquisasCriadas")
+                                  .where(
+                                      filtro == "Todas"
+                                          ? "empresaResponsavel"
+                                          : "status",
+                                      isEqualTo: filtro == "Todas"
+                                          ? snapshotPromotor
+                                              .data["empresaVinculada"]
+                                          : filtro)
+                                  .getDocuments(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else {
+                                  bool corApertou = false;
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 300,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                snapshot.data.documents.length,
+                                            itemBuilder: (_, index) {
+                                              bool buttonPress = false;
+                                              PesquisaData data =
+                                                  PesquisaData.fromDocument(
+                                                      snapshot.data
+                                                          .documents[index]);
+                                              return PesquisaTile(
+                                                  data, context);
+                                            }),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              },
                             );
-                          }
-                        },
-                      );
                     }
                   },
                 )

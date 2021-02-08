@@ -69,9 +69,8 @@ class ProductTileRupturaScreen extends StatelessWidget {
                                       future: Firestore.instance
                                           .collection("Empresas")
                                           .document(data.empresaResponsavel)
-                                          .collection(
-                                              "linhasProdutosAntesReposicao")
-                                          .document(nomeCategoria)
+                                          .collection("Lojas")
+                                          .document(data.nomeLoja)
                                           .collection("Produtos")
                                           .where("nomeLinha",
                                               isEqualTo: nomeCategoria)

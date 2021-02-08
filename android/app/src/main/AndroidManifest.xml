@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vostore.unionteam.versaopromotores">
    <application
-        android:label="versaopromotores"
+        android:label="Union Foods - Promotores"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
