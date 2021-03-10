@@ -28,7 +28,8 @@ class Home extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/login': (BuildContext context) => new Login(),
           '/splash': (BuildContext context) => new SplashScreen(),
-          '/Home': (BuildContext context) => new HomeMenu(),
+          '/Home': (BuildContext context) =>
+              new HomeMenu("Todas", "termosBuscaLoja"),
           '/selecaoPerfil': (BuildContext context) => new SelecaoPerfil(),
         },
         home: SplashScreen(),

@@ -80,7 +80,8 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
   }
 
   String title = "Observações";
-
+  final _observacaoController = TextEditingController();
+  final FocusNode myFocusObservacao = FocusNode();
   @override
   Widget build(BuildContext context) {
     var lista = new List<int>(data.linhaProduto.length);
@@ -606,7 +607,7 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                               .center,
                                                       children: <Widget>[
 //
-                                                        SizedBox(height: 60.0),
+                                                        SizedBox(height: 20.0),
                                                         Text(
                                                           'É necessário um novo pedido ?',
                                                           textAlign:
@@ -618,7 +619,7 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                               EdgeInsets.only(
                                                                   left: 30,
                                                                   right: 30,
-                                                                  top: 20),
+                                                                  top: 30),
                                                           child: Container(
                                                             width: 100,
                                                             height: 100,
@@ -655,10 +656,14 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                         "status":
                                                                             "A APROVAR"
                                                                       });
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .push(
-                                                                              MaterialPageRoute(builder: (context) => SplashScreenPesquisaRespondida()));
+
+                                                                      _pageController
+                                                                          .nextPage(
+                                                                        duration:
+                                                                            Duration(milliseconds: 500),
+                                                                        curve: Curves
+                                                                            .ease,
+                                                                      );
                                                                     },
                                                                     color: Color(
                                                                         0xFFF26868),
@@ -705,10 +710,12 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                             "A APROVAR"
                                                                       });
 
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .push(
-                                                                              MaterialPageRoute(builder: (context) => SplashScreenPesquisaRespondida()));
+                                                                      _pageController.nextPage(
+                                                                          duration: Duration(
+                                                                              milliseconds:
+                                                                                  500),
+                                                                          curve:
+                                                                              Curves.ease);
                                                                     },
                                                                     color: Color(
                                                                         0xFF4FCEB6),
@@ -758,6 +765,188 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                     ),
                                                   ),
                                                 ),
+                                              ),
+                                              Flex(
+                                                direction: Axis.horizontal,
+                                                children: [
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 50,
+                                                              left: 20,
+                                                              right: 20,
+                                                              bottom: 50),
+                                                      child: Card(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15.0),
+                                                        ),
+                                                        elevation: 15,
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  10.0),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: <Widget>[
+                                                              SizedBox(
+                                                                  height: 30.0),
+                                                              SizedBox(
+                                                                  height: 15.0),
+                                                              Card(
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              15.0),
+                                                                ),
+                                                                elevation: 10,
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
+                                                                  child:
+                                                                      Container(
+                                                                    height: 250,
+                                                                    child:
+                                                                        TextField(
+                                                                      focusNode:
+                                                                          myFocusObservacao,
+                                                                      enabled:
+                                                                          true,
+                                                                      maxLines:
+                                                                          10,
+                                                                      controller:
+                                                                          _observacaoController,
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .text,
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "WorkSansSemiBold",
+                                                                          fontSize:
+                                                                              13.0,
+                                                                          color:
+                                                                              Colors.black),
+                                                                      decoration:
+                                                                          InputDecoration(
+                                                                        hintText:
+                                                                            "Sua observação",
+                                                                        labelText:
+                                                                            "Digite alguma observação relevante para a empresa considerar.",
+                                                                        enabledBorder:
+                                                                            UnderlineInputBorder(
+                                                                          borderSide:
+                                                                              BorderSide(color: Colors.white),
+                                                                        ),
+                                                                        focusedBorder:
+                                                                            UnderlineInputBorder(
+                                                                          borderSide:
+                                                                              BorderSide(color: Colors.white),
+                                                                        ),
+                                                                        border:
+                                                                            UnderlineInputBorder(
+                                                                          borderSide:
+                                                                              BorderSide(color: Colors.white),
+                                                                        ),
+                                                                        hintStyle: TextStyle(
+                                                                            fontFamily:
+                                                                                "Georgia",
+                                                                            fontSize:
+                                                                                10.0),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              _currentPage !=
+                                                                      _numPages -
+                                                                          1
+                                                                  ? Expanded(
+                                                                      child:
+                                                                          Align(
+                                                                        alignment:
+                                                                            FractionalOffset.bottomRight,
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          children: [
+                                                                            FlatButton(
+                                                                              onPressed: () {
+                                                                                setState(() {
+                                                                                  title = "Observações";
+                                                                                });
+                                                                                _pageController.previousPage(
+                                                                                  duration: Duration(milliseconds: 500),
+                                                                                  curve: Curves.ease,
+                                                                                );
+                                                                              },
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                children: <Widget>[
+                                                                                  Text(
+                                                                                    'Voltar',
+                                                                                    style: TextStyle(
+                                                                                      fontFamily: "Helvetica",
+                                                                                      color: Color(0xFF707070),
+                                                                                      fontSize: 22.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(width: 10.0),
+                                                                                  Icon(
+                                                                                    Icons.arrow_forward,
+                                                                                    color: Colors.white,
+                                                                                    size: 30.0,
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                            FlatButton(
+                                                                              onPressed: () async {
+                                                                                DocumentReference documentReference3 = await Firestore.instance.collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id);
+
+                                                                                documentReference3.updateData({
+                                                                                  "comentarioPromotor": _observacaoController.text.length != 0 ? _observacaoController.text : "Nenhuma"
+                                                                                });
+                                                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SplashScreenPesquisaRespondida()));
+                                                                              },
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: <Widget>[
+                                                                                  Text(
+                                                                                    'Avançar',
+                                                                                    textAlign: TextAlign.right,
+                                                                                    style: TextStyle(
+                                                                                      fontFamily: "Helvetica",
+                                                                                      color: Color(0xFF707070),
+                                                                                      fontSize: 22.0,
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  : Text(''),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -1323,21 +1512,22 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
         imagemAntes = "carregando";
       });
       String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-      setState(() async {
-        print(docUrl);
-        imagemAntes = docUrl;
+      print(docUrl);
 
-        DocumentReference documentReference = await Firestore.instance
-            .collection("Empresas")
-            .document(data.empresaResponsavel)
-            .collection("pesquisasCriadas")
-            .document(data.id)
-            .collection("imagensLinhas")
-            .document(nomeCategoria)
-            .collection("AfterAreaDeVenda")
-            .document("fotoDepoisReposicao");
-        documentReference.setData({"imagem": docUrl});
+      setState(() {
+        imagemAntes = docUrl;
       });
+
+      DocumentReference documentReference = await Firestore.instance
+          .collection("Empresas")
+          .document(data.empresaResponsavel)
+          .collection("pesquisasCriadas")
+          .document(data.id)
+          .collection("imagensLinhas")
+          .document(nomeCategoria)
+          .collection("AfterAreaDeVenda")
+          .document("fotoDepoisReposicao");
+      documentReference.setData({"imagem": docUrl});
     }
 
     uploadPic(context);
@@ -1377,19 +1567,17 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
           });
           String docUrl =
               await (await uploadTask.onComplete).ref.getDownloadURL();
-          setState(() async {
-            print(docUrl);
-            imagemPontoExtra = docUrl;
+          print(docUrl);
+          imagemPontoExtra = docUrl;
 
-            DocumentReference documentReference = await Firestore.instance
-                .collection("Empresas")
-                .document(data.empresaResponsavel)
-                .collection("pesquisasCriadas")
-                .document(data.id)
-                .collection("pontoExtra")
-                .document(nomeCategoria);
-            documentReference.updateData({"imagemDepois": docUrl});
-          });
+          DocumentReference documentReference = await Firestore.instance
+              .collection("Empresas")
+              .document(data.empresaResponsavel)
+              .collection("pesquisasCriadas")
+              .document(data.id)
+              .collection("pontoExtra")
+              .document(nomeCategoria);
+          documentReference.updateData({"imagemDepois": docUrl});
         }
 
         uploadPic(context);

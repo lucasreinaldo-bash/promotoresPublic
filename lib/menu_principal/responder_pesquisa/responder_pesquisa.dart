@@ -208,7 +208,7 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                             focusNode:
                                                                                 myFocusObservacao,
                                                                             enabled:
-                                                                                true,
+                                                                                false,
                                                                             maxLines:
                                                                                 10,
                                                                             controller:
@@ -516,16 +516,6 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                                             duration: Duration(milliseconds: 500),
                                                                                             curve: Curves.ease,
                                                                                           );
-
-                                                                                          await Firestore.instance
-                                                                                            ..collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id).collection("linhasProdutosAposReposicao").getDocuments().then((snapshot) {
-                                                                                              for (DocumentSnapshot ds in snapshot.documents) {
-                                                                                                ds.reference.setData({
-                                                                                                  "concluida": false
-                                                                                                });
-                                                                                              }
-                                                                                              ;
-                                                                                            });
                                                                                         } else {
                                                                                           showDialog(
                                                                                               context: context,
@@ -1134,9 +1124,7 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                               });
 
                                             documentReference1.delete();
-                                            documentReference3.updateData({
-                                              "novoPedido": FieldValue.delete()
-                                            });
+
                                             Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                     builder: (context) =>

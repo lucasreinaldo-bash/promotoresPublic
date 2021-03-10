@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:versaoPromotores/drawer/custom_drawer.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
@@ -22,12 +23,17 @@ import 'detalhamentoPesquisa.dart';
 import 'exibirPesquisa.dart';
 
 class HomeMenu extends StatefulWidget {
+  String filtro;
+  String tipoDeBusca = "termosBuscaPromotor";
+
+  HomeMenu(this.filtro, this.tipoDeBusca);
   @override
-  _HomeMenuState createState() => _HomeMenuState();
+  _HomeMenuState createState() => _HomeMenuState(this.filtro, this.tipoDeBusca);
 }
 
 class _HomeMenuState extends State<HomeMenu> {
   final _pesquisaController = TextEditingController();
+  final _termoBuscaController = TextEditingController();
   final FocusNode myFocusPesquisa = FocusNode();
 
   final int _numPages = 5;
@@ -49,9 +55,11 @@ class _HomeMenuState extends State<HomeMenu> {
   Color colorFloating = Color(0xFF4388F8);
   Color verdeClaro = Color(0xFF4FCEB6);
 
-  String filtro = "Todas";
   String termoBusca = "nenhum";
-  String tipoDeBusca = "nomeLoja";
+  String tipoDeBusca;
+  String filtro;
+  _HomeMenuState(this.filtro, this.tipoDeBusca);
+
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 150),
@@ -127,6 +135,7 @@ class _HomeMenuState extends State<HomeMenu> {
     return ScopedModelDescendant<UserModel>(
       builder: (context, child, model) {
         return Scaffold(
+          backgroundColor: Colors.white,
           drawer: CustomDrawer(),
           appBar: AppBar(
             backgroundColor: Colors.deepPurple,
@@ -135,6 +144,9 @@ class _HomeMenuState extends State<HomeMenu> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                SizedBox(
+                  height: 30,
+                ),
                 Card(
                   color: colorCard,
                   elevation: 10,
@@ -164,9 +176,9 @@ class _HomeMenuState extends State<HomeMenu> {
                         child: Padding(
                           padding: const EdgeInsets.all(3.0),
                           child: TextField(
-                            onEditingComplete: () {
+                            onChanged: (string) {
                               setState(() {
-                                termoBusca = _pesquisaController.text;
+                                termoBusca = string.toUpperCase().trim();
                               });
                             },
                             focusNode: myFocusPesquisa,
@@ -214,7 +226,8 @@ class _HomeMenuState extends State<HomeMenu> {
                                                 InkWell(
                                                   onTap: () {
                                                     setState(() {
-                                                      tipoDeBusca = "nomeLoja";
+                                                      tipoDeBusca =
+                                                          "termosBuscaLoja";
                                                     });
                                                     Navigator.pop(context);
 
@@ -235,7 +248,6 @@ class _HomeMenuState extends State<HomeMenu> {
                                                       duration: const Duration(
                                                           seconds: 6),
                                                     ).show(context);
-                                                    Navigator.pop(context);
                                                   },
                                                   child: Card(
                                                     child: ListTile(
@@ -254,7 +266,8 @@ class _HomeMenuState extends State<HomeMenu> {
                                                 InkWell(
                                                   onTap: () {
                                                     setState(() {
-                                                      tipoDeBusca = "nomeRede";
+                                                      tipoDeBusca =
+                                                          "termosBuscaRede";
                                                     });
                                                     Navigator.pop(context);
 
@@ -275,7 +288,6 @@ class _HomeMenuState extends State<HomeMenu> {
                                                       duration: const Duration(
                                                           seconds: 6),
                                                     ).show(context);
-                                                    Navigator.pop(context);
                                                   },
                                                   child: Card(
                                                     child: ListTile(
@@ -294,7 +306,7 @@ class _HomeMenuState extends State<HomeMenu> {
                                                   onTap: () {
                                                     setState(() {
                                                       tipoDeBusca =
-                                                          "nomePromotor";
+                                                          "termosBuscaPromotor";
                                                     });
                                                     Navigator.pop(context);
 
@@ -346,9 +358,9 @@ class _HomeMenuState extends State<HomeMenu> {
                                     height: 2,
                                   ))),
                               border: InputBorder.none,
-                              hintText: tipoDeBusca == "nomeLoja"
+                              hintText: tipoDeBusca == "termosBuscaLoja"
                                   ? "Digite o nome da Loja"
-                                  : tipoDeBusca == "nomeRede"
+                                  : tipoDeBusca == "termosBuscaRede"
                                       ? "Digite o nome da Rede"
                                       : "Digite o nome do Promotor",
                               hintStyle: TextStyle(
@@ -372,14 +384,14 @@ class _HomeMenuState extends State<HomeMenu> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         child: Container(
-                          height: 70,
-                          width: 70,
+                          height: 80,
+                          width: 80,
                           child: Center(
                             child: Text(
                               "Todas",
                               style: TextStyle(
                                   fontFamily: "QuickSand",
-                                  fontSize: 12,
+                                  fontSize: 10,
                                   color: filtro == "Todas"
                                       ? Colors.white
                                       : Colors.grey),
@@ -389,10 +401,15 @@ class _HomeMenuState extends State<HomeMenu> {
                       ),
                       onTap: () {
                         setState(() {
-                          filtro = "Todas";
                           termoBusca = "nenhum";
+                          filtro = "Todas";
+                          _termoBuscaController.text = "Todas";
                         });
-                        initState();
+                        Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.fade,
+                                child: HomeMenu(filtro, tipoDeBusca)));
                       },
                     ),
                     InkWell(
@@ -402,28 +419,29 @@ class _HomeMenuState extends State<HomeMenu> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         child: Container(
-                          height: 70,
-                          width: 70,
-                          child: Center(
-                            child: Text(
+                            height: 80,
+                            width: 80,
+                            child: Center(
+                                child: Text(
                               "Abertas",
                               style: TextStyle(
                                   fontFamily: "QuickSand",
-                                  fontSize: 12,
-                                  color: filtro == "Abertas"
+                                  fontSize: 10,
+                                  color: filtro == "ABERTA"
                                       ? Colors.white
                                       : Colors.grey),
-                            ),
-                          ),
-                        ),
+                            ))),
                       ),
                       onTap: () {
                         setState(() {
                           filtro = "ABERTA";
-                          termoBusca = "nenhum";
+                          _termoBuscaController.text = "ABERTA";
+                          Navigator.pushReplacement(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.fade,
+                                  child: HomeMenu(filtro, tipoDeBusca)));
                         });
-
-                        initState();
                       },
                     ),
                     InkWell(
@@ -434,15 +452,15 @@ class _HomeMenuState extends State<HomeMenu> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         child: Container(
-                          height: 70,
-                          width: 70,
+                          height: 80,
+                          width: 80,
                           child: Center(
                             child: Text(
                               "A Aprovar",
                               style: TextStyle(
                                   fontFamily: "QuickSand",
-                                  fontSize: 12,
-                                  color: filtro == "A Aprovar"
+                                  fontSize: 10,
+                                  color: filtro == "A APROVAR"
                                       ? Colors.white
                                       : Colors.grey),
                             ),
@@ -451,11 +469,15 @@ class _HomeMenuState extends State<HomeMenu> {
                       ),
                       onTap: () {
                         setState(() {
-                          filtro = "A APROVAR";
                           termoBusca = "nenhum";
+                          filtro = "A APROVAR";
+                          _termoBuscaController.text = "A APROVAR";
                         });
-
-                        initState();
+                        Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.fade,
+                                child: HomeMenu(filtro, tipoDeBusca)));
                       },
                     ),
                     InkWell(
@@ -466,15 +488,15 @@ class _HomeMenuState extends State<HomeMenu> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         child: Container(
-                          height: 70,
-                          width: 70,
+                          height: 80,
+                          width: 80,
                           child: Center(
                             child: Text(
                               "Concluídas",
                               style: TextStyle(
                                   fontFamily: "QuickSand",
-                                  fontSize: 12,
-                                  color: filtro == "Concluídas"
+                                  fontSize: 10,
+                                  color: filtro == "CONCLUÍDA"
                                       ? Colors.white
                                       : Colors.grey),
                             ),
@@ -483,10 +505,15 @@ class _HomeMenuState extends State<HomeMenu> {
                       ),
                       onTap: () {
                         setState(() {
+                          termoBusca = "nenhum";
                           filtro = "CONCLUÍDA";
+                          _termoBuscaController.text = "CONCLUÍDA";
                         });
-
-                        initState();
+                        Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.fade,
+                                child: HomeMenu(filtro, tipoDeBusca)));
                       },
                     )
                   ],
@@ -522,7 +549,8 @@ class _HomeMenuState extends State<HomeMenu> {
                                       isEqualTo: UserModel.of(context)
                                           .firebaseUser
                                           .uid)
-                                  .where(tipoDeBusca, isEqualTo: termoBusca)
+                                  .where(tipoDeBusca, arrayContains: termoBusca)
+                                  .orderBy("data_query", descending: true)
                                   .getDocuments(),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData) {
@@ -537,7 +565,9 @@ class _HomeMenuState extends State<HomeMenu> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                        height: 300,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.5,
                                         child: ListView.builder(
                                             shrinkWrap: true,
                                             itemCount:
@@ -570,6 +600,11 @@ class _HomeMenuState extends State<HomeMenu> {
                                           ? snapshotPromotor
                                               .data["empresaVinculada"]
                                           : filtro)
+                                  .where("idPromotor",
+                                      isEqualTo: UserModel.of(context)
+                                          .firebaseUser
+                                          .uid)
+                                  .orderBy("data_query", descending: true)
                                   .getDocuments(),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData) {
@@ -584,7 +619,9 @@ class _HomeMenuState extends State<HomeMenu> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                        height: 300,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.5,
                                         child: ListView.builder(
                                             shrinkWrap: true,
                                             itemCount:

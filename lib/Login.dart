@@ -381,16 +381,16 @@ class _Login extends State<Login> with SingleTickerProviderStateMixin {
   _onSucess() async {
     Future.delayed(Duration(seconds: 1)).then((_) async {
       print("Empresa");
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomeMenu()));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => HomeMenu("Todas", "termosBusca")));
     });
   }
 
   _onSucessPromotor() async {
     Future.delayed(Duration(seconds: 1)).then((_) async {
       print("Promotor");
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomeMenu()));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => HomeMenu("Todas", "termosBuscaLoja")));
     });
   }
 

@@ -135,7 +135,7 @@ class _SplashScreenPesquisaRespondidaState
   }
 
   Future<Null> _loadCurrentUser() async {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => HomeMenu()));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => HomeMenu("Todas", "termosBuscaLoja")));
   }
 }

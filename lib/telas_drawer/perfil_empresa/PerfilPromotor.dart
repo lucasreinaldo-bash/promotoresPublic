@@ -65,295 +65,258 @@ class _PerfilPromotorState extends State<PerfilPromotor> {
       });
     }
 
-    if (UserModel.of(context).isLoggedIn()) {
-      return StreamBuilder(
-        stream: Firestore.instance
-            .collection("Promotores")
-            .document(UserModel.of(context).firebaseUser.uid)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          else {
-            String idEmpresa = snapshot.data["empresaVinculada"].toString();
-            controllerNome.text = snapshot.data["nomePromotor"].toString();
-            controllerTelefone.text = snapshot.data["telefone"].toString();
-            controllerTipoContrato.text =
-                snapshot.data["tipoContrato"].toString();
-            controllerEndereco.text = snapshot.data["endereco"].toString() +
-                "\n" +
-                snapshot.data["cidade"].toString() +
-                "-" +
-                snapshot.data["estado"].toString();
-            controllerEmpresaVinculada.text =
-                snapshot.data["empresaVinculada"].toString();
-            return Scaffold(
-                key: _scaffoldKey,
-                appBar: AppBar(
-                  iconTheme: new IconThemeData(color: Colors.black),
-                  backgroundColor: Colors.white,
-                ),
-                body: Stack(
-                  children: <Widget>[
-                    Container(
-                      decoration: new BoxDecoration(
-                        image: new DecorationImage(
-                          image: new AssetImage("assets/bg_meuspedidos.png"),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      /* add child content content here */
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(16, 16, 16, 1),
-                      child: ListView(
-                        children: <Widget>[
-                          Card(
-                            child: Stack(
-                              children: <Widget>[
-                                Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Column(
-                                    children: <Widget>[
-                                      Center(
-                                          child: Stack(
-                                        children: <Widget>[
-                                          Card(
-                                              elevation: 40,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      new BorderRadius.circular(
-                                                          100.0),
-                                                  side: BorderSide(
-                                                      color: Colors.white30)),
-                                              child: Stack(
-                                                children: <Widget>[
-                                                  Container(
-                                                      width: 150.0,
-                                                      height: 150.0,
-                                                      decoration:
-                                                          new BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                              image:
-                                                                  new DecorationImage(
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                                image: new NetworkImage(snapshot.data[
-                                                                            "imagem"] !=
-                                                                        null
-                                                                    ? snapshot
-                                                                            .data[
-                                                                        "imagem"]
-                                                                    : "https://ml7u4cm4jjmy.i.optimole.com/CaABJw-JFJSbi1T/w:auto/h:auto/q:auto/https://bmsenergiasolar.com.br/wp-content/uploads/2020/02/default-user-1.png"),
-                                                              ))),
-                                                ],
-                                              )),
-                                        ],
-                                      )),
-                                      Center(
-                                          child: IconButton(
-                                        onPressed: () {
-                                          getImage();
-                                        },
-                                        icon: Icon(Icons.camera_alt),
-                                      )),
-                                      Align(
-                                        alignment: Alignment.topCenter,
-                                        child: Column(
-                                          children: <Widget>[
-                                            TextField(
-                                              enabled: false,
-                                              autofocus: false,
-                                              onTap: () {
-                                                alterar = true;
-                                              },
-                                              controller: controllerNome,
-                                              decoration: InputDecoration(
-                                                labelText: "Seu nome",
-                                                border: InputBorder.none,
-                                                icon: Icon(Icons.person),
-                                              ),
-                                            ),
-                                            StreamBuilder(
-                                              stream: Firestore.instance
-                                                  .collection("Empresas")
-                                                  .document(idEmpresa)
-                                                  .snapshots(),
-                                              builder: (context, snapEmpresa) {
-                                                if (!snapEmpresa.hasData) {
-                                                  return LinearProgressIndicator();
-                                                } else {
-                                                  controllerEmpresaVinculada
-                                                          .text =
-                                                      snapEmpresa
-                                                          .data["empresa"];
-                                                  return TextField(
-                                                    enabled: false,
-                                                    onChanged: (text) {
-                                                      alterar = true;
-                                                    },
-                                                    autofocus: false,
-                                                    controller:
-                                                        controllerEmpresaVinculada,
-                                                    decoration: InputDecoration(
-                                                      labelText:
-                                                          "Empresa Vinculada",
-                                                      border: InputBorder.none,
-                                                      icon:
-                                                          Icon(Icons.business),
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                            ),
-                                            TextField(
-                                              onChanged: (text) {
-                                                alterar = true;
-                                              },
-                                              autofocus: false,
-                                              inputFormatters: [
-                                                telefoneFormatter
-                                              ],
-                                              controller: controllerTelefone,
-                                              decoration: InputDecoration(
-                                                  labelText:
-                                                      "Telefone para contato",
-                                                  border: InputBorder.none,
-                                                  icon: Icon(Icons.phone),
-                                                  hintText:
-                                                      'Informe o Telefone'),
-                                            ),
-                                            TextField(
-                                              enabled: false,
-                                              onChanged: (text) {
-                                                alterar = true;
-                                              },
-                                              autofocus: false,
-                                              maxLines: 4,
-                                              controller: controllerEndereco,
-                                              decoration: InputDecoration(
-                                                  labelText: "Endereço",
-                                                  border: InputBorder.none,
-                                                  icon: Icon(Icons.pin_drop),
-                                                  hintText: 'Seu Endereço'),
-                                            ),
-                                            TextField(
-                                              enabled: false,
-                                              onChanged: (text) {
-                                                alterar = true;
-                                              },
-                                              autofocus: false,
-                                              controller:
-                                                  controllerTipoContrato,
-                                              decoration: InputDecoration(
-                                                  labelText: "Tipo de Contrato",
-                                                  border: InputBorder.none,
-                                                  icon: Icon(Icons.event_note),
-                                                  hintText: 'Tipo de Contrato'),
-                                            ),
-                                            OutlineButton(
-                                              hoverColor: Colors.white,
-                                              highlightColor: Colors.white70,
-                                              highlightElevation: 10,
-                                              child: Text('Salvar Alterações'),
-                                              onPressed: () async {
-                                                FirebaseAuth _auth =
-                                                    FirebaseAuth.instance;
-                                                FirebaseUser firebaseUser;
-                                                if (firebaseUser == null)
-                                                  firebaseUser =
-                                                      await _auth.currentUser();
-                                                if (firebaseUser != null) {
-                                                  DocumentReference
-                                                      documentReference =
-                                                      Firestore.instance
-                                                          .collection(
-                                                              "Promotores")
-                                                          .document(
-                                                              firebaseUser.uid);
-
-                                                  uid = firebaseUser.uid;
-                                                  documentReference.updateData({
-                                                    "empresa":
-                                                        controllerNome.text
-                                                  });
-
-                                                  documentReference.updateData({
-                                                    "telefone":
-                                                        controllerTelefone.text
-                                                  });
-                                                }
-                                                showInSnackBar(
-                                                    "Alterações Salvas",
-                                                    context);
-                                              },
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      new BorderRadius.circular(
-                                                          18.0),
-                                                  side: BorderSide(
-                                                      color: Colors.white30)),
-                                              // callback when button is clicked
-                                              borderSide: BorderSide(
-                                                color: Colors
-                                                    .blueGrey, //Color of the border
-                                                style: BorderStyle
-                                                    .solid, //Style of the border
-                                                width:
-                                                    0.8, //width of the border
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ));
-          }
-        },
-      );
-    } else {
-      return Container(
-        color: Colors.white,
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.remove_shopping_cart,
-              size: 80,
-              color: Colors.purple,
-            ),
-            SizedBox(height: 16),
-            Text(
-              "Faça login novamente",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16),
-            RaisedButton(
-              color: Colors.purple,
-              onPressed: () {},
-              child: Text(
-                "Entrar",
-                style: TextStyle(fontSize: 18, color: Colors.white),
+    return StreamBuilder(
+      stream: Firestore.instance
+          .collection("Promotores")
+          .document(UserModel.of(context).firebaseUser.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        else {
+          String idEmpresa = snapshot.data["empresaVinculada"].toString();
+          controllerNome.text = snapshot.data["nomePromotor"].toString();
+          controllerTelefone.text = snapshot.data["telefone"].toString();
+          controllerTipoContrato.text =
+              snapshot.data["tipoContrato"].toString();
+          controllerEndereco.text = snapshot.data["endereco"].toString() +
+              "\n" +
+              snapshot.data["cidade"].toString() +
+              "-" +
+              snapshot.data["estado"].toString();
+          controllerEmpresaVinculada.text =
+              snapshot.data["empresaVinculada"].toString();
+          return Scaffold(
+              key: _scaffoldKey,
+              appBar: AppBar(
+                iconTheme: new IconThemeData(color: Colors.black),
+                backgroundColor: Colors.white,
               ),
-            )
-          ],
-        ),
-      );
-    }
+              body: Stack(
+                children: <Widget>[
+                  Container(
+                    decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        image: new AssetImage("assets/bg_meuspedidos.png"),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    /* add child content content here */
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16, 16, 16, 1),
+                    child: ListView(
+                      children: <Widget>[
+                        Card(
+                          child: Stack(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: Column(
+                                  children: <Widget>[
+                                    Center(
+                                        child: Stack(
+                                      children: <Widget>[
+                                        Card(
+                                            elevation: 40,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        100.0),
+                                                side: BorderSide(
+                                                    color: Colors.white30)),
+                                            child: Stack(
+                                              children: <Widget>[
+                                                Container(
+                                                    width: 150.0,
+                                                    height: 150.0,
+                                                    decoration:
+                                                        new BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            image:
+                                                                new DecorationImage(
+                                                              fit: BoxFit.cover,
+                                                              image: new NetworkImage(snapshot
+                                                                              .data[
+                                                                          "imagem"] !=
+                                                                      null
+                                                                  ? snapshot
+                                                                          .data[
+                                                                      "imagem"]
+                                                                  : "https://ml7u4cm4jjmy.i.optimole.com/CaABJw-JFJSbi1T/w:auto/h:auto/q:auto/https://bmsenergiasolar.com.br/wp-content/uploads/2020/02/default-user-1.png"),
+                                                            ))),
+                                              ],
+                                            )),
+                                      ],
+                                    )),
+                                    Center(
+                                        child: IconButton(
+                                      onPressed: () {
+                                        getImage();
+                                      },
+                                      icon: Icon(Icons.camera_alt),
+                                    )),
+                                    Align(
+                                      alignment: Alignment.topCenter,
+                                      child: Column(
+                                        children: <Widget>[
+                                          TextField(
+                                            enabled: false,
+                                            autofocus: false,
+                                            onTap: () {
+                                              alterar = true;
+                                            },
+                                            controller: controllerNome,
+                                            decoration: InputDecoration(
+                                              labelText: "Seu nome",
+                                              border: InputBorder.none,
+                                              icon: Icon(Icons.person),
+                                            ),
+                                          ),
+                                          StreamBuilder(
+                                            stream: Firestore.instance
+                                                .collection("Empresas")
+                                                .document(idEmpresa)
+                                                .snapshots(),
+                                            builder: (context, snapEmpresa) {
+                                              if (!snapEmpresa.hasData) {
+                                                return LinearProgressIndicator();
+                                              } else {
+                                                controllerEmpresaVinculada
+                                                        .text =
+                                                    snapEmpresa.data["empresa"];
+                                                return TextField(
+                                                  enabled: false,
+                                                  onChanged: (text) {
+                                                    alterar = true;
+                                                  },
+                                                  autofocus: false,
+                                                  controller:
+                                                      controllerEmpresaVinculada,
+                                                  decoration: InputDecoration(
+                                                    labelText:
+                                                        "Empresa Vinculada",
+                                                    border: InputBorder.none,
+                                                    icon: Icon(Icons.business),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                          ),
+                                          TextField(
+                                            onChanged: (text) {
+                                              alterar = true;
+                                            },
+                                            autofocus: true,
+                                            inputFormatters: [
+                                              telefoneFormatter
+                                            ],
+                                            controller: controllerTelefone,
+                                            keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(
+                                                labelText:
+                                                    "Telefone para contato",
+                                                border: InputBorder.none,
+                                                icon: Icon(Icons.phone),
+                                                hintText: 'Informe o Telefone'),
+                                          ),
+                                          TextField(
+                                            enabled: false,
+                                            onChanged: (text) {
+                                              alterar = true;
+                                            },
+                                            autofocus: false,
+                                            maxLines: 4,
+                                            controller: controllerEndereco,
+                                            decoration: InputDecoration(
+                                                labelText: "Endereço",
+                                                border: InputBorder.none,
+                                                icon: Icon(Icons.pin_drop),
+                                                hintText: 'Seu Endereço'),
+                                          ),
+                                          TextField(
+                                            enabled: false,
+                                            onChanged: (text) {
+                                              alterar = true;
+                                            },
+                                            autofocus: false,
+                                            onEditingComplete: () {},
+                                            controller: controllerTipoContrato,
+                                            decoration: InputDecoration(
+                                                labelText: "Tipo de Contrato",
+                                                border: InputBorder.none,
+                                                icon: Icon(Icons.event_note),
+                                                hintText: 'Tipo de Contrato'),
+                                          ),
+                                          OutlineButton(
+                                            hoverColor: Colors.white,
+                                            highlightColor: Colors.white70,
+                                            highlightElevation: 10,
+                                            child: Text('Salvar Alterações'),
+                                            onPressed: () async {
+                                              FirebaseAuth _auth =
+                                                  FirebaseAuth.instance;
+                                              FirebaseUser firebaseUser;
+                                              if (firebaseUser == null)
+                                                firebaseUser =
+                                                    await _auth.currentUser();
+                                              if (firebaseUser != null) {
+                                                DocumentReference
+                                                    documentReference =
+                                                    Firestore.instance
+                                                        .collection(
+                                                            "Promotores")
+                                                        .document(UserModel.of(
+                                                                context)
+                                                            .firebaseUser
+                                                            .uid);
+
+                                                uid = UserModel.of(context)
+                                                    .firebaseUser
+                                                    .uid;
+                                                documentReference.updateData({
+                                                  "telefone":
+                                                      controllerTelefone.text
+                                                });
+                                              }
+                                              showInSnackBar(
+                                                  "Alterações Salvas", context);
+                                            },
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        18.0),
+                                                side: BorderSide(
+                                                    color: Colors.white30)),
+                                            // callback when button is clicked
+                                            borderSide: BorderSide(
+                                              color: Colors
+                                                  .blueGrey, //Color of the border
+                                              style: BorderStyle
+                                                  .solid, //Style of the border
+                                              width: 0.8, //width of the border
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ));
+        }
+      },
+    );
   }
 
   void showInSnackBar(String value, BuildContext context) {
