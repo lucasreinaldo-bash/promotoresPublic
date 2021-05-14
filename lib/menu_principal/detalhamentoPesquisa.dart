@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:nice_button/NiceButton.dart';
 import 'package:versaoPromotores/menu_principal/datas/pontoExtraImagemData.dart';
 import 'package:versaoPromotores/menu_principal/responder_pesquisa/responder_pesquisa.dart';
@@ -12,8 +13,11 @@ import 'package:versaoPromotores/menu_principal/datas/ProdutoData_ruptura_valida
 import 'package:versaoPromotores/menu_principal/datas/estoqueDeposito_data.dart';
 import 'package:versaoPromotores/menu_principal/screens/detalhamento_linha.dart';
 import 'package:versaoPromotores/menu_principal/screens/exibirImagem.dart';
+import 'package:versaoPromotores/widget/BottomNavigation.dart';
+import 'package:versaoPromotores/widget/DialogMotivoReprovacao.dart';
 
 import 'datas/pesquisaData.dart';
+import 'datas/tagsLinhaData.dart';
 
 class DetalhamentoPesquisa extends StatefulWidget {
   PesquisaData data;
@@ -30,412 +34,220 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
   Color colorButtonVoltar = Color(0xFFF26868);
   Color colorButtonIniciarPesquisa = Color(0xFF4FCEB6);
 
+  final _observacaoController = TextEditingController();
+
   _DetalhamentoPesquisaState(this.data);
 
   @override
   Widget build(BuildContext context) {
-    return data.status == "ABERTA"
-        ? Scaffold(
-            body: Stack(
-              children: [
-                Container(
-                  decoration: new BoxDecoration(
-                    image: new DecorationImage(
-                      image:
-                          new AssetImage("assets/background_detalhamento.png"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: null /* add child content content here */,
-                ),
-                SingleChildScrollView(
-                    child: Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Detalhes",
-                        style: TextStyle(
-                            fontFamily: "QuickSandRegular",
-                            fontSize: 16,
-                            color: Colors.white),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Container(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Divider(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Nome da Loja:",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black87),
-                                        ),
-                                        Text(
-                                          data.nomeLoja,
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black38),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Nome da Rede: ",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black87),
-                                        ),
-                                        Text(
-                                          data.nomeRede,
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black38),
-                                        ),
-                                      ],
-                                    ),
-//                              Column(
-//                                crossAxisAlignment: CrossAxisAlignment.start,
-//                                children: [
-//                                  Text(
-//                                    "Endereco:",
-//                                    style: TextStyle(
-//                                        fontFamily: "QuickSand",
-//                                        color: Colors.black87),
-//                                  ),
-//                                  Text(
-//                                    data.enderecoLoja,
-//                                    style: TextStyle(
-//                                        fontFamily: "QuickSand",
-//                                        color: Colors.black38),
-//                                  ),
-//                                ],
-//                              ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Status:",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black87),
-                                        ),
-                                        Text(
-                                          data.status,
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black38),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Linha de Produtos Pesquisadas:",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black87),
-                                        ),
-                                        Text(
-                                            "Clique na linha desejada para ver o detalhamento",
-                                            style: TextStyle(
-                                                fontFamily: "Helvetica",
-                                                fontSize: 12)),
-                                        Container(
-                                          height: 40,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: data.linhaProduto.length,
-                                            itemBuilder: (_, index) {
-                                              return GestureDetector(
-                                                onTap: data.status == "ABERTA"
-                                                    ? () {
-                                                        Flushbar(
-                                                          title:
-                                                              "Linha de produto não respondida.",
-                                                          message:
-                                                              "Você precisa responder a pesquisa antes de ver o detalhamento.",
-                                                          flushbarPosition:
-                                                              FlushbarPosition
-                                                                  .BOTTOM,
-                                                          flushbarStyle:
-                                                              FlushbarStyle
-                                                                  .GROUNDED,
-                                                          isDismissible: true,
-                                                          backgroundColor: Colors
-                                                              .deepPurpleAccent,
-                                                          duration:
-                                                              const Duration(
-                                                                  seconds: 6),
-                                                        ).show(context);
-                                                      }
-                                                    : () {
-                                                        Navigator.of(context).push(
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    DetalhamentoLinha(
-                                                                        data.linhaProduto[
-                                                                            index],
-                                                                        data)));
-                                                      },
-                                                child: Card(
-                                                  elevation: 4,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      data.linhaProduto[index],
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "QuickSand",
-                                                          color:
-                                                              Colors.black38),
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Data Agendada:",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black87),
-                                        ),
-                                        Text(
-                                          data.dataInicial,
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black38),
-                                        ),
-                                      ],
-                                    ),
-
-                                    //Falta modificar a data de conclusão
-                                  ],
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationPesquisa(data),
+      appBar: AppBar(
+          backgroundColor: Color(0xFF796DEA),
+          bottomOpacity: 0.0,
+          elevation: 0.0,
+          centerTitle: true,
+          title: Column(
+            children: [
+              Text(
+                "Pesquisa ${data.status.toString()[0].toUpperCase() + data.status.toString().substring(1).toLowerCase()}",
+                style: TextStyle(fontFamily: "QuickSandRegular"),
+              ),
+            ],
+          )),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 8,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Detalhes da Pesquisa",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: "QuickSand",
+                                  color: Colors.black54),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Divider(),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data.nomeLoja,
+                                  style: TextStyle(
+                                      fontFamily: "QuickSand",
+                                      color: Colors.black87),
                                 ),
-                              ),
-                            )),
-                      ),
-                      Container(
-                        width: 200,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          onPressed: data.status == "ABERTA"
-                              ? () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          ResponderPesquisaData(data)));
-                                }
-                              : null,
-                          color: Color(0xFF4FCEB6),
-                          textColor: Colors.white,
-                          child: Text("Iniciar Pesquisa",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "QuickSandRegular")),
-                        ),
-                      ),
-                      Container(
-                        width: 200,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          color: Color(0xFFF26868),
-                          textColor: Colors.white,
-                          child: Text("Voltar",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "QuickSandRegular")),
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
-              ],
-            ),
-          )
-        : Scaffold(
-            appBar: AppBar(
-                backgroundColor: Colors.deepPurple,
-                centerTitle: true,
-                title: Column(
-                  children: [
-                    Text(
-                      "Pesquisa ${data.status.toString()[0].toUpperCase() + data.status.toString().substring(1).toLowerCase()}",
-                      style: TextStyle(fontFamily: "QuickSandRegular"),
-                    ),
-                    Text(
-                      "(detalhamento)",
-                      style: TextStyle(
-                          fontFamily: "QuickSandRegular", fontSize: 12),
-                    ),
-                  ],
-                )),
-            body: Stack(
-              children: [
-                Container(
-                  color: Color(0xFFEAECF5),
-                  child: null /* add child content content here */,
-                ),
-                SingleChildScrollView(
-                    child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Container(
-                              height: 400,
-                              width: 400,
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Detalhes",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontFamily: "QuickSand",
-                                          color: Colors.black87),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Rede: " + data.nomeRede,
+                                  style: TextStyle(
+                                      fontFamily: "QuickSand",
+                                      color: Colors.black38),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Promotor: " + data.nomePromotor,
+                                  style: TextStyle(
+                                      fontFamily: "QuickSand",
+                                      color: Colors.black38),
+                                ),
+                                Text(
+                                  "Agendada: " + data.dataInicial,
+                                  style: TextStyle(
+                                      fontFamily: "QuickSand",
+                                      color: Colors.black38),
+                                ),
+                                Text(
+                                  data.dataFinalizacao !=
+                                          "pesquisa não respondida"
+                                      ? "Finalizada: ${data.dataFinalizacao}"
+                                      : "Não finalizada",
+                                  style: TextStyle(
+                                      fontFamily: "QuickSand",
+                                      color: Colors.black38),
+                                ),
+                                Text(
+                                  "Observação:",
+                                  style: TextStyle(
+                                      fontFamily: "QuickSand",
+                                      color: Colors.black38),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: Colors.grey, // set border color
+                                        width: 1.0), // set border width
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            14.0)), // set rounded corner radius
+                                  ),
+                                  height: 150,
+                                  child: TextField(
+                                    enabled: false,
+                                    maxLines: 20,
+                                    controller: _observacaoController,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
                                     ),
-                                    Divider(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Nome da Loja:",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black87),
-                                        ),
-                                        Text(
-                                          data.nomeLoja,
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black38),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Nome da Rede: ",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black87),
-                                        ),
-                                        Text(
-                                          data.nomeRede,
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black38),
-                                        ),
-                                      ],
-                                    ),
-//                              Column(
-//                                crossAxisAlignment: CrossAxisAlignment.start,
-//                                children: [
-//                                  Text(
-//                                    "Endereco:",
-//                                    style: TextStyle(
-//                                        fontFamily: "QuickSand",
-//                                        color: Colors.black87),
-//                                  ),
-//                                  Text(
-//                                    data.enderecoLoja,
-//                                    style: TextStyle(
-//                                        fontFamily: "QuickSand",
-//                                        color: Colors.black38),
-//                                  ),
-//                                ],
-//                              ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Status:",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black87),
-                                        ),
-                                        Text(
-                                          data.status,
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black38),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Linha de Produtos Pesquisadas:",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black87),
-                                        ),
-                                        Text(
-                                            "Clique na linha desejada para ver o detalhamento",
+                                    style: TextStyle(
+                                        fontFamily: "WorkSansSemiBold",
+                                        fontSize: 13.0,
+                                        color: Colors.black),
+                                  ),
+                                )
+                              ],
+                            ),
+                            data.status == "A APROVAR" ||
+                                    data.status == "CONCLUÍDA"
+                                ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Comentario do Promotor",
+                                        style: TextStyle(
+                                            fontFamily: "QuickSand",
+                                            color: Colors.black87),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "(Clique no icone abaixo para mais informações)",
                                             style: TextStyle(
-                                                fontFamily: "Helvetica",
-                                                fontSize: 12)),
-                                        Container(
-                                          height: 40,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: data.linhaProduto.length,
-                                            itemBuilder: (_, index) {
-                                              return GestureDetector(
-                                                onTap: () {
+                                                fontSize: 10,
+                                                fontFamily: "QuickSand",
+                                                color: Colors.black87),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          InkWell(
+                                              onTap: () {
+//                                                showAnimatedDialog(
+//                                                  context: context,
+//                                                  barrierDismissible: true,
+//                                                  builder:
+//                                                      (BuildContext context) {
+//                                                    return DialogComentarioPromotor(
+//                                                        data);
+//                                                  },
+//                                                  animationType:
+//                                                      DialogTransitionType.size,
+//                                                  curve: Curves.fastOutSlowIn,
+//                                                  duration:
+//                                                      Duration(seconds: 1),
+//                                                );
+                                              },
+                                              child: Icon(CupertinoIcons
+                                                  .conversation_bubble))
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                : Container(),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Linha de Produtos Pesquisadas:",
+                                  style: TextStyle(
+                                      fontFamily: "QuickSand",
+                                      color: Colors.black54),
+                                ),
+                                Divider(),
+                                data.status != "ABERTA"
+                                    ? Text("Clique no cartão para vizualizar",
+                                        style: TextStyle(
+                                            fontFamily: "Helvetica",
+                                            fontSize: 12))
+                                    : Container(),
+                                Container(
+                                  height: 150,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: data.linhaProduto.length,
+                                    itemBuilder: (_, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: GestureDetector(
+                                          onTap: data.status == "ABERTA"
+                                              ? null
+                                              : () {
                                                   Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (context) =>
@@ -444,96 +256,130 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                                                       index],
                                                                   data)));
                                                 },
-                                                child: Card(
-                                                  elevation: 4,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      data.linhaProduto[index],
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "QuickSand",
-                                                          color:
-                                                              Colors.black38),
-                                                    ),
-                                                  ),
+                                          child: Container(
+                                            decoration: new BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(0xFF796DEA),
+                                                    Color(0xFFCC73FF)
+                                                  ],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
                                                 ),
-                                              );
-                                            },
+                                                color: Colors.blue,
+                                                borderRadius:
+                                                    BorderRadius.circular(14)),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    " " +
+                                                        data.linhaProduto[
+                                                            index],
+                                                    style: TextStyle(
+                                                        fontFamily: "QuickSand",
+                                                        color: Colors.white),
+                                                  ),
+                                                  StreamBuilder(
+                                                    stream: Firestore.instance
+                                                        .collection("Empresas")
+                                                        .document(data
+                                                            .empresaResponsavel)
+                                                        .collection(
+                                                            "pesquisasCriadas")
+                                                        .document(data.id)
+                                                        .collection(
+                                                            "linhasProdutosAntesReposicao")
+                                                        .document(
+                                                            data.linhaProduto[
+                                                                index])
+                                                        .snapshots(),
+                                                    builder:
+                                                        (context, snapTags) {
+                                                      if (!snapTags.hasData) {
+                                                        return LinearProgressIndicator();
+                                                      } else {
+                                                        TagsLinhaData dataTags =
+                                                            TagsLinhaData
+                                                                .fromDocument(
+                                                                    snapTags
+                                                                        .data);
+                                                        return Container(
+                                                          height: 30,
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              8,
+                                                          child:
+                                                              ListView.builder(
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            itemCount: dataTags
+                                                                .tags.length,
+                                                            itemBuilder:
+                                                                (_, index) {
+                                                              return Card(
+                                                                color: dataTags.tags[index] == "Vencimento" ||
+                                                                        dataTags.tags[index] ==
+                                                                            "Ruptura" ||
+                                                                        dataTags.tags[index] ==
+                                                                            "Novo Pedido" ||
+                                                                        dataTags.tags[index] ==
+                                                                            "Nova Pesquisa"
+                                                                    ? Color(
+                                                                        0xFF4FCEB6)
+                                                                    : Colors
+                                                                        .red,
+                                                                elevation: 4,
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          5.0),
+                                                                  child: Text(
+                                                                    dataTags.tags[
+                                                                        index],
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "QuickSand",
+                                                                        fontSize:
+                                                                            10,
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        );
+                                                      }
+                                                    },
+                                                  )
+                                                ],
+                                              ),
+                                            ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Data Agendada:",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black87),
                                         ),
-                                        Text(
-                                          data.dataInicial,
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              color: Colors.black38),
-                                        ),
-                                      ],
-                                    ),
-
-                                    //Falta modificar a data de conclusão
-                                  ],
-                                ),
-                              ),
-                            )),
-                      ),
-                      Container(
-                        width: 200,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          onPressed: data.status == "ABERTA"
-                              ? () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          ResponderPesquisaData(data)));
-                                }
-                              : null,
-                          color: Color(0xFF4FCEB6),
-                          textColor: Colors.white,
-                          child: Text("Iniciar Pesquisa",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "QuickSandRegular")),
+                                      );
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
                         ),
-                      ),
-                      Container(
-                        width: 200,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          color: Color(0xFFF26868),
-                          textColor: Colors.white,
-                          child: Text("Voltar",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "QuickSandRegular")),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 )),
-              ],
-            ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 }

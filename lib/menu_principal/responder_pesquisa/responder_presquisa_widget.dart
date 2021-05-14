@@ -4,12 +4,7 @@ class backgroundContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: new BoxDecoration(
-        image: new DecorationImage(
-          image: new AssetImage("assets/fundo_colors.png"),
-          fit: BoxFit.cover,
-        ),
-      ),
+      color: Colors.blue,
       child: null /* add child content content here */,
     );
   }

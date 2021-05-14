@@ -9,6 +9,7 @@ import 'package:versaoPromotores/models/user_model.dart';
 import 'package:versaoPromotores/splash_screen.dart';
 
 import 'Login.dart';
+import 'fcm/config_fcm.dart';
 import 'menu_principal/home_menu.dart';
 
 main() {
@@ -21,6 +22,7 @@ main() {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    configFCM(context);
     return ScopedModel(
       model: UserModel(),
       child: MaterialApp(
@@ -28,7 +30,7 @@ class Home extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/login': (BuildContext context) => new Login(),
           '/splash': (BuildContext context) => new SplashScreen(),
-          '/Home': (BuildContext context) =>
+          '/Home': (BuildContext conteqxt) =>
               new HomeMenu("Todas", "termosBuscaLoja"),
           '/selecaoPerfil': (BuildContext context) => new SelecaoPerfil(),
         },

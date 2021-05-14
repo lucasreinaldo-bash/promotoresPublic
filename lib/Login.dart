@@ -57,7 +57,7 @@ class _Login extends State<Login> with SingleTickerProviderStateMixin {
   Color right = Colors.white;
   String uid;
   bool isSwitched = true;
-  String tipoUsuario = "um Promotor";
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -318,7 +318,7 @@ class _Login extends State<Login> with SingleTickerProviderStateMixin {
                           onPressed: () {
                             model.signIn(
                                 email: _emailController.text.trim(),
-                                pass: _senhaController.text,
+                                pass: _senhaController.text.trim(),
                                 onSucess: _onSucessPromotor,
                                 onFail: _onFail);
                           },

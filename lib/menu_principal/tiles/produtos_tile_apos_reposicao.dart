@@ -19,6 +19,7 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
   ProductData dataProdutos;
   PesquisaData data;
   final _quantidadeProdutoController = TextEditingController();
+  final FocusNode myFocus = FocusNode();
 
   _ProdutosTileAposReposicaoState(this.data, this.dataProdutos);
   @override
@@ -35,54 +36,131 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
             child: Container(
               width: 60,
               child: Padding(
-                padding: EdgeInsets.all(10),
-                child: TextField(
-                  onEditingComplete: () {
-                    DocumentReference documentReference = Firestore.instance
+                  padding: EdgeInsets.all(10),
+                  child: StreamBuilder(
+                    stream: Firestore.instance
                         .collection("Empresas")
                         .document(data.empresaResponsavel)
                         .collection("pesquisasCriadas")
                         .document(data.id)
                         .collection("estoqueDeposito")
-                        .document(dataProdutos.nomeProduto);
+                        .document(dataProdutos.nomeProduto)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return LinearProgressIndicator();
+                      } else if (snapshot.data["aposReposicao"] == 9999) {
+                        _quantidadeProdutoController.text = "0";
+                        return TextField(
+                          onEditingComplete: () {
+                            DocumentReference documentReference = Firestore
+                                .instance
+                                .collection("Empresas")
+                                .document(data.empresaResponsavel)
+                                .collection("pesquisasCriadas")
+                                .document(data.id)
+                                .collection("estoqueDeposito")
+                                .document(dataProdutos.nomeProduto);
 
-                    documentReference.updateData(
-                      {
-                        "aposReposicao":
-                            int.parse(_quantidadeProdutoController.text),
-                      },
-                    );
-                    FocusScope.of(context).unfocus();
-                    Flushbar(
-                      title: "Informação respondida com sucesso.",
-                      message:
-                          "A quantidade atual de ${_quantidadeProdutoController.text} "
-                          "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
-                      backgroundGradient:
-                          LinearGradient(colors: [Colors.blue, Colors.teal]),
-                      backgroundColor: Colors.red,
-                      duration: Duration(seconds: 3),
-                      boxShadows: [
-                        BoxShadow(
-                          color: Colors.blue[800],
-                          offset: Offset(0.0, 2.0),
-                          blurRadius: 5.0,
-                        )
-                      ],
-                    )..show(context);
-                  },
-                  controller: _quantidadeProdutoController,
-                  keyboardType: TextInputType.number,
-                  style: TextStyle(
-                      fontFamily: "WorkSansSemiBold",
-                      fontSize: 12,
-                      color: Colors.black),
-                  decoration: InputDecoration(
-                    hintText: "0",
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
+                            documentReference.updateData(
+                              {
+                                "linha": dataProdutos.nomeLinha,
+                                "produto": dataProdutos.nomeProduto,
+                                "aposReposicao": int.parse(
+                                    _quantidadeProdutoController.text),
+                              },
+                            );
+                            FocusScope.of(context).unfocus();
+                            Flushbar(
+                              title: "Informação respondida com sucesso.",
+                              message:
+                                  "A quantidade atual de ${_quantidadeProdutoController.text} "
+                                  "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                              backgroundGradient: LinearGradient(
+                                  colors: [Colors.blue, Colors.teal]),
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 3),
+                              boxShadows: [
+                                BoxShadow(
+                                  color: Colors.blue[800],
+                                  offset: Offset(0.0, 2.0),
+                                  blurRadius: 5.0,
+                                )
+                              ],
+                            )..show(context);
+                          },
+                          controller: _quantidadeProdutoController,
+                          keyboardType: TextInputType.number,
+                          focusNode: myFocus,
+                          style: TextStyle(
+                              fontFamily: "WorkSansSemiBold",
+                              fontSize: 12,
+                              color: Colors.black),
+                          decoration: InputDecoration(
+                            hintText: "0",
+                            border: InputBorder.none,
+                          ),
+                        );
+                      } else {
+                        int valorAnterior = 0;
+                        _quantidadeProdutoController.text = "0";
+
+                        valorAnterior = snapshot.data["aposReposicao"];
+                        _quantidadeProdutoController.text =
+                            valorAnterior.toString();
+                        return TextField(
+                          onEditingComplete: () {
+                            DocumentReference documentReference = Firestore
+                                .instance
+                                .collection("Empresas")
+                                .document(data.empresaResponsavel)
+                                .collection("pesquisasCriadas")
+                                .document(data.id)
+                                .collection("estoqueDeposito")
+                                .document(dataProdutos.nomeProduto);
+
+                            documentReference.updateData(
+                              {
+                                "linha": dataProdutos.nomeLinha,
+                                "produto": dataProdutos.nomeProduto,
+                                "aposReposicao": int.parse(
+                                    _quantidadeProdutoController.text),
+                              },
+                            );
+                            FocusScope.of(context).unfocus();
+                            Flushbar(
+                              title: "Informação respondida com sucesso.",
+                              message:
+                                  "A quantidade atual de ${_quantidadeProdutoController.text} "
+                                  "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                              backgroundGradient: LinearGradient(
+                                  colors: [Colors.blue, Colors.teal]),
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 3),
+                              boxShadows: [
+                                BoxShadow(
+                                  color: Colors.blue[800],
+                                  offset: Offset(0.0, 2.0),
+                                  blurRadius: 5.0,
+                                )
+                              ],
+                            )..show(context);
+                          },
+                          controller: _quantidadeProdutoController,
+                          keyboardType: TextInputType.number,
+                          focusNode: myFocus,
+                          style: TextStyle(
+                              fontFamily: "WorkSansSemiBold",
+                              fontSize: 12,
+                              color: Colors.black),
+                          decoration: InputDecoration(
+                            hintText: "0",
+                            border: InputBorder.none,
+                          ),
+                        );
+                      }
+                    },
+                  )),
             ),
           ),
           title: Card(

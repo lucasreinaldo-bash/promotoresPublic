@@ -638,6 +638,24 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                     ),
                                                                     onPressed:
                                                                         () async {
+                                                                      var tagAtualizada =
+                                                                          new List<String>.from(
+                                                                              data.tag);
+
+                                                                      if (tagAtualizada
+                                                                          .contains(
+                                                                              "NOVO PEDIDO")) {
+                                                                        tagAtualizada
+                                                                            .remove("NOVO PEDIDO");
+                                                                      }
+
+                                                                      if (tagAtualizada
+                                                                          .contains(
+                                                                              "NOVA PESQUISA")) {
+                                                                        tagAtualizada
+                                                                            .remove("NOVA PESQUISA");
+                                                                      }
+
                                                                       DocumentReference documentReference = Firestore
                                                                           .instance
                                                                           .collection(
@@ -653,6 +671,8 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                           .updateData({
                                                                         "novoPedido":
                                                                             "Não",
+                                                                        "tag":
+                                                                            tagAtualizada,
                                                                         "status":
                                                                             "A APROVAR"
                                                                       });
@@ -691,6 +711,21 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                     ),
                                                                     onPressed:
                                                                         () async {
+                                                                      var tagAtualizada =
+                                                                          new List<String>.from(
+                                                                              data.tag);
+
+                                                                      tagAtualizada
+                                                                          .add(
+                                                                              "NOVO PEDIDO");
+
+                                                                      if (tagAtualizada
+                                                                          .contains(
+                                                                              "NOVA PESQUISA")) {
+                                                                        tagAtualizada
+                                                                            .remove("NOVA PESQUISA");
+                                                                      }
+
                                                                       DocumentReference documentReference = Firestore
                                                                           .instance
                                                                           .collection(
@@ -706,6 +741,8 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                           .updateData({
                                                                         "novoPedido":
                                                                             "Sim",
+                                                                        "tag":
+                                                                            tagAtualizada,
                                                                         "status":
                                                                             "A APROVAR"
                                                                       });
@@ -916,7 +953,22 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                                                 DocumentReference documentReference3 = await Firestore.instance.collection("Empresas").document(data.empresaResponsavel).collection("pesquisasCriadas").document(data.id);
 
                                                                                 documentReference3.updateData({
-                                                                                  "comentarioPromotor": _observacaoController.text.length != 0 ? _observacaoController.text : "Nenhuma"
+                                                                                  "comentarioPromotor": _observacaoController.text.length != 0 ? _observacaoController.text : "Nenhuma",
+                                                                                  "dataFinalizacao": da.formatDate(DateTime.now(), [
+                                                                                        da.dd,
+                                                                                        '/',
+                                                                                        da.mm,
+                                                                                        '/',
+                                                                                        da.yyyy
+                                                                                      ]) +
+                                                                                      " às ${da.formatDate(DateTime.now(), [
+                                                                                        da.HH,
+                                                                                        ':',
+                                                                                        da.nn,
+                                                                                        ':',
+                                                                                        da.ss
+                                                                                      ])}",
+                                                                                  "data_query_finalizada": DateTime.now().microsecondsSinceEpoch,
                                                                                 });
                                                                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => SplashScreenPesquisaRespondida()));
                                                                               },
@@ -1443,21 +1495,172 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
       actions: <Widget>[
         // define os botões na base do dialogo
         new FlatButton(
-          child: new Text("Salvar"),
-          onPressed: imagemAntes != "sem imagem" &&
-                  imagemPontoExtra != "sem imagem"
-              ? () {
-                  DocumentReference reference = Firestore.instance
-                      .collection("Empresas")
-                      .document(data.empresaResponsavel)
-                      .collection("pesquisasCriadas")
-                      .document(data.id)
-                      .collection("linhasProdutosAposReposicao")
-                      .document(nomeCategoria);
+            child: new Text("Salvar"),
+            onPressed:
+                //  imagemAntes != "sem imagem" &&
+                //         imagemPontoExtra != "sem imagem"
+                //     ?
+                () {
+              void _settingModalBottomSheet(context) {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext bc) {
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+//
+                            SizedBox(height: 20.0),
+                            Text(
+                              'É necessário um novo pedido ?',
+                              textAlign: TextAlign.center,
+                              style: kTitleStyle,
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsets.only(left: 30, right: 30, top: 30),
+                              child: Container(
+                                width: 100,
+                                height: 100,
+                                child: Center(
+                                    child: Column(
+                                  children: [
+                                    Container(
+                                      width: 200,
+                                      child: RaisedButton(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        onPressed: () async {
+                                          var tagAtualizada =
+                                              new List<String>.from(data.tag);
 
-                  reference
-                      .setData({"concluida": true, "nomeLinha": nomeCategoria});
-                  Navigator.of(context).pop();
+                                          if (tagAtualizada
+                                              .contains("NOVO PEDIDO")) {
+                                            tagAtualizada.remove("NOVO PEDIDO");
+                                          }
+
+                                          if (tagAtualizada
+                                              .contains("NOVA PESQUISA")) {
+                                            tagAtualizada
+                                                .remove("NOVA PESQUISA");
+                                          }
+
+                                          DocumentReference documentReference =
+                                              Firestore.instance
+                                                  .collection("Empresas")
+                                                  .document(
+                                                      data.empresaResponsavel)
+                                                  .collection(
+                                                      "pesquisasCriadas")
+                                                  .document(data.id);
+
+                                          await documentReference.updateData({
+                                            "novoPedido": "Não",
+                                            "tag": tagAtualizada,
+                                          });
+
+                                          Navigator.of(bc).pop();
+                                        },
+                                        color: Color(0xFFF26868),
+                                        textColor: Colors.white,
+                                        child: Text("Não",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily:
+                                                    "QuickSandRegular")),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 200,
+                                      child: RaisedButton(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        onPressed: () async {
+                                          var tagAtualizada =
+                                              new List<String>.from(data.tag);
+
+                                          tagAtualizada.add("NOVO PEDIDO");
+
+                                          if (tagAtualizada
+                                              .contains("NOVA PESQUISA")) {
+                                            tagAtualizada
+                                                .remove("NOVA PESQUISA");
+                                          }
+
+                                          DocumentReference documentReference =
+                                              Firestore.instance
+                                                  .collection("Empresas")
+                                                  .document(
+                                                      data.empresaResponsavel)
+                                                  .collection(
+                                                      "pesquisasCriadas")
+                                                  .document(data.id);
+
+                                          await documentReference.updateData({
+                                            "novoPedido": "Sim",
+                                            "tag": tagAtualizada,
+                                          });
+
+                                          DocumentReference
+                                              documentReferenceAntesReposicao =
+                                              Firestore.instance
+                                                  .collection("Empresas")
+                                                  .document(
+                                                      data.empresaResponsavel)
+                                                  .collection(
+                                                      "pesquisasCriadas")
+                                                  .document(data.id)
+                                                  .collection(
+                                                      "linhasProdutosAntesReposicao")
+                                                  .document(nomeCategoria);
+
+                                          documentReferenceAntesReposicao
+                                              .updateData(
+                                            {
+                                              "tags": FieldValue.arrayUnion(
+                                                  ["Novo Pedido"])
+                                            },
+                                          );
+                                          Navigator.of(bc).pop();
+                                        },
+                                        color: Color(0xFF4FCEB6),
+                                        textColor: Colors.white,
+                                        child: Text("Sim",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily:
+                                                    "QuickSandRegular")),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                              ),
+                            ),
+                            SizedBox(height: 15.0),
+                          ],
+                        ),
+                      );
+                    });
+              }
+
+              DocumentReference reference = Firestore.instance
+                  .collection("Empresas")
+                  .document(data.empresaResponsavel)
+                  .collection("pesquisasCriadas")
+                  .document(data.id)
+                  .collection("linhasProdutosAposReposicao")
+                  .document(nomeCategoria);
+
+              reference
+                  .setData({"concluida": true, "nomeLinha": nomeCategoria});
+              Navigator.of(context).pop();
+
+              _settingModalBottomSheet(context);
 
 //            DocumentReference documentReference = Firestore.instance
 //                .collection("Empresas")
@@ -1468,9 +1671,9 @@ class _DialogAposReposicaoState extends State<DialogAposReposicao> {
 //                .document(nomeCategoria);
 //
 //            documentReference.setData({"concluida": true}, merge: true);
-                }
-              : null,
-        ),
+            }
+            // : null,
+            ),
       ],
     );
   }

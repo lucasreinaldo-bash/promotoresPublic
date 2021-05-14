@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
+import 'package:versaoPromotores/widget/checkbox_model.dart';
+import 'package:versaoPromotores/widget/checkbox_widget.dart';
 
 class ProdutosTileRuptura extends StatefulWidget {
   ProductData dataProdutos;
@@ -26,98 +29,124 @@ class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
   var dataFormatter =
       new MaskTextInputFormatter(mask: '####', filter: {"#": RegExp(r'[0-9]')});
 
+// ...
+
   _ProdutosTileRupturaState(this.data, this.dataProdutos, this.nomeCategoria);
+
+  bool valueRadio = false;
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        height: 50,
-        width: 200,
-        child: ListTile(
-          trailing: Card(
-            elevation: 10,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Container(
-              width: 60,
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: TextField(
-                  inputFormatters: [dataFormatter],
-                  onEditingComplete: () {
-                    DocumentReference documentReference = Firestore.instance
-                        .collection("Empresas")
-                        .document(data.empresaResponsavel)
-                        .collection("pesquisasCriadas")
-                        .document(data.id)
-                        .collection("ruptura")
-                        .document(nomeCategoria)
-                        .collection("Produtos")
-                        .document(dataProdutos.nomeProduto);
+    SingingCharacter _character = SingingCharacter.lafayette;
 
-                    documentReference.setData(
-                      {
-                        "linha": dataProdutos.nomeLinha,
-                        "produto": dataProdutos.nomeProduto,
-                        "ruptura": int.parse(_rupturaController.text),
-                      },
-                    );
-                    FocusScope.of(context).unfocus();
-                    Flushbar(
-                      title: "Informação respondida com sucesso.",
-                      message:
-                          "O produto ${dataProdutos.nomeProduto} está com ruptura. Apenas ${_rupturaController.text} unidades em estoque.",
-                      backgroundGradient:
-                          LinearGradient(colors: [Colors.blue, Colors.teal]),
-                      backgroundColor: Colors.red,
-                      duration: Duration(seconds: 4),
-                      boxShadows: [
-                        BoxShadow(
-                          color: Colors.blue[800],
-                          offset: Offset(0.0, 2.0),
-                          blurRadius: 5.0,
-                        )
-                      ],
-                    )..show(context);
-                  },
-                  controller: _rupturaController,
-                  keyboardType: TextInputType.number,
-                  style: TextStyle(
-                      fontFamily: "WorkSansSemiBold",
-                      fontSize: 10,
-                      color: Colors.black),
-                  decoration: InputDecoration(
-                    hintText: "0",
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          title: InkWell(
-            onTap: () {},
-            child: Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Container(
-                width: 200,
-                height: 40,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          valueRadio = !valueRadio;
+        });
+      },
+      child: ListTile(
+        title: InkWell(
+          child: Container(
+            width: 110,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 150,
                   child: Text(
                     "" + dataProdutos.nomeProduto,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        fontFamily: "QuickSand",
-                        fontSize: 8,
+                        fontFamily: "Helvetica",
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
-                    textAlign: TextAlign.start,
                   ),
                 ),
-              ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      StreamBuilder(
+                        stream: Firestore.instance
+                            .collection("Empresas")
+                            .document(data.empresaResponsavel)
+                            .collection("Lojas")
+                            .document(data.nomeLoja)
+                            .collection("Produtos")
+                            .document(dataProdutos.nomeProduto)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return LinearProgressIndicator();
+                          } else {
+                            String qtdMinima = snapshot.data["qtdMinAreaVenda"];
+                            return Text("< $qtdMinima   ");
+                          }
+                        },
+                      ),
+                      GestureDetector(
+                          onTap: () async {
+                            setState(() {
+                              valueRadio = !valueRadio;
+                            });
+                            await Firestore.instance
+                                .collection("Empresas")
+                                .document(data.empresaResponsavel)
+                                .collection("Lojas")
+                                .document(data.nomeLoja)
+                                .collection("Produtos")
+                                .document(dataProdutos.nomeProduto)
+                                .updateData({"rupturaInicial": valueRadio});
+                          },
+                          child: valueRadio == false
+                              ? Container(
+                                  width: 20.0,
+                                  height: 20.0,
+                                  decoration: new BoxDecoration(
+                                    border: Border.all(color: Colors.black45),
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: Container(
+                                      width: 10.0,
+                                      height: 10.0,
+                                      decoration: new BoxDecoration(
+                                        border:
+                                            Border.all(color: Colors.black45),
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  width: 20.0,
+                                  height: 20.0,
+                                  decoration: new BoxDecoration(
+                                    border: Border.all(color: Colors.black45),
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: Container(
+                                      width: 10.0,
+                                      height: 10.0,
+                                      decoration: new BoxDecoration(
+                                        color: Colors.orange,
+                                        border:
+                                            Border.all(color: Colors.black45),
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -125,3 +154,5 @@ class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
     );
   }
 }
+
+enum SingingCharacter { lafayette, jefferson }

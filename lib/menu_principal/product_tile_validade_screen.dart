@@ -16,96 +16,111 @@ class ProductTileValidadeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xFF365BE5),
-        ),
-        body: Stack(
-          children: [
-            Container(
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  image: new AssetImage("assets/fundo_validade.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: null /* add child content content here */,
+      appBar: AppBar(
+        backgroundColor: Color(0xFF796CE7),
+        centerTitle: true,
+        title: Text("Área de Venda",
+            style: TextStyle(
+              fontFamily: "Helvetica",
+              color: Colors.white,
+              fontSize: 16,
+            )),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
             ),
-            SingleChildScrollView(
-              child: Column(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(
                 children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Informe os produtos\ncom validade próxima",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontFamily: "Helvetica",
-                        fontSize: 20,
-                        color: Colors.white),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Card(
-                        color: Color(0xFFF1EBFD),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Container(
-                            height: 400,
-                            child: Column(
-                              children: [
-                                Text(
-                                    "Selecione os produtos com validade próxima com suas respectivas datas:"),
-                                Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  color: Color(0xFFFFFFFF),
-                                  child: Container(
-                                    height: 300,
-                                    child: FutureBuilder(
-                                      future: Firestore.instance
-                                          .collection("Empresas")
-                                          .document(data.empresaResponsavel)
-                                          .collection("Lojas")
-                                          .document(data.nomeLoja)
-                                          .collection("Produtos")
-                                          .where("nomeLinha",
-                                              isEqualTo: nomeCategoria)
-                                          .getDocuments(),
-                                      builder: (context, snapshotProdutos) {
-                                        if (!snapshotProdutos.hasData) {
-                                          return LinearProgressIndicator();
-                                        } else {
-                                          return ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: snapshotProdutos
-                                                  .data.documents.length,
-                                              itemBuilder: (_, indexProduto) {
-                                                ProductData dataProdutos =
-                                                    ProductData.fromDocument(
-                                                        snapshotProdutos
-                                                                .data.documents[
-                                                            indexProduto]);
+                  Container(
+                    height: 500,
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Column(
+                        children: [
+                          Text(
+                              "Informe somente as datas dos produtos com vencimentos próximos"),
+                          Container(
+                            height: 4,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                          Container(
+                            color: Colors.black12,
+                            height: 2,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                          FutureBuilder(
+                            future: Firestore.instance
+                                .collection("Empresas")
+                                .document(data.empresaResponsavel)
+                                .collection("Lojas")
+                                .document(data.nomeLoja)
+                                .collection("Produtos")
+                                .where("nomeLinha", isEqualTo: nomeCategoria)
+                                .getDocuments(),
+                            builder: (context, snapshotProdutos) {
+                              if (!snapshotProdutos.hasData) {
+                                return LinearProgressIndicator();
+                              } else {
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        snapshotProdutos.data.documents.length,
+                                    itemBuilder: (_, indexProduto) {
+                                      ProductData dataProdutos =
+                                          ProductData.fromDocument(
+                                              snapshotProdutos.data
+                                                  .documents[indexProduto]);
 
-                                                return ProdutosTileValidade(
-                                                    data, dataProdutos);
-                                              });
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                )
-                              ],
+                                      return ProdutosTileValidade(
+                                          data, dataProdutos);
+                                    });
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: Text(
+                              "Cancelar",
+                              style: TextStyle(
+                                  fontSize: 20, color: Colors.black54),
                             ),
                           ),
-                        )),
-                  ),
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: Text(
+                              "Salvar",
+                              style: TextStyle(
+                                  fontSize: 20, color: Colors.black54),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
-          ],
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }

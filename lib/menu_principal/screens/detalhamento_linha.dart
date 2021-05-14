@@ -35,65 +35,54 @@ class DetalhamentoLinha extends StatelessWidget {
                 SingleChildScrollView(
                   child: Column(children: <Widget>[
                     SizedBox(
-                        height: 150.0,
-                        width: 350.0,
+                        height: 350,
+                        width: MediaQuery.of(context).size.width,
                         child: Carousel(
                           images: [
                             Column(
                               children: [
                                 InkWell(
                                   onTap: () {},
-                                  child: Card(
-                                    elevation: 10,
-                                    color: Color(0xFFFFFFFF),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Container(
-                                          height: 80,
-                                          width: 80,
-                                          child: StreamBuilder(
-                                            stream: Firestore.instance
-                                                .collection("Empresas")
-                                                .document(
-                                                    data.empresaResponsavel)
-                                                .collection("pesquisasCriadas")
-                                                .document(data.id)
-                                                .collection("imagensLinhas")
-                                                .document(nomeLinha)
-                                                .collection("BeforeAreaDeVenda")
-                                                .document("fotoAntesReposicao")
-                                                .snapshots(),
-                                            builder: (context, snapImg1) {
-                                              if (!snapImg1.hasData) {
-                                                return Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
-                                              } else {
-                                                return InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ExibirImagem(
-                                                                    snapImg1.data[
-                                                                        "imagem"],
-                                                                    "1",
-                                                                    "1")));
-                                                  },
-                                                  child: Image.network(
-                                                    snapImg1.data["imagem"],
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                );
-                                              }
-                                            },
-                                          )),
-                                    ),
-                                  ),
+                                  child: Container(
+                                      height: 300,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: StreamBuilder(
+                                        stream: Firestore.instance
+                                            .collection("Empresas")
+                                            .document(data.empresaResponsavel)
+                                            .collection("pesquisasCriadas")
+                                            .document(data.id)
+                                            .collection("imagensLinhas")
+                                            .document(nomeLinha)
+                                            .collection("BeforeAreaDeVenda")
+                                            .document("fotoAntesReposicao")
+                                            .snapshots(),
+                                        builder: (context, snapImg1) {
+                                          if (!snapImg1.hasData) {
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          } else {
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ExibirImagem(
+                                                                snapImg1.data[
+                                                                    "imagem"],
+                                                                "1",
+                                                                "1")));
+                                              },
+                                              child: Image.network(
+                                                snapImg1.data["imagem"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      )),
                                 ),
                                 Text(
                                   "Aréa de Venda\n(antes da reposição)",
@@ -111,57 +100,46 @@ class DetalhamentoLinha extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {},
-                                  child: Card(
-                                    elevation: 10,
-                                    color: Color(0xFFFFFFFF),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Container(
-                                          height: 100,
-                                          width: 100,
-                                          child: StreamBuilder(
-                                            stream: Firestore.instance
-                                                .collection("Empresas")
-                                                .document(
-                                                    data.empresaResponsavel)
-                                                .collection("pesquisasCriadas")
-                                                .document(data.id)
-                                                .collection("imagensLinhas")
-                                                .document(nomeLinha)
-                                                .collection("AfterAreaDeVenda")
-                                                .document("fotoDepoisReposicao")
-                                                .snapshots(),
-                                            builder: (context, snapImg1) {
-                                              if (!snapImg1.hasData) {
-                                                return Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
-                                              } else {
-                                                return InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ExibirImagem(
-                                                                    snapImg1.data[
-                                                                        "imagem"],
-                                                                    "1",
-                                                                    "1")));
-                                                  },
-                                                  child: Image.network(
-                                                    snapImg1.data["imagem"],
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                                );
-                                              }
-                                            },
-                                          )),
-                                    ),
-                                  ),
+                                  child: Container(
+                                      height: 300,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: StreamBuilder(
+                                        stream: Firestore.instance
+                                            .collection("Empresas")
+                                            .document(data.empresaResponsavel)
+                                            .collection("pesquisasCriadas")
+                                            .document(data.id)
+                                            .collection("imagensLinhas")
+                                            .document(nomeLinha)
+                                            .collection("AfterAreaDeVenda")
+                                            .document("fotoDepoisReposicao")
+                                            .snapshots(),
+                                        builder: (context, snapImg1) {
+                                          if (!snapImg1.hasData) {
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          } else {
+                                            return InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ExibirImagem(
+                                                                snapImg1.data[
+                                                                    "imagem"],
+                                                                "1",
+                                                                "1")));
+                                              },
+                                              child: Image.network(
+                                                snapImg1.data["imagem"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      )),
                                 ),
                                 Text(
                                   "Aréa de Venda\n(após a reposição)",
@@ -194,88 +172,104 @@ class DetalhamentoLinha extends StatelessWidget {
                                       ? Container()
                                       : Column(
                                           children: [
-                                            Row(
-                                              children: [
-                                                InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) => ExibirImagem(
-                                                                pontoExtraData
-                                                                    .imagemAntes,
-                                                                "2",
-                                                                "${pontoExtraData.id} " +
-                                                                    "\n(antes da reposição)")));
-                                                  },
-                                                  child: Card(
-                                                    elevation: 10,
-                                                    color: Color(0xFFFFFFFF),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                      child: Container(
-                                                        height: 100,
-                                                        width: 100,
-                                                        child: Image.network(
-                                                          pontoExtraData
-                                                              .imagemAntes,
-                                                          fit: BoxFit.fill,
-                                                        ),
-                                                      ),
-                                                    ),
+                                            InkWell(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ExibirImagem(
+                                                                  pontoExtraData
+                                                                      .imagemAntes,
+                                                                  "2",
+                                                                  "${pontoExtraData.id} " +
+                                                                      "\n(antes da reposição)")));
+                                                },
+                                                child: Container(
+                                                  height: 300,
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  child: Image.network(
+                                                    pontoExtraData.imagemAntes,
+                                                    fit: BoxFit.fill,
                                                   ),
-                                                ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) => ExibirImagem(
+                                                )),
+                                            Text(
+                                              "Ponto Extra ${pontoExtraData.id}\n " +
+                                                  "(imagem antes)",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontFamily:
+                                                      "QuickSandRegular",
+                                                  fontSize: 12),
+                                            ),
+                                          ],
+                                        );
+                                  ;
+                                }
+                              },
+                            ),
+                            StreamBuilder(
+                              stream: Firestore.instance
+                                  .collection("Empresas")
+                                  .document(data.empresaResponsavel)
+                                  .collection("pesquisasCriadas")
+                                  .document(data.id)
+                                  .collection("pontoExtra")
+                                  .document(nomeLinha)
+                                  .snapshots(),
+                              builder: (context, snapPontoExtra) {
+                                if (!snapPontoExtra.hasData) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else {
+                                  PontoExtraData pontoExtraData =
+                                      PontoExtraData.fromDocument(
+                                          snapPontoExtra.data);
+                                  return pontoExtraData.existe == false
+                                      ? Container()
+                                      : Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(
+                                                        context)
+                                                    .push(MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ExibirImagem(
                                                                 pontoExtraData
                                                                     .imagemDepois,
                                                                 "2",
                                                                 "${pontoExtraData.id} " +
                                                                     "\n(depois da reposição)")));
-                                                  },
-                                                  child: Card(
-                                                    elevation: 10,
-                                                    color: Color(0xFFFFFFFF),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8.0),
-                                                      child: Container(
-                                                        height: 100,
-                                                        width: 100,
-                                                        child: Image.network(
-                                                          pontoExtraData
-                                                              .imagemDepois,
-                                                          fit: BoxFit.fill,
-                                                        ),
-                                                      ),
+                                              },
+                                              child: Card(
+                                                elevation: 10,
+                                                color: Color(0xFFFFFFFF),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                  child: Container(
+                                                    height: 100,
+                                                    width: 100,
+                                                    child: Image.network(
+                                                      pontoExtraData
+                                                          .imagemDepois,
+                                                      fit: BoxFit.fill,
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                  width: 30,
-                                                )
-                                              ],
+                                              ),
                                             ),
                                             Text(
                                               "Ponto Extra ${pontoExtraData.id}\n " +
-                                                  "(imagem antes e depois)",
+                                                  "(imagem depois)",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                   fontFamily:
@@ -291,8 +285,9 @@ class DetalhamentoLinha extends StatelessWidget {
                           ],
                           dotSize: 4.0,
                           dotSpacing: 15.0,
-                          animationDuration: Duration(seconds: 2),
-                          showIndicator: false,
+                          autoplay: false,
+                          animationDuration: Duration(hours: 20),
+                          showIndicator: true,
                           dotColor: Colors.white,
                           indicatorBgPadding: 5.0,
                           dotBgColor: Colors.deepPurple.withOpacity(0.5),

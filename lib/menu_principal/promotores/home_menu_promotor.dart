@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -9,6 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:versaoPromotores/drawer/custom_drawer.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
+import 'package:versaoPromotores/menu_principal/home_menu.dart';
 import 'package:versaoPromotores/models/user_model.dart';
 import 'package:versaoPromotores/style/style.dart';
 
@@ -65,6 +70,92 @@ class _HomeMenuPromotor extends State<HomeMenuPromotor> {
     // TODO: implement initState
     super.initState();
     carregarUser();
+    configFCM(context);
+  }
+
+  Future<bool> _onBackPressed() {
+    return showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Desconectar do App?'),
+            content: new Text('Você irá se deslogar dessa conta.'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('Cancelar'),
+              ),
+              new FlatButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            HomeMenu("Todas", "termosBuscaPromotor")),
+                  );
+                },
+                child: new Text('Sim'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  void configFCM(BuildContext context) {
+    if (Platform.isIOS) {
+      final fcm = FirebaseMessaging();
+
+      fcm.requestNotificationPermissions(
+          const IosNotificationSettings(provisional: true));
+
+      fcm.configure(
+        onLaunch: (Map<String, dynamic> message) async {
+          print('onLaunch $message');
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print('onResume $message');
+        },
+        onMessage: (Map<String, dynamic> message) async {
+          showNotification(message['notification']['title'] as String,
+              message['notification']['body'] as String);
+        },
+      );
+    } else {
+      final fcm = FirebaseMessaging();
+
+      fcm.configure(
+        onLaunch: (Map<String, dynamic> message) async {
+          print('onLaunch $message');
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print('onResume $message');
+        },
+        onMessage: (Map<String, dynamic> message) async {
+          print("Recebi algumaa mensagem");
+          showNotification(message['notification']['title'] as String,
+              message['notification']['body'] as String);
+        },
+      );
+    }
+  }
+
+  void showNotification(String title, String message) {
+    Flushbar(
+        title: title,
+        message: message,
+        flushbarPosition: FlushbarPosition.TOP,
+        flushbarStyle: FlushbarStyle.GROUNDED,
+        isDismissible: true,
+        backgroundColor: Colors.deepPurpleAccent,
+        duration: const Duration(seconds: 6),
+        icon: Card(
+          child: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Image.asset("assets/logo.png"),
+              )),
+        )).show(context);
   }
 
   carregarUser() async {
