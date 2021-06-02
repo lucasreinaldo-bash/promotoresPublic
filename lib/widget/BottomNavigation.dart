@@ -46,22 +46,32 @@ class _BottomNavigationPesquisaState extends State<BottomNavigationPesquisa> {
                   icon: Column(
                     children: [
                       Container(
-                        width: 100,
+                        width: 125,
                         child: RaisedButton(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            onPressed: () async {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      ResponderPesquisaData(data)));
-                            },
+                            onPressed: data.status == "CONCLUÍDA" ||
+                                    data.status == "A APROVAR"
+                                ? null
+                                : () async {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ResponderPesquisaData(data)));
+                                  },
                             color: Color(0xFF4FCEB6),
                             textColor: Colors.white,
-                            child: Text("Continuar",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: "QuickSandRegular"))),
+                            child: data.status != "ABERTA"
+                                ? Text("Respondida",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                        fontFamily: "QuickSandRegular"))
+                                : Text("Continuar",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: "QuickSandRegular"))),
                       ),
                     ],
                   ),

@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'menu_principal/home_menu.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -17,33 +20,33 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-//    configFCM();
+    configFCM();
     openStartPage();
   }
 
-//  void configFCM() {
-//    final fcm = FirebaseMessaging();
-//
-//    if (Platform.isIOS) {
-//      fcm.requestNotificationPermissions(
-//          const IosNotificationSettings(provisional: true));
-//    }
-//
-//    fcm.configure(
-//      onLaunch: (Map<String, dynamic> message) async {
-//        print('onLaunch $message');
-//      },
-//      onResume: (Map<String, dynamic> message) async {
-//        print('onResume $message');
-//      },
-//      onMessage: (Map<String, dynamic> message) async {
-//        showNotification(
-//          message['notification']['title'] as String,
-//          message['notification']['body'] as String,
-//        );
-//      },
-//    );
-//  }
+  void configFCM() {
+    final fcm = FirebaseMessaging();
+
+    if (Platform.isIOS) {
+      fcm.requestNotificationPermissions(
+          const IosNotificationSettings(provisional: true));
+    }
+
+    fcm.configure(
+      onLaunch: (Map<String, dynamic> message) async {
+        print('onLaunch $message');
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('onResume $message');
+      },
+      onMessage: (Map<String, dynamic> message) async {
+        showNotification(
+          message['notification']['title'] as String,
+          message['notification']['body'] as String,
+        );
+      },
+    );
+  }
 
   void showNotification(String title, String message) {
     Flushbar(
@@ -54,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
             isDismissible: true,
             backgroundColor: Theme.of(context).primaryColor,
             duration: const Duration(seconds: 3),
-            icon: Image.asset("assets/ic_launcher.png"))
+            icon: Image.asset("assets/logo.png"))
         .show(context);
   }
 
@@ -77,22 +80,24 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-//          Container(
-//            decoration: new BoxDecoration(
-//              image: new DecorationImage(
-//                image: new AssetImage("assets/fundocatalao.png"),
-//                fit: BoxFit.cover,
-//              ),
-//            ),
-//            child: null /* add child content content here */,
-//          ),
+          Container(
+            decoration: new BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF796DEA), Color(0xFFCC73FF)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              color: Colors.blue,
+            ),
+            child: null /* add child content content here */,
+          ),
           Center(
             child: Container(
               width: 200,
               height: 200,
               child: Center(
                 child: Transform.scale(
-                    scale: 1.2, child: Image.asset("assets/logo.png")),
+                    scale: 1.2, child: Image.asset("assets/logo_splash.png")),
               ),
             ),
           )
@@ -121,7 +126,10 @@ class _SplashScreenState extends State<SplashScreen> {
 //        'platform': Platform.operatingSystem,
 //      });
       print(firebaseUser.uid);
-      Navigator.pushNamed(context, "/Home");
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomeMenu("Todas", "termosBuscaPrommotor")));
     }
   }
 }

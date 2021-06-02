@@ -28,160 +28,132 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
       child: Container(
         height: 50,
         child: ListTile(
-          trailing: Card(
-            elevation: 1,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Container(
-              width: 60,
-              child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: StreamBuilder(
-                    stream: Firestore.instance
-                        .collection("Empresas")
-                        .document(data.empresaResponsavel)
-                        .collection("pesquisasCriadas")
-                        .document(data.id)
-                        .collection("estoqueDeposito")
-                        .document(dataProdutos.nomeProduto)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return LinearProgressIndicator();
-                      } else if (snapshot.data["aposReposicao"] == 9999) {
-                        _quantidadeProdutoController.text = "0";
-                        return TextField(
-                          onEditingComplete: () {
-                            DocumentReference documentReference = Firestore
-                                .instance
-                                .collection("Empresas")
-                                .document(data.empresaResponsavel)
-                                .collection("pesquisasCriadas")
-                                .document(data.id)
-                                .collection("estoqueDeposito")
-                                .document(dataProdutos.nomeProduto);
+          trailing: Container(
+            width: 60,
+            decoration: new BoxDecoration(
+                border: Border.all(width: 1.0, color: Colors.black38),
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: Padding(
+                padding: EdgeInsets.all(2),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: Container(
+                    width: 70,
+                    height: 30,
+                    child: StreamBuilder(
+                      stream: Firestore.instance
+                          .collection("Empresas")
+                          .document(data.empresaResponsavel)
+                          .collection("pesquisasCriadas")
+                          .document(data.id)
+                          .collection("estoqueDeposito")
+                          .document(dataProdutos.nomeProduto)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return LinearProgressIndicator();
+                        } else {
+                          _quantidadeProdutoController.text =
+                              snapshot.data["aposReposicao"].toString() ==
+                                      "9999"
+                                  ? "0"
+                                  : snapshot.data["aposReposicao"].toString();
 
-                            documentReference.updateData(
-                              {
-                                "linha": dataProdutos.nomeLinha,
-                                "produto": dataProdutos.nomeProduto,
-                                "aposReposicao": int.parse(
-                                    _quantidadeProdutoController.text),
-                              },
-                            );
-                            FocusScope.of(context).unfocus();
-                            Flushbar(
-                              title: "Informação respondida com sucesso.",
-                              message:
-                                  "A quantidade atual de ${_quantidadeProdutoController.text} "
-                                  "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
-                              backgroundGradient: LinearGradient(
-                                  colors: [Colors.blue, Colors.teal]),
-                              backgroundColor: Colors.red,
-                              duration: Duration(seconds: 3),
-                              boxShadows: [
-                                BoxShadow(
-                                  color: Colors.blue[800],
-                                  offset: Offset(0.0, 2.0),
-                                  blurRadius: 5.0,
-                                )
-                              ],
-                            )..show(context);
-                          },
-                          controller: _quantidadeProdutoController,
-                          keyboardType: TextInputType.number,
-                          focusNode: myFocus,
-                          style: TextStyle(
-                              fontFamily: "WorkSansSemiBold",
-                              fontSize: 12,
-                              color: Colors.black),
-                          decoration: InputDecoration(
-                            hintText: "0",
-                            border: InputBorder.none,
-                          ),
-                        );
-                      } else {
-                        int valorAnterior = 0;
-                        _quantidadeProdutoController.text = "0";
+                          return TextField(
+                            onEditingComplete: () async {
+                              await Firestore.instance
+                                  .collection("Empresas")
+                                  .document(data.empresaResponsavel)
+                                  .collection("pesquisasCriadas")
+                                  .document(data.id)
+                                  .collection("estoqueDeposito")
+                                  .document(dataProdutos.nomeProduto)
+                                  .updateData(
+                                {
+                                  "linha": dataProdutos.nomeLinha,
+                                  "produto": dataProdutos.nomeProduto,
+                                  "aposReposicao": int.tryParse(
+                                          _quantidadeProdutoController.text) ??
+                                      0,
+                                  "qtdReposto": int.tryParse(
+                                          _quantidadeProdutoController.text) ??
+                                      0 - dataProdutos.antesReposicao,
+                                  "ruptura": dataProdutos.rupturaInicial == true
+                                      ? true
+                                      : false
+                                },
+                              );
+                              await Firestore.instance
+                                  .collection("Empresas")
+                                  .document(data.empresaResponsavel)
+                                  .collection("pesquisasCriadas")
+                                  .document(data.id)
+                                  .updateData({
+                                "tags": FieldValue.arrayUnion(["Ruptura"])
+                              });
 
-                        valorAnterior = snapshot.data["aposReposicao"];
-                        _quantidadeProdutoController.text =
-                            valorAnterior.toString();
-                        return TextField(
-                          onEditingComplete: () {
-                            DocumentReference documentReference = Firestore
-                                .instance
-                                .collection("Empresas")
-                                .document(data.empresaResponsavel)
-                                .collection("pesquisasCriadas")
-                                .document(data.id)
-                                .collection("estoqueDeposito")
-                                .document(dataProdutos.nomeProduto);
-
-                            documentReference.updateData(
-                              {
-                                "linha": dataProdutos.nomeLinha,
-                                "produto": dataProdutos.nomeProduto,
-                                "aposReposicao": int.parse(
-                                    _quantidadeProdutoController.text),
-                              },
-                            );
-                            FocusScope.of(context).unfocus();
-                            Flushbar(
-                              title: "Informação respondida com sucesso.",
-                              message:
-                                  "A quantidade atual de ${_quantidadeProdutoController.text} "
-                                  "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
-                              backgroundGradient: LinearGradient(
-                                  colors: [Colors.blue, Colors.teal]),
-                              backgroundColor: Colors.red,
-                              duration: Duration(seconds: 3),
-                              boxShadows: [
-                                BoxShadow(
-                                  color: Colors.blue[800],
-                                  offset: Offset(0.0, 2.0),
-                                  blurRadius: 5.0,
-                                )
-                              ],
-                            )..show(context);
-                          },
-                          controller: _quantidadeProdutoController,
-                          keyboardType: TextInputType.number,
-                          focusNode: myFocus,
-                          style: TextStyle(
-                              fontFamily: "WorkSansSemiBold",
-                              fontSize: 12,
-                              color: Colors.black),
-                          decoration: InputDecoration(
-                            hintText: "0",
-                            border: InputBorder.none,
-                          ),
-                        );
-                      }
-                    },
-                  )),
-            ),
+                              await Firestore.instance
+                                  .collection("Empresas")
+                                  .document(data.empresaResponsavel)
+                                  .collection("pesquisasCriadas")
+                                  .document(data.id)
+                                  .collection("linhasProdutosAntesReposicao")
+                                  .document(dataProdutos.nomeProduto)
+                                  .updateData({
+                                "tags": FieldValue.arrayUnion(["Ruptura"])
+                              });
+                              FocusScope.of(context).unfocus();
+                              Flushbar(
+                                title: "Informação respondida com sucesso.",
+                                message:
+                                    "A quantidade atual de ${_quantidadeProdutoController.text} "
+                                    "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                                backgroundGradient: LinearGradient(
+                                    colors: [Colors.blue, Colors.teal]),
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 3),
+                                boxShadows: [
+                                  BoxShadow(
+                                    color: Colors.blue[800],
+                                    offset: Offset(0.0, 2.0),
+                                    blurRadius: 5.0,
+                                  )
+                                ],
+                              )..show(context);
+                            },
+                            controller: _quantidadeProdutoController,
+                            keyboardType: TextInputType.number,
+                            focusNode: myFocus,
+                            style: TextStyle(
+                                fontFamily: "WorkSansSemiBold",
+                                fontSize: 12,
+                                color: Colors.black),
+                            decoration: InputDecoration(
+                              hintText: "0",
+                              border: InputBorder.none,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                )),
           ),
-          title: Card(
-            elevation: 1,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Container(
-              width: 300,
-              height: 40,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "" + dataProdutos.nomeProduto,
-                  style: TextStyle(
-                      fontFamily: "QuickSand",
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.start,
-                ),
+          title: Container(
+            width: 300,
+            height: 40,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "" + dataProdutos.nomeProduto,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontFamily: "QuickSand",
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                textAlign: TextAlign.start,
               ),
             ),
           ),

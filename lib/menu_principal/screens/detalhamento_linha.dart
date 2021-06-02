@@ -2,6 +2,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData_ruptura_validade.dart';
 import 'package:versaoPromotores/menu_principal/datas/estoqueDeposito_data.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
@@ -12,7 +13,8 @@ import 'exibirImagem.dart';
 class DetalhamentoLinha extends StatelessWidget {
   String nomeLinha;
   PesquisaData data;
-
+  final _observacaoController = TextEditingController();
+  final FocusNode myFocusObservacao = FocusNode();
   DetalhamentoLinha(this.nomeLinha, this.data);
   @override
   Widget build(BuildContext context) {
@@ -244,26 +246,14 @@ class DetalhamentoLinha extends StatelessWidget {
                                                                 "${pontoExtraData.id} " +
                                                                     "\n(depois da reposição)")));
                                               },
-                                              child: Card(
-                                                elevation: 10,
-                                                color: Color(0xFFFFFFFF),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  child: Container(
-                                                    height: 100,
-                                                    width: 100,
-                                                    child: Image.network(
-                                                      pontoExtraData
-                                                          .imagemDepois,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  ),
+                                              child: Container(
+                                                height: 300,
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: Image.network(
+                                                  pontoExtraData.imagemDepois,
+                                                  fit: BoxFit.fill,
                                                 ),
                                               ),
                                             ),
@@ -380,10 +370,9 @@ class DetalhamentoLinha extends StatelessWidget {
                       .document(data.empresaResponsavel)
                       .collection("pesquisasCriadas")
                       .document(data.id)
-                      .collection("ruptura")
-                      .document(nomeLinha)
-                      .collection("Produtos")
+                      .collection("estoqueDeposito")
                       .where("linha", isEqualTo: nomeLinha)
+                      .where("ruptura", isEqualTo: true)
                       .getDocuments(),
                   builder: (context, snapDetalhes) {
                     if (!snapDetalhes.hasData) {
@@ -416,22 +405,22 @@ class DetalhamentoLinha extends StatelessWidget {
                                             itemCount: snapDetalhes
                                                 .data.documents.length,
                                             itemBuilder: (_, index) {
-                                              ProductDataRupturaValidade data =
-                                                  ProductDataRupturaValidade
-                                                      .fromDocument(snapDetalhes
-                                                          .data
+                                              ProductData data =
+                                                  ProductData.fromDocument(
+                                                      snapDetalhes.data
                                                           .documents[index]);
 
-                                              if (data.ruptura != 0) {
+                                              if (data.nomeProduto != "") {
                                                 return ListTile(
                                                   title: Text(
-                                                    data.produto,
+                                                    data.nomeProduto,
                                                     style: TextStyle(
                                                         fontFamily:
                                                             "QuickSandRegular"),
                                                   ),
                                                   trailing: Text(
-                                                      data.ruptura.toString() +
+                                                      data.aposReposicao
+                                                              .toString() +
                                                           " UN",
                                                       style: TextStyle(
                                                           fontFamily:
@@ -567,6 +556,87 @@ class DetalhamentoLinha extends StatelessWidget {
                                                             "QuickSandRegular")),
                                               );
                                             })
+
+                                        //Falta modificar a data de conclusão
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Container(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Comentário do Promotor",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontFamily: "QuickSand",
+                                              color: Colors.black87),
+                                        ),
+                                        Divider(),
+                                        StreamBuilder(
+                                          stream: Firestore.instance
+                                              .collection("Empresas")
+                                              .document(data.empresaResponsavel)
+                                              .collection("pesquisasCriadas")
+                                              .document(data.id)
+                                              .collection(
+                                                  "linhasProdutosAposReposicao")
+                                              .document(nomeLinha)
+                                              .snapshots(),
+                                          builder:
+                                              (context, snapshotComentario) {
+                                            if (!snapshotComentario.hasData) {
+                                              return LinearProgressIndicator();
+                                            } else {
+                                              _observacaoController.text =
+                                                  snapshotComentario
+                                                      .data["comentario"];
+                                              return TextField(
+                                                enabled: true,
+                                                maxLines: 5,
+                                                controller:
+                                                    _observacaoController,
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                style: TextStyle(
+                                                    fontFamily:
+                                                        "WorkSansSemiBold",
+                                                    fontSize: 13.0,
+                                                    color: Colors.black),
+                                                decoration: InputDecoration(
+                                                  hintText: "Sua observação",
+                                                  enabledBorder:
+                                                      UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.white),
+                                                  ),
+                                                  focusedBorder:
+                                                      UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.white),
+                                                  ),
+                                                  border: UnderlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors.white),
+                                                  ),
+                                                  hintStyle: TextStyle(
+                                                      fontFamily: "Georgia",
+                                                      fontSize: 10.0),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        )
 
                                         //Falta modificar a data de conclusão
                                       ],

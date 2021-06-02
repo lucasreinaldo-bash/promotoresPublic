@@ -36,7 +36,7 @@ class _ProdutosTileAntesReposicaoState
               width: 60,
               decoration: new BoxDecoration(
                   border: Border.all(width: 1.0, color: Colors.black38),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Padding(
                   padding: EdgeInsets.all(10),
                   child: StreamBuilder(
@@ -60,7 +60,7 @@ class _ProdutosTileAntesReposicaoState
                           onEditingComplete: () async {
                             qtdAtual =
                                 int.parse(_quantidadeProdutoController.text);
-                            qtdMinima = int.parse(dataProdutos.qtdMinAreaVenda);
+                            qtdMinima = dataProdutos.qtdMinAreaVenda;
 
                             DocumentReference documentReference =
                                 await Firestore.instance
@@ -123,7 +123,7 @@ class _ProdutosTileAntesReposicaoState
                           onEditingComplete: () async {
                             qtdAtual =
                                 int.parse(_quantidadeProdutoController.text);
-                            qtdMinima = int.parse(dataProdutos.qtdMinAreaVenda);
+                            qtdMinima = dataProdutos.qtdMinAreaVenda;
 
                             DocumentReference documentReference =
                                 await Firestore.instance

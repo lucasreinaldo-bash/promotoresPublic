@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart' as da;
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
@@ -57,118 +59,118 @@ class _PesquisaTileState extends State<PesquisaTile> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
-          child: Stack(
-            children: <Widget>[
-              Column(
+          child: Container(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "" +
-                                    data.nomeLoja.toUpperCase() +
-                                    "\nRede: " +
-                                    data.nomeRede +
-                                    "\nPromotor: " +
-                                    data.nomePromotor,
-                                style: TextStyle(
-                                    fontFamily: "QuickSand",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                                textAlign: TextAlign.start,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.center,
-                              child: SizedBox(
-                                  height: 30,
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: data.tag.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (_, index) {
-                                      return Card(
-                                          color: data.tag[index].contains(
-                                                      "NÃO APROVADA") ||
-                                                  data.tag[index].contains(
-                                                      "VENCIMENTOS PRÓXIMOS")
-                                              ? Colors.red
-                                              : verdeClaro,
-                                          child: Padding(
-                                              padding: EdgeInsets.all(5),
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text(
-                                                    data.tag[index],
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        fontFamily: "QuickSand",
-                                                        fontSize: 6,
-                                                        color: Colors.white),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                ],
-                                              )));
-                                    },
-                                  )),
-                            ),
-                            Text(
-                              data.dataInicial == "sem data inicial"
-                                  ? "Não Agendada"
-                                  : "Agendada: " + data.dataInicial,
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.65,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "" +
+                                  data.nomeLoja.toUpperCase() +
+                                  "\nRede: " +
+                                  data.nomeRede +
+                                  "\nPromotor: " +
+                                  data.nomePromotor,
                               style: TextStyle(
                                   fontFamily: "QuickSand",
-                                  fontSize: 10,
-                                  color: Colors.black54),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                              textAlign: TextAlign.start,
                             ),
-                            Text(
-                              data.dataFinal == "sem data final"
-                                  ? "Não Finalizada"
-                                  : "Finalizada: " + data.dataFinal,
-                              style: TextStyle(
-                                  fontFamily: "QuickSand",
-                                  fontSize: 10,
-                                  color: Colors.black54),
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "" + data.status,
-                                style: TextStyle(
-                                    fontFamily: "QuickSand",
-                                    fontSize: 10,
-                                    color: Colors.black54),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                                height: 30,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: data.tag.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (_, index) {
+                                    return Card(
+                                        color: data.tag[index]
+                                                    .contains("NÃO APROVADA") ||
+                                                data.tag[index].contains(
+                                                    "VENCIMENTOS PRÓXIMOS")
+                                            ? Colors.red
+                                            : verdeClaro,
+                                        child: Padding(
+                                            padding: EdgeInsets.all(5),
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  data.tag[index],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontFamily: "QuickSand",
+                                                      fontSize: 6,
+                                                      color: Colors.white),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                              ],
+                                            )));
+                                  },
+                                )),
+                          ),
+                          Text(
+                            data.dataInicial == "sem data inicial"
+                                ? "Não Agendada"
+                                : "Agendada: " + data.dataInicial,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontFamily: "QuickSand",
+                                fontSize: 10,
+                                color: Colors.black54),
+                          ),
+                          Text(
+                            data.dataFinalizacao == "pesquisa não respondida"
+                                ? "Não Finalizada"
+                                : "Finalizada: " + data.dataFinalizacao,
+                            style: TextStyle(
+                                fontFamily: "QuickSand",
+                                fontSize: 10,
+                                color: Colors.black54),
+                          ),
+                          Text(
+                            "" + data.status,
+                            style: TextStyle(
+                                fontFamily: "QuickSand",
+                                fontSize: 10,
+                                color: Colors.black54),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
-              )
-            ],
+              ),
+            ),
           ),
         ),
       ),

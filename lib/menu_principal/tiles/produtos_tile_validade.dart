@@ -36,7 +36,7 @@ class _ProdutosTileValidadeState extends State<ProdutosTileValidade> {
     return SingleChildScrollView(
       child: Container(
         height: 50,
-        width: 200,
+        width: 220,
         child: ListTile(
           trailing: GestureDetector(
             onTap: () {
@@ -74,18 +74,16 @@ class _ProdutosTileValidadeState extends State<ProdutosTileValidade> {
                   },
                 );
 
-                List list = new List<String>.from(data.tag);
-
-                list.add("VENCIMENTOS PRÓXIMOS");
-
                 DocumentReference documentReference2 = Firestore.instance
                     .collection("Empresas")
                     .document(data.empresaResponsavel)
                     .collection("pesquisasCriadas")
                     .document(data.id);
 
-                documentReference2
-                    .updateData({"tagVencimentoProximo": true, "tag": list});
+                documentReference2.updateData({
+                  "tagVencimentoProximo": true,
+                  "tag": FieldValue.arrayUnion(["Vencimento"])
+                });
 
                 DocumentReference documentReferenceAntesReposicao = Firestore
                     .instance
@@ -122,10 +120,10 @@ class _ProdutosTileValidadeState extends State<ProdutosTileValidade> {
               }, currentTime: DateTime.now(), locale: LocaleType.pt);
             },
             child: Container(
-              width: 110,
+              width: 115,
               decoration: new BoxDecoration(
-                  border: Border.all(width: 1.0, color: Colors.black38),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
+                  border: Border.all(width: 1.0, color: Colors.black12),
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
               child: Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: Row(
@@ -133,7 +131,7 @@ class _ProdutosTileValidadeState extends State<ProdutosTileValidade> {
                     Padding(
                       padding: const EdgeInsets.only(left: 5),
                       child: Container(
-                        width: 70,
+                        width: 80,
                         height: 30,
                         child: TextField(
                           inputFormatters: [dataFormatter],
@@ -145,15 +143,15 @@ class _ProdutosTileValidadeState extends State<ProdutosTileValidade> {
                               fontSize: 9,
                               color: Colors.black),
                           decoration: InputDecoration(
-                            hintText: "20/12/1990",
+                            hintText: "",
                             border: InputBorder.none,
                           ),
                         ),
                       ),
                     ),
                     Container(
-                      height: 22,
-                      width: 22,
+                      height: 17,
+                      width: 17,
                       child: Image.asset("assets/calendar_icon.png"),
                     )
                   ],

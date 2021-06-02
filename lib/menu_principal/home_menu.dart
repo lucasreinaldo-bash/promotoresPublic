@@ -187,401 +187,400 @@ class _HomeMenuState extends State<HomeMenu> {
                           bottomLeft: const Radius.circular(14.0),
                           bottomRight: const Radius.circular(14.0),
                         )),
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.33,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Text(
-                              'Pesquisas',
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  color: Colors.white,
-                                  fontFamily: "QuickSandRegular"),
+                        Expanded(
+                          flex: 1,
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Text(
+                                'Pesquisas',
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    color: Colors.white,
+                                    fontFamily: "QuickSandRegular"),
+                              ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 30.0),
-                        Card(
-                          elevation: 5,
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40.0),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: TextField(
-                              onChanged: (string) {
-                                setState(() {
-                                  termoBusca = string.toUpperCase().trim();
-                                });
-                              },
-                              focusNode: myFocusPesquisa,
-                              controller: _pesquisaController,
-                              keyboardType: TextInputType.text,
-                              style: TextStyle(
-                                  fontFamily: "WorkSansSemiBold",
-                                  fontSize: 13.0,
-                                  color: Colors.black),
-                              decoration: InputDecoration(
-                                prefixIcon: InkWell(
-                                  child: Icon(
-                                    Icons.search,
-                                    color: Colors.black,
-                                    size: 20.0,
+                        SizedBox(height: 5.0),
+                        Expanded(
+                          child: Card(
+                            elevation: 5,
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: TextField(
+                                onChanged: (string) {
+                                  setState(() {
+                                    termoBusca = string.toUpperCase().trim();
+                                  });
+                                },
+                                focusNode: myFocusPesquisa,
+                                controller: _pesquisaController,
+                                keyboardType: TextInputType.text,
+                                style: TextStyle(
+                                    fontFamily: "WorkSansSemiBold",
+                                    fontSize: 13.0,
+                                    color: Colors.black),
+                                decoration: InputDecoration(
+                                  prefixIcon: InkWell(
+                                    child: Icon(
+                                      Icons.search,
+                                      color: Colors.black,
+                                      size: 20.0,
+                                    ),
                                   ),
-                                ),
-                                suffixIcon: (InkWell(
-                                    onTap: () {
-                                      void _settingModalBottomSheet(context) {
-                                        showModalBottomSheet(
-                                            context: context,
-                                            builder: (BuildContext bc) {
-                                              return Container(
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(5),
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      Card(
-                                                        child: Container(
+                                  suffixIcon: (InkWell(
+                                      onTap: () {
+                                        void _settingModalBottomSheet(context) {
+                                          showModalBottomSheet(
+                                              context: context,
+                                              builder: (BuildContext bc) {
+                                                return Container(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(5),
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(
                                                           height: 5,
-                                                          width: 50,
                                                         ),
-                                                        color: Colors.grey,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
+                                                        Card(
+                                                          child: Container(
+                                                            height: 5,
+                                                            width: 50,
+                                                          ),
+                                                          color: Colors.grey,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Text(
-                                                        "Ordenar por",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "QuickSand",
-                                                            fontSize: 16),
-                                                      ),
-                                                      Text(
-                                                        "(Selecione o Parâmetro a ser utilizado)",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "Helvetica",
-                                                            fontSize: 12),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Column(
-                                                            children: [
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    tipoDeBusca =
-                                                                        "termosBuscaLoja";
-                                                                  });
-                                                                  Navigator.pop(
-                                                                      context);
+                                                        Text(
+                                                          "Ordenar por",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "QuickSand",
+                                                              fontSize: 16),
+                                                        ),
+                                                        Text(
+                                                          "(Selecione o Parâmetro a ser utilizado)",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Helvetica",
+                                                              fontSize: 12),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Column(
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      tipoDeBusca =
+                                                                          "termosBuscaLoja";
+                                                                    });
+                                                                    Navigator.pop(
+                                                                        context);
 
-                                                                  Flushbar(
-                                                                    title:
-                                                                        "Filtro de Busca alterado",
-                                                                    message:
-                                                                        "O parâmetro da busca será o Nome da Loja",
-                                                                    flushbarPosition:
-                                                                        FlushbarPosition
-                                                                            .BOTTOM,
-                                                                    flushbarStyle:
-                                                                        FlushbarStyle
-                                                                            .GROUNDED,
-                                                                    isDismissible:
-                                                                        true,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .deepPurpleAccent,
-                                                                    duration: const Duration(
-                                                                        seconds:
-                                                                            6),
-                                                                  ).show(
-                                                                      context);
-                                                                },
-                                                                child:
-                                                                    new Container(
-                                                                        width:
-                                                                            70.0,
-                                                                        height:
-                                                                            70.0,
+                                                                    Flushbar(
+                                                                      title:
+                                                                          "Filtro de Busca alterado",
+                                                                      message:
+                                                                          "O parâmetro da busca será o Nome da Loja",
+                                                                      flushbarPosition:
+                                                                          FlushbarPosition
+                                                                              .BOTTOM,
+                                                                      flushbarStyle:
+                                                                          FlushbarStyle
+                                                                              .GROUNDED,
+                                                                      isDismissible:
+                                                                          true,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .deepPurpleAccent,
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              6),
+                                                                    ).show(
+                                                                        context);
+                                                                  },
+                                                                  child: new Container(
+                                                                      width: 70.0,
+                                                                      height: 70.0,
+                                                                      child: CircleAvatar(
+                                                                        backgroundColor:
+                                                                            Colors.white,
                                                                         child:
-                                                                            CircleAvatar(
-                                                                          backgroundColor:
-                                                                              Colors.white,
-                                                                          child:
-                                                                              Icon(
-                                                                            FontAwesomeIcons.store,
-                                                                            color:
-                                                                                Colors.grey,
-                                                                          ),
-                                                                        ),
-                                                                        decoration:
-                                                                            new BoxDecoration(
+                                                                            Icon(
+                                                                          FontAwesomeIcons
+                                                                              .store,
                                                                           color:
-                                                                              Colors.orange,
-                                                                          border:
-                                                                              Border.all(color: Colors.grey),
-                                                                          shape:
-                                                                              BoxShape.circle,
-                                                                        )),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                  "Nome da Loja",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "Helvetica",
-                                                                      fontSize:
-                                                                          14)),
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            children: [
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    tipoDeBusca =
-                                                                        "termosBuscaRede";
-                                                                  });
-                                                                  Navigator.pop(
-                                                                      context);
+                                                                              Colors.grey,
+                                                                        ),
+                                                                      ),
+                                                                      decoration: new BoxDecoration(
+                                                                        color: Colors
+                                                                            .orange,
+                                                                        border: Border.all(
+                                                                            color:
+                                                                                Colors.grey),
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                      )),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                    "Nome da Loja",
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "Helvetica",
+                                                                        fontSize:
+                                                                            14)),
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      tipoDeBusca =
+                                                                          "termosBuscaRede";
+                                                                    });
+                                                                    Navigator.pop(
+                                                                        context);
 
-                                                                  Flushbar(
-                                                                    title:
-                                                                        "Filtro de Busca alterado",
-                                                                    message:
-                                                                        "O parâmetro da busca será o Nome da Rede",
-                                                                    flushbarPosition:
-                                                                        FlushbarPosition
-                                                                            .BOTTOM,
-                                                                    flushbarStyle:
-                                                                        FlushbarStyle
-                                                                            .GROUNDED,
-                                                                    isDismissible:
-                                                                        true,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .deepPurpleAccent,
-                                                                    duration: const Duration(
-                                                                        seconds:
-                                                                            6),
-                                                                  ).show(
-                                                                      context);
-                                                                },
-                                                                child:
-                                                                    new Container(
-                                                                        width:
-                                                                            70.0,
-                                                                        height:
-                                                                            70.0,
+                                                                    Flushbar(
+                                                                      title:
+                                                                          "Filtro de Busca alterado",
+                                                                      message:
+                                                                          "O parâmetro da busca será o Nome da Rede",
+                                                                      flushbarPosition:
+                                                                          FlushbarPosition
+                                                                              .BOTTOM,
+                                                                      flushbarStyle:
+                                                                          FlushbarStyle
+                                                                              .GROUNDED,
+                                                                      isDismissible:
+                                                                          true,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .deepPurpleAccent,
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              6),
+                                                                    ).show(
+                                                                        context);
+                                                                  },
+                                                                  child: new Container(
+                                                                      width: 70.0,
+                                                                      height: 70.0,
+                                                                      child: CircleAvatar(
+                                                                        backgroundColor:
+                                                                            Colors.white,
                                                                         child:
-                                                                            CircleAvatar(
-                                                                          backgroundColor:
-                                                                              Colors.white,
-                                                                          child:
-                                                                              Icon(
-                                                                            FontAwesomeIcons.storeAlt,
-                                                                            color:
-                                                                                Colors.grey,
-                                                                          ),
-                                                                        ),
-                                                                        decoration:
-                                                                            new BoxDecoration(
+                                                                            Icon(
+                                                                          FontAwesomeIcons
+                                                                              .storeAlt,
                                                                           color:
-                                                                              Colors.orange,
-                                                                          border:
-                                                                              Border.all(color: Colors.grey),
-                                                                          shape:
-                                                                              BoxShape.circle,
-                                                                        )),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                  "Nome da Rede",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "Helvetica",
-                                                                      fontSize:
-                                                                          14)),
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            children: [
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    tipoDeBusca =
-                                                                        "termosBuscaPromotor";
-                                                                  });
-                                                                  Navigator.pop(
-                                                                      context);
+                                                                              Colors.grey,
+                                                                        ),
+                                                                      ),
+                                                                      decoration: new BoxDecoration(
+                                                                        color: Colors
+                                                                            .orange,
+                                                                        border: Border.all(
+                                                                            color:
+                                                                                Colors.grey),
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                      )),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                    "Nome da Rede",
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "Helvetica",
+                                                                        fontSize:
+                                                                            14)),
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      tipoDeBusca =
+                                                                          "termosBuscaPromotor";
+                                                                    });
+                                                                    Navigator.pop(
+                                                                        context);
 
-                                                                  Flushbar(
-                                                                    title:
-                                                                        "Filtro de Busca alterado",
-                                                                    message:
-                                                                        "O parâmetro da busca será o Nome do Promotor",
-                                                                    flushbarPosition:
-                                                                        FlushbarPosition
-                                                                            .BOTTOM,
-                                                                    flushbarStyle:
-                                                                        FlushbarStyle
-                                                                            .GROUNDED,
-                                                                    isDismissible:
-                                                                        true,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .deepPurpleAccent,
-                                                                    duration: const Duration(
-                                                                        seconds:
-                                                                            6),
-                                                                  ).show(
-                                                                      context);
-                                                                },
-                                                                child:
-                                                                    new Container(
-                                                                        width:
-                                                                            70.0,
-                                                                        height:
-                                                                            70.0,
+                                                                    Flushbar(
+                                                                      title:
+                                                                          "Filtro de Busca alterado",
+                                                                      message:
+                                                                          "O parâmetro da busca será o Nome do Promotor",
+                                                                      flushbarPosition:
+                                                                          FlushbarPosition
+                                                                              .BOTTOM,
+                                                                      flushbarStyle:
+                                                                          FlushbarStyle
+                                                                              .GROUNDED,
+                                                                      isDismissible:
+                                                                          true,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .deepPurpleAccent,
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              6),
+                                                                    ).show(
+                                                                        context);
+                                                                  },
+                                                                  child: new Container(
+                                                                      width: 70.0,
+                                                                      height: 70.0,
+                                                                      child: CircleAvatar(
+                                                                        backgroundColor:
+                                                                            Colors.white,
                                                                         child:
-                                                                            CircleAvatar(
-                                                                          backgroundColor:
-                                                                              Colors.white,
-                                                                          child:
-                                                                              Icon(
-                                                                            FontAwesomeIcons.user,
-                                                                            color:
-                                                                                Colors.grey,
-                                                                          ),
+                                                                            Icon(
+                                                                          FontAwesomeIcons
+                                                                              .user,
+                                                                          color:
+                                                                              Colors.grey,
                                                                         ),
-                                                                        decoration:
-                                                                            new BoxDecoration(
-                                                                          color:
-                                                                              Colors.orange,
-                                                                          border:
-                                                                              Border.all(color: Colors.grey),
-                                                                          shape:
-                                                                              BoxShape.circle,
-                                                                        )),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                  "Nome do Promotor",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "Helvetica",
-                                                                      fontSize:
-                                                                          14)),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Column(
-                                                            children: [
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  setState(
-                                                                      () {});
-                                                                  Navigator.pop(
-                                                                      context);
+                                                                      ),
+                                                                      decoration: new BoxDecoration(
+                                                                        color: Colors
+                                                                            .orange,
+                                                                        border: Border.all(
+                                                                            color:
+                                                                                Colors.grey),
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                      )),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                    "Nome do Promotor",
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "Helvetica",
+                                                                        fontSize:
+                                                                            14)),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Column(
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {});
+                                                                    Navigator.pop(
+                                                                        context);
 
-                                                                  Flushbar(
-                                                                    title:
-                                                                        "Filtro de Busca alterado",
-                                                                    message:
-                                                                        "O parâmetro da busca será o Nome da Loja",
-                                                                    flushbarPosition:
-                                                                        FlushbarPosition
-                                                                            .BOTTOM,
-                                                                    flushbarStyle:
-                                                                        FlushbarStyle
-                                                                            .GROUNDED,
-                                                                    isDismissible:
-                                                                        true,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .deepPurpleAccent,
-                                                                    duration: const Duration(
-                                                                        seconds:
-                                                                            6),
-                                                                  ).show(
-                                                                      context);
-                                                                },
-                                                                child: new Container(
-                                                                    width: 70.0,
-                                                                    height: 70.0,
-                                                                    child: CircleAvatar(
-                                                                        backgroundColor: Colors.white,
-                                                                        child: Text(
-                                                                          "tag",
-                                                                          style: TextStyle(
-                                                                              fontSize: 15,
-                                                                              fontFamily: "QuickSand",
-                                                                              color: Colors.grey),
-                                                                        )),
-                                                                    decoration: new BoxDecoration(
-                                                                      color: Colors
-                                                                          .orange,
-                                                                      border: Border.all(
-                                                                          color:
-                                                                              Colors.grey),
-                                                                      shape: BoxShape
-                                                                          .circle,
-                                                                    )),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                  "Novo Pedido",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "Helvetica",
-                                                                      fontSize:
-                                                                          14)),
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            children: [
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  setState(
-                                                                      () {});
-                                                                  Navigator.pop(
-                                                                      context);
+                                                                    Flushbar(
+                                                                      title:
+                                                                          "Filtro de Busca alterado",
+                                                                      message:
+                                                                          "O parâmetro da busca será o Nome da Loja",
+                                                                      flushbarPosition:
+                                                                          FlushbarPosition
+                                                                              .BOTTOM,
+                                                                      flushbarStyle:
+                                                                          FlushbarStyle
+                                                                              .GROUNDED,
+                                                                      isDismissible:
+                                                                          true,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .deepPurpleAccent,
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              6),
+                                                                    ).show(
+                                                                        context);
+                                                                  },
+                                                                  child: new Container(
+                                                                      width: 70.0,
+                                                                      height: 70.0,
+                                                                      child: CircleAvatar(
+                                                                          backgroundColor: Colors.white,
+                                                                          child: Text(
+                                                                            "tag",
+                                                                            style: TextStyle(
+                                                                                fontSize: 15,
+                                                                                fontFamily: "QuickSand",
+                                                                                color: Colors.grey),
+                                                                          )),
+                                                                      decoration: new BoxDecoration(
+                                                                        color: Colors
+                                                                            .orange,
+                                                                        border: Border.all(
+                                                                            color:
+                                                                                Colors.grey),
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                      )),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                    "Novo Pedido",
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "Helvetica",
+                                                                        fontSize:
+                                                                            14)),
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {});
+                                                                    Navigator.pop(
+                                                                        context);
 
 //                                                                  Flushbar(
 //                                                                    title:
@@ -604,48 +603,48 @@ class _HomeMenuState extends State<HomeMenu> {
 //                                                                            6),
 //                                                                  ).show(
 //                                                                      context);
-                                                                },
-                                                                child: new Container(
-                                                                    width: 70.0,
-                                                                    height: 70.0,
-                                                                    child: CircleAvatar(
-                                                                        backgroundColor: Colors.white,
-                                                                        child: Text(
-                                                                          "tag",
-                                                                          style: TextStyle(
-                                                                              fontSize: 15,
-                                                                              fontFamily: "QuickSand",
-                                                                              color: Colors.grey),
-                                                                        )),
-                                                                    decoration: new BoxDecoration(
-                                                                      color: Colors
-                                                                          .orange,
-                                                                      border: Border.all(
-                                                                          color:
-                                                                              Colors.grey),
-                                                                      shape: BoxShape
-                                                                          .circle,
-                                                                    )),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text("Ruptura",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "Helvetica",
-                                                                      fontSize:
-                                                                          14)),
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            children: [
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  setState(
-                                                                      () {});
-                                                                  Navigator.pop(
-                                                                      context);
+                                                                  },
+                                                                  child: new Container(
+                                                                      width: 70.0,
+                                                                      height: 70.0,
+                                                                      child: CircleAvatar(
+                                                                          backgroundColor: Colors.white,
+                                                                          child: Text(
+                                                                            "tag",
+                                                                            style: TextStyle(
+                                                                                fontSize: 15,
+                                                                                fontFamily: "QuickSand",
+                                                                                color: Colors.grey),
+                                                                          )),
+                                                                      decoration: new BoxDecoration(
+                                                                        color: Colors
+                                                                            .orange,
+                                                                        border: Border.all(
+                                                                            color:
+                                                                                Colors.grey),
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                      )),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text("Ruptura",
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "Helvetica",
+                                                                        fontSize:
+                                                                            14)),
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {});
+                                                                    Navigator.pop(
+                                                                        context);
 
 //                                                                  Flushbar(
 //                                                                    title:
@@ -668,222 +667,267 @@ class _HomeMenuState extends State<HomeMenu> {
 //                                                                            6),
 //                                                                  ).show(
 //                                                                      context);
-                                                                },
-                                                                child: new Container(
-                                                                    width: 70.0,
-                                                                    height: 70.0,
-                                                                    child: CircleAvatar(
-                                                                        backgroundColor: Colors.white,
-                                                                        child: Text(
-                                                                          "tag",
-                                                                          style: TextStyle(
-                                                                              fontSize: 15,
-                                                                              fontFamily: "QuickSand",
-                                                                              color: Colors.grey),
-                                                                        )),
-                                                                    decoration: new BoxDecoration(
-                                                                      color: Colors
-                                                                          .orange,
-                                                                      border: Border.all(
-                                                                          color:
-                                                                              Colors.grey),
-                                                                      shape: BoxShape
-                                                                          .circle,
-                                                                    )),
-                                                              ),
-                                                              SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                  "Venc. Próximo",
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "Helvetica",
-                                                                      fontSize:
-                                                                          14)),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                                  },
+                                                                  child: new Container(
+                                                                      width: 70.0,
+                                                                      height: 70.0,
+                                                                      child: CircleAvatar(
+                                                                          backgroundColor: Colors.white,
+                                                                          child: Text(
+                                                                            "tag",
+                                                                            style: TextStyle(
+                                                                                fontSize: 15,
+                                                                                fontFamily: "QuickSand",
+                                                                                color: Colors.grey),
+                                                                          )),
+                                                                      decoration: new BoxDecoration(
+                                                                        color: Colors
+                                                                            .orange,
+                                                                        border: Border.all(
+                                                                            color:
+                                                                                Colors.grey),
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                      )),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                    "Venc. Próximo",
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "Helvetica",
+                                                                        fontSize:
+                                                                            14)),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            });
-                                      }
+                                                );
+                                              });
+                                        }
 
-                                      _settingModalBottomSheet(context);
-                                    },
-                                    child: Padding(
-                                      padding: EdgeInsets.only(right: 10),
-                                      child: Image.asset(
-                                        "assets/btn_ordenar.png",
-                                        height: 40,
-                                        width: 60,
-                                      ),
-                                    ))),
-                                border: InputBorder.none,
-                                hintText: tipoDeBusca == "termosBuscaLoja"
-                                    ? "Digite o nome da Loja"
-                                    : tipoDeBusca == "termosBuscaRede"
-                                        ? "Digite o nome da Rede"
-                                        : "Digite o nome do Promotor",
-                                hintStyle: TextStyle(
-                                    fontFamily: "Georgia", fontSize: 10.0),
+                                        _settingModalBottomSheet(context);
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.only(right: 10),
+                                        child: Image.asset(
+                                          "assets/btn_ordenar.png",
+                                          height: 40,
+                                          width: 60,
+                                        ),
+                                      ))),
+                                  border: InputBorder.none,
+                                  hintText: tipoDeBusca == "termosBuscaLoja"
+                                      ? "Digite o nome da Loja"
+                                      : tipoDeBusca == "termosBuscaRede"
+                                          ? "Digite o nome da Rede"
+                                          : "Digite o nome do Promotor",
+                                  hintStyle: TextStyle(
+                                      fontFamily: "Georgia", fontSize: 10.0),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 10.0),
-                        SizedBox(height: 15.0),
+                        SizedBox(height: 5.0),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            height: MediaQuery.of(context).size.width * 0.3,
+                            width: MediaQuery.of(context).size.width,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  child: Card(
+                                    color: filtro == "Todas"
+                                        ? colorCardFiltro
+                                        : Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        child: Center(
+                                          child: Text(
+                                            "Todas",
+                                            style: TextStyle(
+                                                fontFamily: "QuickSand",
+                                                fontSize: 10,
+                                                color: filtro == "Todas"
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      termoBusca = "nenhum";
+                                      filtro = "Todas";
+                                      _termoBuscaController.text = "Todas";
+                                    });
+                                    Navigator.pushReplacement(
+                                        context,
+                                        PageTransition(
+                                            type: PageTransitionType.fade,
+                                            child:
+                                                HomeMenu(filtro, tipoDeBusca)));
+                                  },
+                                ),
+                                InkWell(
+                                  child: Card(
+                                    color: filtro == "ABERTA"
+                                        ? colorCardFiltro
+                                        : Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Expanded(
+                                      flex: 25,
+                                      child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.2,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.2,
+                                          child: Center(
+                                              child: Text(
+                                            "Abertas",
+                                            style: TextStyle(
+                                                fontFamily: "QuickSand",
+                                                fontSize: 10,
+                                                color: filtro == "ABERTA"
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                          ))),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      filtro = "ABERTA";
+                                      _termoBuscaController.text = "ABERTA";
+                                      Navigator.pushReplacement(
+                                          context,
+                                          PageTransition(
+                                              type: PageTransitionType.fade,
+                                              child: HomeMenu(
+                                                  filtro, tipoDeBusca)));
+                                    });
+                                  },
+                                ),
+                                InkWell(
+                                  child: Card(
+                                    color: filtro == "A APROVAR"
+                                        ? colorCardFiltro
+                                        : Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Expanded(
+                                      flex: 25,
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        child: Center(
+                                          child: Text(
+                                            "A Aprovar",
+                                            style: TextStyle(
+                                                fontFamily: "QuickSand",
+                                                fontSize: 10,
+                                                color: filtro == "A APROVAR"
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      termoBusca = "nenhum";
+                                      filtro = "A APROVAR";
+                                      _termoBuscaController.text = "A APROVAR";
+                                    });
+                                    Navigator.pushReplacement(
+                                        context,
+                                        PageTransition(
+                                            type: PageTransitionType.fade,
+                                            child:
+                                                HomeMenu(filtro, tipoDeBusca)));
+                                  },
+                                ),
+                                InkWell(
+                                  child: Card(
+                                    color: filtro == "CONCLUÍDA"
+                                        ? colorCardFiltro
+                                        : Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Expanded(
+                                      flex: 25,
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        child: Center(
+                                          child: Text(
+                                            "Concluídas",
+                                            style: TextStyle(
+                                                fontFamily: "QuickSand",
+                                                fontSize: 10,
+                                                color: filtro == "CONCLUÍDA"
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      termoBusca = "nenhum";
+                                      filtro = "CONCLUÍDA";
+                                      _termoBuscaController.text = "CONCLUÍDA";
+                                    });
+                                    Navigator.pushReplacement(
+                                        context,
+                                        PageTransition(
+                                            type: PageTransitionType.fade,
+                                            child:
+                                                HomeMenu(filtro, tipoDeBusca)));
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        child: Card(
-                          color: filtro == "Todas"
-                              ? colorCardFiltro
-                              : Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            child: Center(
-                              child: Text(
-                                "Todas",
-                                style: TextStyle(
-                                    fontFamily: "QuickSand",
-                                    fontSize: 10,
-                                    color: filtro == "Todas"
-                                        ? Colors.white
-                                        : Colors.grey),
-                              ),
-                            ),
-                          ),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            termoBusca = "nenhum";
-                            filtro = "Todas";
-                            _termoBuscaController.text = "Todas";
-                          });
-                          Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.fade,
-                                  child: HomeMenu(filtro, tipoDeBusca)));
-                        },
-                      ),
-                      InkWell(
-                        child: Card(
-                          color: filtro == "ABERTA"
-                              ? colorCardFiltro
-                              : Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Container(
-                              height: 80,
-                              width: 80,
-                              child: Center(
-                                  child: Text(
-                                "Abertas",
-                                style: TextStyle(
-                                    fontFamily: "QuickSand",
-                                    fontSize: 10,
-                                    color: filtro == "ABERTA"
-                                        ? Colors.white
-                                        : Colors.grey),
-                              ))),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            filtro = "ABERTA";
-                            _termoBuscaController.text = "ABERTA";
-                            Navigator.pushReplacement(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.fade,
-                                    child: HomeMenu(filtro, tipoDeBusca)));
-                          });
-                        },
-                      ),
-                      InkWell(
-                        child: Card(
-                          color: filtro == "A APROVAR"
-                              ? colorCardFiltro
-                              : Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            child: Center(
-                              child: Text(
-                                "A Aprovar",
-                                style: TextStyle(
-                                    fontFamily: "QuickSand",
-                                    fontSize: 10,
-                                    color: filtro == "A APROVAR"
-                                        ? Colors.white
-                                        : Colors.grey),
-                              ),
-                            ),
-                          ),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            termoBusca = "nenhum";
-                            filtro = "A APROVAR";
-                            _termoBuscaController.text = "A APROVAR";
-                          });
-                          Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.fade,
-                                  child: HomeMenu(filtro, tipoDeBusca)));
-                        },
-                      ),
-                      InkWell(
-                        child: Card(
-                          color: filtro == "CONCLUÍDA"
-                              ? colorCardFiltro
-                              : Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            child: Center(
-                              child: Text(
-                                "Concluídas",
-                                style: TextStyle(
-                                    fontFamily: "QuickSand",
-                                    fontSize: 10,
-                                    color: filtro == "CONCLUÍDA"
-                                        ? Colors.white
-                                        : Colors.grey),
-                              ),
-                            ),
-                          ),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            termoBusca = "nenhum";
-                            filtro = "CONCLUÍDA";
-                            _termoBuscaController.text = "CONCLUÍDA";
-                          });
-                          Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.fade,
-                                  child: HomeMenu(filtro, tipoDeBusca)));
-                        },
-                      )
-                    ],
                   ),
                   SizedBox(
                     height: 20,
@@ -933,11 +977,11 @@ class _HomeMenuState extends State<HomeMenu> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
+                                        Container(
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.5,
+                                              0.6,
                                           child: ListView.builder(
                                               shrinkWrap: true,
                                               itemCount: snapshot

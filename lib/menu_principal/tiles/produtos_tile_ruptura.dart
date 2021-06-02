@@ -82,7 +82,7 @@ class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
                           if (!snapshot.hasData) {
                             return LinearProgressIndicator();
                           } else {
-                            String qtdMinima = snapshot.data["qtdMinAreaVenda"];
+                            int qtdMinima = snapshot.data["qtdMinAreaVenda"];
                             return Text("< $qtdMinima   ");
                           }
                         },
@@ -95,11 +95,20 @@ class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
                             await Firestore.instance
                                 .collection("Empresas")
                                 .document(data.empresaResponsavel)
-                                .collection("Lojas")
-                                .document(data.nomeLoja)
-                                .collection("Produtos")
+                                .collection("pesquisasCriadas")
+                                .document(data.id)
+                                .collection("estoqueDeposito")
                                 .document(dataProdutos.nomeProduto)
                                 .updateData({"rupturaInicial": valueRadio});
+
+                            await Firestore.instance
+                                .collection("Empresas")
+                                .document(data.empresaResponsavel)
+                                .collection("pesquisasCriadas")
+                                .document(data.id)
+                                .updateData({
+                              "tags": FieldValue.arrayUnion(["Ruptura"])
+                            });
                           },
                           child: valueRadio == false
                               ? Container(

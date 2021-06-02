@@ -53,14 +53,14 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
   final FocusNode myFocusInstrucao = FocusNode();
 
   final int _numPages =
-      5; //Numero total de telas para responder a pesquisa antes da reposição
+      3; //Numero total de telas para responder a pesquisa antes da reposição
 
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
   List<Widget> _buildPageIndicator() {
     List<Widget> list = [];
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
       list.add(i == _currentPage ? _indicator(true) : _indicator(false));
     }
     return list;
@@ -305,10 +305,12 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                               setState(() {
                                                                                 title = "Observações";
                                                                               });
-                                                                              _pageController.previousPage(
-                                                                                duration: Duration(milliseconds: 2000),
-                                                                                curve: Curves.fastOutSlowIn,
-                                                                              );
+                                                                              setState(() {
+                                                                                _pageController.previousPage(
+                                                                                  duration: Duration(milliseconds: 2000),
+                                                                                  curve: Curves.fastOutSlowIn,
+                                                                                );
+                                                                              });
                                                                             },
                                                                             child:
                                                                                 Row(
@@ -349,11 +351,11 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                                   print(true);
                                                                                   setState(() {
                                                                                     title = "Estoque depósito";
+                                                                                    _pageController.nextPage(
+                                                                                      duration: Duration(milliseconds: 500),
+                                                                                      curve: Curves.ease,
+                                                                                    );
                                                                                   });
-                                                                                  _pageController.nextPage(
-                                                                                    duration: Duration(milliseconds: 500),
-                                                                                    curve: Curves.ease,
-                                                                                  );
                                                                                 } else {
                                                                                   showDialog(
                                                                                       context: context,
@@ -398,10 +400,10 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            top: 50,
-                                                            left: 20,
-                                                            right: 20,
-                                                            bottom: 50),
+                                                            top: 5,
+                                                            left: 5,
+                                                            right: 5,
+                                                            bottom: 15),
                                                     child: Card(
                                                       shape:
                                                           RoundedRectangleBorder(
@@ -409,7 +411,7 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                             BorderRadius
                                                                 .circular(15.0),
                                                       ),
-                                                      elevation: 15,
+                                                      elevation: 1,
                                                       child: Padding(
                                                         padding: EdgeInsets.all(
                                                             10.0),
@@ -423,7 +425,6 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                               style: TextStyle(
                                                                   fontFamily:
                                                                       "QuickSand",
-                                                                  fontSize: 8,
                                                                   color: Color(
                                                                       0xFF000000)),
                                                             ),
@@ -507,11 +508,11 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                                 () {
                                                                               setState(() {
                                                                                 title = "Área de Venda";
+                                                                                _pageController.previousPage(
+                                                                                  duration: Duration(milliseconds: 500),
+                                                                                  curve: Curves.ease,
+                                                                                );
                                                                               });
-                                                                              _pageController.previousPage(
-                                                                                duration: Duration(milliseconds: 500),
-                                                                                curve: Curves.ease,
-                                                                              );
                                                                             },
                                                                             child:
                                                                                 Row(
@@ -538,12 +539,12 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                           FlatButton(
                                                                             onPressed:
                                                                                 () async {
-                                                                              _pageController.nextPage(
-                                                                                duration: Duration(milliseconds: 500),
-                                                                                curve: Curves.ease,
-                                                                              );
                                                                               setState(() {
                                                                                 title = "Instruções de Reposição";
+                                                                                _pageController.nextPage(
+                                                                                  duration: Duration(milliseconds: 500),
+                                                                                  curve: Curves.ease,
+                                                                                );
                                                                               });
                                                                             },
                                                                             child:
@@ -597,10 +598,10 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                           padding:
                                                               const EdgeInsets
                                                                       .only(
-                                                                  top: 50,
-                                                                  left: 20,
-                                                                  right: 20,
-                                                                  bottom: 50),
+                                                                  top: 5,
+                                                                  left: 5,
+                                                                  right: 5,
+                                                                  bottom: 15),
                                                           child: Container(
                                                             height: 600,
                                                             child: Card(
@@ -611,7 +612,7 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                         .circular(
                                                                             15.0),
                                                               ),
-                                                              elevation: 15,
+                                                              elevation: 1,
                                                               child: Padding(
                                                                 padding:
                                                                     EdgeInsets
@@ -699,72 +700,70 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                                         ),
                                                                       ),
                                                                     ),
-                                                                    _currentPage !=
-                                                                            _numPages -
-                                                                                1
-                                                                        ? Expanded(
-                                                                            child:
-                                                                                Align(
-                                                                              alignment: FractionalOffset.bottomRight,
+                                                                    Expanded(
+                                                                      child:
+                                                                          Align(
+                                                                        alignment:
+                                                                            FractionalOffset.bottomRight,
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          children: [
+                                                                            FlatButton(
+                                                                              onPressed: () {
+                                                                                setState(() {
+                                                                                  title = "Estoque Depósito";
+                                                                                  _pageController.previousPage(
+                                                                                    duration: Duration(milliseconds: 500),
+                                                                                    curve: Curves.ease,
+                                                                                  );
+                                                                                });
+                                                                              },
                                                                               child: Row(
                                                                                 mainAxisAlignment: MainAxisAlignment.center,
-                                                                                children: [
-                                                                                  FlatButton(
-                                                                                    onPressed: () {
-                                                                                      setState(() {
-                                                                                        title = "Estoque Depósito";
-                                                                                      });
-                                                                                      _pageController.previousPage(
-                                                                                        duration: Duration(milliseconds: 500),
-                                                                                        curve: Curves.ease,
-                                                                                      );
-                                                                                    },
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                                      mainAxisSize: MainAxisSize.min,
-                                                                                      children: <Widget>[
-                                                                                        Text(
-                                                                                          'Voltar',
-                                                                                          style: TextStyle(
-                                                                                            fontFamily: "Helvetica",
-                                                                                            color: Color(0xFF707070),
-                                                                                            fontSize: 22.0,
-                                                                                          ),
-                                                                                        ),
-                                                                                        SizedBox(width: 10.0),
-                                                                                        Icon(
-                                                                                          Icons.arrow_forward,
-                                                                                          color: Colors.white,
-                                                                                          size: 30.0,
-                                                                                        ),
-                                                                                      ],
+                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                children: <Widget>[
+                                                                                  Text(
+                                                                                    'Voltar',
+                                                                                    style: TextStyle(
+                                                                                      fontFamily: "Helvetica",
+                                                                                      color: Color(0xFF707070),
+                                                                                      fontSize: 22.0,
                                                                                     ),
                                                                                   ),
-                                                                                  FlatButton(
-                                                                                    onPressed: () async {
-                                                                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => PesquisaAposReposicao(data)));
-                                                                                    },
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                                      children: <Widget>[
-                                                                                        Text(
-                                                                                          'Avançar',
-                                                                                          textAlign: TextAlign.right,
-                                                                                          style: TextStyle(
-                                                                                            fontFamily: "Helvetica",
-                                                                                            color: Color(0xFF707070),
-                                                                                            fontSize: 22.0,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
+                                                                                  SizedBox(width: 10.0),
+                                                                                  Icon(
+                                                                                    Icons.arrow_forward,
+                                                                                    color: Colors.white,
+                                                                                    size: 30.0,
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                            FlatButton(
+                                                                              onPressed: () async {
+                                                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PesquisaAposReposicao(data)));
+                                                                              },
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                                children: <Widget>[
+                                                                                  Text(
+                                                                                    'Avançar',
+                                                                                    textAlign: TextAlign.right,
+                                                                                    style: TextStyle(
+                                                                                      fontFamily: "Helvetica",
+                                                                                      color: Color(0xFF707070),
+                                                                                      fontSize: 22.0,
                                                                                     ),
                                                                                   ),
                                                                                 ],
                                                                               ),
                                                                             ),
-                                                                          )
-                                                                        : Text(
-                                                                            ''),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
                                                                   ],
                                                                 ),
                                                               ),
@@ -776,85 +775,6 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                                   );
                                                 }
                                               },
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  left: 10,
-                                                  right: 10,
-                                                  bottom: 100),
-                                              child: Card(
-                                                elevation: 15,
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-//
-                                                      SizedBox(height: 60.0),
-                                                      Text(
-                                                        'Pesquisa Criada',
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: kTitleStyle,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 30,
-                                                                right: 30,
-                                                                top: 20),
-                                                        child: Container(
-                                                          width: 100,
-                                                          height: 100,
-                                                          child: Center(
-                                                              child: FlareActor(
-                                                                  "assets/success_check.flr",
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                  fit: BoxFit
-                                                                      .contain,
-                                                                  animation:
-                                                                      "Untitled")),
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 15.0),
-                                                      _currentPage !=
-                                                              _numPages - 2
-                                                          ? Flex(
-                                                              direction: Axis
-                                                                  .horizontal,
-                                                              children: [
-                                                                Expanded(
-                                                                  child: Align(
-                                                                    alignment:
-                                                                        FractionalOffset
-                                                                            .bottomRight,
-                                                                    child:
-                                                                        FlatButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        _pageController
-                                                                            .nextPage(
-                                                                          duration:
-                                                                              Duration(milliseconds: 500),
-                                                                          curve:
-                                                                              Curves.ease,
-                                                                        );
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            )
-                                                          : Text(''),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
                                             ),
                                           ],
                                         ),
