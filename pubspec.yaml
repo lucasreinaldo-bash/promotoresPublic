@@ -29,7 +29,7 @@ dependencies:
   cpf_cnpj_validator: ^1.0.5
   keyboard_actions: ^3.3.0+12
   brasil_fields: ^0.2.0
-  
+  provider: ^4.1.2
   http:
   flutter_date_pickers:
   google_map_polyline:
