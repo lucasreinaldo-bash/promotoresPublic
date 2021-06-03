@@ -6,9 +6,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
+import 'package:versaoPromotores/models/research_manager.dart';
 
+import '../../models/user_manager.dart';
 import '../detalhamentoPesquisa.dart';
 import '../home_menu.dart';
+import 'package:provider/provider.dart';
 
 class PesquisaTile extends StatefulWidget {
   PesquisaData data;
@@ -47,8 +50,9 @@ class _PesquisaTileState extends State<PesquisaTile> {
         });
       },
       onTap: () async {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DetalhamentoPesquisa(data)));
+        context.read<ResearchManager>().setResearch(data);
+
+        Navigator.pushNamed(context, "/detalhamentoPesquisa");
 //
       },
       child: Padding(

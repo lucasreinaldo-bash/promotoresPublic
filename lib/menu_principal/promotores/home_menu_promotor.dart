@@ -10,12 +10,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:versaoPromotores/drawer/custom_drawer.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 import 'package:versaoPromotores/menu_principal/home_menu.dart';
+import 'package:versaoPromotores/models/user_manager.dart';
 import 'package:versaoPromotores/models/user_model.dart';
-import 'package:versaoPromotores/style/style.dart';
+import 'package:versaoPromotores/styles/style.dart';
 
 import '../detalhamentoPesquisa.dart';
 
@@ -164,8 +166,8 @@ class _HomeMenuPromotor extends State<HomeMenuPromotor> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<UserModel>(
-      builder: (context, child, model) {
+    return Consumer<UserManager>(
+      builder: (_, userManager, __) {
         return StreamBuilder(
           stream: Firestore.instance
               .collection("Promotores")
@@ -402,7 +404,7 @@ class _HomeMenuPromotor extends State<HomeMenuPromotor> {
                                     ? "empresaResponsavel"
                                     : "status",
                                 isEqualTo: filtro == "Todas"
-                                    ? UserModel.of(context).firebaseUser.uid
+                                    ? userManager.user.id
                                     : filtro)
                             .getDocuments(),
                         builder: (context, snapshot) {

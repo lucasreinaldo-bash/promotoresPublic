@@ -7,7 +7,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:versaoPromotores/style/style.dart';
+import 'package:versaoPromotores/styles/style.dart';
 
 import 'menu_principal/home_menu.dart';
 

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_apos_reposicao.dart';
+import 'package:versaoPromotores/models/user_manager.dart';
 import 'package:versaoPromotores/models/user_model.dart';
 import 'dart:io';
 import 'dart:ui';
@@ -14,30 +16,16 @@ import 'package:date_format/date_format.dart' as da;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter/widgets.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
-import 'package:flutter_date_pickers/flutter_date_pickers.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:versaoPromotores/drawer/custom_drawer.dart';
-import 'package:versaoPromotores/menu_principal/datas/LinhaProdutoData.dart';
-import 'package:versaoPromotores/menu_principal/datas/LojaData.dart';
+
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/detalhamentoPesquisa.dart';
-import 'package:versaoPromotores/menu_principal/home_menu.dart';
-import 'package:versaoPromotores/menu_principal/product_tile_ruptura_screen.dart';
-import 'package:versaoPromotores/menu_principal/product_tile_validade_screen.dart';
-import 'package:versaoPromotores/menu_principal/tiles/loja_tile.dart';
-import 'package:versaoPromotores/menu_principal/tiles/produtos_tile.dart';
-import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_antes_reposicao.dart';
-import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_validade.dart';
-import 'package:versaoPromotores/models/user_model.dart';
 import 'package:versaoPromotores/splash_screen_pesquisaRespondida.dart';
-import 'package:versaoPromotores/style/style.dart';
+import 'package:versaoPromotores/styles/style.dart';
 import 'package:versaoPromotores/widget/afterBottomSheetView.dart';
 
 import '../responder_pesquisa/responder_pesquisa.dart';
@@ -97,8 +85,8 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
     return MaterialApp(
         localizationsDelegates: [GlobalMaterialLocalizations.delegate],
         supportedLocales: [const Locale('pt'), const Locale('BR')],
-        home: ScopedModelDescendant<UserModel>(
-          builder: (context, child, model) {
+        home: Consumer<UserManager>(
+          builder: (_, userManager, __) {
             return Scaffold(
               backgroundColor: Color(0xFFEBEDF5),
               appBar: AppBar(
@@ -120,7 +108,7 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                       child: StreamBuilder(
                         stream: Firestore.instance
                             .collection("Empresas")
-                            .document(model.firebaseUser.uid)
+                            .document(userManager.user.id)
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
@@ -1332,8 +1320,8 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
 
                                                 await Firestore.instance
                                                   ..collection("Empresas")
-                                                      .document(model
-                                                          .firebaseUser.uid)
+                                                      .document(
+                                                          userManager.user.id)
                                                       .collection("Lojas")
                                                       .document(data.nomeLoja)
                                                       .collection("Produtos")
@@ -1344,8 +1332,8 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                       Firestore.instance
                                                           .collection(
                                                               "Empresas")
-                                                          .document(model
-                                                              .firebaseUser.uid)
+                                                          .document(userManager
+                                                              .user.id)
                                                           .collection(
                                                               "pesquisasCriadas")
                                                           .document(data.id)
@@ -1450,13 +1438,10 @@ class _PesquisaAposReposicaoState extends State<PesquisaAposReposicao> {
                                                     ;
                                                   });
 
-                                                documentReference1.delete();
-
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            DetalhamentoPesquisa(
-                                                                data)));
+                                               context.read<UserManager>();
+                                                  Navigator
+                                                      .pushReplacementNamed(
+                                                          context, "/homeMenu");
                                               },
                                               color: Color(0xFFF26868),
                                               textColor: Colors.white,

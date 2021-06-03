@@ -5,10 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:versaoPromotores/helpers/firebase_errors.dart';
 import 'package:versaoPromotores/models/user.dart';
 
+import '../menu_principal/datas/pesquisaData.dart';
+
 class UserManager extends ChangeNotifier {
   UserManager() {
     _loadingCurrentUser();
   }
+//Carregando Pesquisas
+  List<PesquisaData> allResearchs = [];
 
   final Firestore firestore = Firestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -55,6 +59,21 @@ class UserManager extends ChangeNotifier {
           .document(currentUser.uid)
           .get();
       user = User.fromDocument(docUser);
+
+      final QuerySnapshot snapshotProducts = await firestore
+          .collection("Empresas")
+          .document(user.empresaVinculada)
+          .collection("pesquisasCriadas")
+          .where("idPromotor", isEqualTo: currentUser.uid)
+          .getDocuments();
+
+      allResearchs = snapshotProducts.documents
+          .map((d) => PesquisaData.fromDocument(d))
+          .toList();
+
+
+
+      debugPrint(""+allResearchs[1].nomeLoja);
     }
     notifyListeners();
   }

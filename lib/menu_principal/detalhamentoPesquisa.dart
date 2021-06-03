@@ -7,12 +7,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:nice_button/NiceButton.dart';
+import 'package:provider/provider.dart';
 import 'package:versaoPromotores/menu_principal/datas/pontoExtraImagemData.dart';
 import 'package:versaoPromotores/menu_principal/responder_pesquisa/responder_pesquisa.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData_ruptura_validade.dart';
 import 'package:versaoPromotores/menu_principal/datas/estoqueDeposito_data.dart';
 import 'package:versaoPromotores/menu_principal/screens/detalhamento_linha.dart';
 import 'package:versaoPromotores/menu_principal/screens/exibirImagem.dart';
+import 'package:versaoPromotores/models/research_manager.dart';
 import 'package:versaoPromotores/widget/BottomNavigation.dart';
 import 'package:versaoPromotores/widget/DialogMotivoReprovacao.dart';
 
@@ -20,35 +22,32 @@ import 'datas/pesquisaData.dart';
 import 'datas/tagsLinhaData.dart';
 
 class DetalhamentoPesquisa extends StatefulWidget {
-  PesquisaData data;
-
-  DetalhamentoPesquisa(this.data);
   @override
-  _DetalhamentoPesquisaState createState() =>
-      _DetalhamentoPesquisaState(this.data);
+  _DetalhamentoPesquisaState createState() => _DetalhamentoPesquisaState();
 }
 
 class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
-  PesquisaData data;
-
   Color colorButtonVoltar = Color(0xFFF26868);
   Color colorButtonIniciarPesquisa = Color(0xFF4FCEB6);
 
   final _observacaoController = TextEditingController();
 
-  _DetalhamentoPesquisaState(this.data);
+  _DetalhamentoPesquisaState();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _observacaoController.text = data.observacao;
-  }
+//TODO: A FAZER
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   _observacaoController.text = data.observacao;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationPesquisa(data),
+    return Consumer<ResearchManager>(
+      builder: (_, researchManager, __){
+        return Scaffold(
+      bottomNavigationBar: BottomNavigationPesquisa(researchManager.data),
       appBar: AppBar(
           backgroundColor: Color(0xFF796DEA),
           bottomOpacity: 0.0,
@@ -57,7 +56,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
           title: Column(
             children: [
               Text(
-                "Pesquisa ${data.status.toString()[0].toUpperCase() + data.status.toString().substring(1).toLowerCase()}",
+                "Pesquisa ${researchManager.data.status.toString()[0].toUpperCase() + researchManager.data.status.toString().substring(1).toLowerCase()}",
                 style: TextStyle(fontFamily: "QuickSandRegular"),
               ),
             ],
@@ -94,7 +93,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    data.nomeLoja,
+                                    researchManager.data.nomeLoja,
                                     style: TextStyle(
                                         fontFamily: "QuickSand",
                                         color: Colors.black87),
@@ -105,7 +104,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Rede: " + data.nomeRede,
+                                    "Rede: " + researchManager.data.nomeRede,
                                     style: TextStyle(
                                         fontFamily: "QuickSand",
                                         color: Colors.black38),
@@ -116,21 +115,21 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Promotor: " + data.nomePromotor,
+                                    "Promotor: " + researchManager.data.nomePromotor,
                                     style: TextStyle(
                                         fontFamily: "QuickSand",
                                         color: Colors.black38),
                                   ),
                                   Text(
-                                    "Agendada: " + data.dataInicial,
+                                    "Agendada: " + researchManager.data.dataInicial,
                                     style: TextStyle(
                                         fontFamily: "QuickSand",
                                         color: Colors.black38),
                                   ),
                                   Text(
-                                    data.dataFinalizacao !=
+                                    researchManager.data.dataFinalizacao !=
                                             "pesquisa não respondida"
-                                        ? "Finalizada: ${data.dataFinalizacao}"
+                                        ? "Finalizada: ${researchManager.data.dataFinalizacao}"
                                         : "Não finalizada",
                                     style: TextStyle(
                                         fontFamily: "QuickSand",
@@ -187,7 +186,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                         color: Colors.black54),
                                   ),
                                   Divider(),
-                                  data.status != "ABERTA"
+                                  researchManager.data.status != "ABERTA"
                                       ? Text("Clique no cartão para vizualizar",
                                           style: TextStyle(
                                               fontFamily: "Helvetica",
@@ -198,21 +197,21 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                     width: MediaQuery.of(context).size.width,
                                     child: ListView.builder(
                                       scrollDirection: Axis.vertical,
-                                      itemCount: data.linhaProduto.length,
+                                      itemCount: researchManager.data.linhaProduto.length,
                                       itemBuilder: (_, index) {
                                         return Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: GestureDetector(
-                                            onTap: data.status == "ABERTA"
+                                            onTap: researchManager.data.status == "ABERTA"
                                                 ? null
                                                 : () {
                                                     Navigator.of(context).push(
                                                         MaterialPageRoute(
                                                             builder: (context) =>
                                                                 DetalhamentoLinha(
-                                                                    data.linhaProduto[
+                                                                    researchManager.data.linhaProduto[
                                                                         index],
-                                                                    data)));
+                                                                    researchManager.data)));
                                                   },
                                             child: Container(
                                               decoration: new BoxDecoration(
@@ -237,7 +236,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                                   children: [
                                                     Text(
                                                       " " +
-                                                          data.linhaProduto[
+                                                          researchManager.data.linhaProduto[
                                                               index],
                                                       style: TextStyle(
                                                           fontFamily:
@@ -248,15 +247,15 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                                                       stream: Firestore.instance
                                                           .collection(
                                                               "Empresas")
-                                                          .document(data
+                                                          .document(researchManager.data
                                                               .empresaResponsavel)
                                                           .collection(
                                                               "pesquisasCriadas")
-                                                          .document(data.id)
+                                                          .document(researchManager.data.id)
                                                           .collection(
                                                               "linhasProdutosAntesReposicao")
                                                           .document(
-                                                              data.linhaProduto[
+                                                              researchManager.data.linhaProduto[
                                                                   index])
                                                           .snapshots(),
                                                       builder:
@@ -344,6 +343,9 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
           ],
         ),
       ),
+    );
+  
+      },
     );
   }
 }

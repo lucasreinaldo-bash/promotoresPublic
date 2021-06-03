@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_ruptura_screen.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_validade_screen.dart';
-import 'package:versaoPromotores/style/colors.dart';
+import 'package:versaoPromotores/styles/colors.dart';
 
 class AfterBottomSheetView extends StatefulWidget {
   String nomeCategoria;

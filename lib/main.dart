@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:versaoPromotores/menu_principal/responder_pesquisa/responder_pesquisa.dart';
-import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
-import 'package:versaoPromotores/menu_principal/detalhamentoPesquisa.dart';
-import 'package:versaoPromotores/menu_principal/selecao_perfil.dart';
-import 'package:versaoPromotores/models/user_model.dart';
+import 'package:provider/provider.dart';
+import 'package:versaoPromotores/models/research_manager.dart';
+import 'package:versaoPromotores/screens/login_screen.dart';
 import 'package:versaoPromotores/splash_screen.dart';
-
 import 'Login.dart';
 import 'fcm/config_fcm.dart';
+import 'menu_principal/detalhamentoPesquisa.dart';
 import 'menu_principal/home_menu.dart';
+import 'menu_principal/selecao_perfil.dart';
+import 'models/user_manager.dart';
 
 main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -23,18 +22,41 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     configFCM(context);
-    return ScopedModel(
-      model: UserModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserManager(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ResearchManager(),
+          lazy: false,
+        ),
+        
+        
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        routes: <String, WidgetBuilder>{
-          '/login': (BuildContext context) => new Login(),
-          '/splash': (BuildContext context) => new SplashScreen(),
-          '/Home': (BuildContext conteqxt) =>
-              new HomeMenu("Todas", "termosBuscaLoja"),
-          '/selecaoPerfil': (BuildContext context) => new SelecaoPerfil(),
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case "/login":
+              return MaterialPageRoute(builder: (_) => LoginScreen());
+            case "/splash":
+              return MaterialPageRoute(builder: (_) => SplashScreen());
+            case "/detalhamentoPesquisa":
+              return MaterialPageRoute(builder: (_) => DetalhamentoPesquisa());
+            case "/home":
+              return MaterialPageRoute(builder: (_) => HomeMenu("Todas", "termosBuscaLoja"));
+          }
         },
-        home: SplashScreen(),
+//      routes: <String, WidgetBuilder>{
+//        '/login': (BuildContext context) => new Login(),
+//        '/splash': (BuildContext context) => new SplashScreen(),
+//        '/Home': (BuildContext conteqxt) =>
+//        new HomeMenu("Todas", "termosBuscaLoja"),
+//        '/selecaoPerfil': (BuildContext context) => new SelecaoPerfil(),
+//      },
+        initialRoute: "/splash",
         theme: ThemeData(
             primarySwatch: Colors.purple,
             primaryColor: Color.fromARGB(255, 20, 125, 141)),
