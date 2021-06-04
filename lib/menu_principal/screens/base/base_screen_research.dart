@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:versaoPromotores/menu_principal/screens/research_screen_four.dart';
 import 'package:versaoPromotores/menu_principal/screens/research_screen_one.dart';
 import 'package:versaoPromotores/menu_principal/screens/research_screen_three.dart';
 import 'package:versaoPromotores/menu_principal/screens/research_screen_two.dart';
@@ -21,6 +22,7 @@ class BaseScreenResearch extends StatelessWidget {
           ResearchScreenOne(),
           ResearchScreenTwo(),
           ResearchScreenThree(),
+          ResearchScreenFour(),
           
         ],
       ),
