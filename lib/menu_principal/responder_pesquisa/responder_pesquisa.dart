@@ -20,7 +20,9 @@ import 'package:versaoPromotores/menu_principal/detalhamentoPesquisa.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_ruptura_screen.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_validade_screen.dart';
 import 'package:versaoPromotores/menu_principal/responder_pesquisa/responder_presquisa_widget.dart';
+import 'package:versaoPromotores/menu_principal/screens/base/base_screen_research.dart';
 import 'package:versaoPromotores/menu_principal/screens/pesquisa_aposReposicao.dart';
+import 'package:versaoPromotores/menu_principal/screens/research_screen_one.dart';
 import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_antes_reposicao.dart';
 import 'package:versaoPromotores/models/user_manager.dart';
 import 'package:versaoPromotores/models/user_model.dart';
@@ -145,16 +147,7 @@ class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.75,
-                                        child: PageView(
-                                          allowImplicitScrolling: false,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          controller: _pageController,
-                                          onPageChanged: (int page) {
-                                            _currentPage = page;
-                                          },
-                                          children: <Widget>[],
-                                        ),
+                                        child: BaseScreenResearch()
                                       ),
                                       Align(
                                         alignment: Alignment.bottomCenter,
