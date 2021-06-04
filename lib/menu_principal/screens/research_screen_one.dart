@@ -20,6 +20,7 @@ class ResearchScreenOne extends StatelessWidget {
 
       return resultFirstWhere;
     }
+     context.read<ResearchManager>().titleScreen = "Área de Venda";
 
     return Consumer<UserManager>(
       builder: (_, userManager, __) {
@@ -224,9 +225,7 @@ class ResearchScreenOne extends StatelessWidget {
                               children: [
                                 FlatButton(
                                   onPressed: () {
-                                    // context
-                                    //     .read<ResearchManager>()
-                                    //     .titleScreen("Observações");
+                                    
                                     context.read<PageManager>().previusPage();
                                   },
                                   child: Row(
@@ -268,7 +267,7 @@ class ResearchScreenOne extends StatelessWidget {
                                         print(true);
 
                                         context.read<PageManager>().nextPage();
-                                      } else {
+                                         } else {
                                         showDialog(
                                             context: context,
                                             builder: (_) => FlareGiffyDialog(

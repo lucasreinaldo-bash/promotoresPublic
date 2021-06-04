@@ -10,14 +10,14 @@ class ResearchManager extends ChangeNotifier {
   PesquisaData data;
   ResearchManager({this.data});
 
-  
-  String _titleScreen = "";
+  String _titleScreen = "Área de Venda";
   set titleScreen(String title) {
-    titleScreen = title;
+    _titleScreen = title;
+    print(_titleScreen);
     notifyListeners();
   }
 
-  get titleScreen => _titleScreen;
+  String get titleScreen => _titleScreen;
 
   void setResearch(PesquisaData data) {
     this.data = data;

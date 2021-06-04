@@ -13,6 +13,7 @@ import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_antes_reposi
 class ResearchScreenTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    context.read<ResearchManager>().titleScreen = "Estoque Depósito";
     return Consumer<ResearchManager>(
       builder: (_, researchManager, __) {
         return Flex(
@@ -89,7 +90,8 @@ class ResearchScreenTwo extends StatelessWidget {
                                 FlatButton(
                                   onPressed: () {
                                     context.read<PageManager>().previusPage();
-                                    // title = "Área de Venda";
+                                    
+                                    
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +117,8 @@ class ResearchScreenTwo extends StatelessWidget {
                                 FlatButton(
                                   onPressed: () async {
                                     context.read<PageManager>().nextPage();
-                                    //  title = "Instruções de Reposição";
+                          
+                                  
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
