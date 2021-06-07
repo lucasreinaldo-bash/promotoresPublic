@@ -1,14 +1,7 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flare_flutter/flare_actor.dart';
-//import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:versaoPromotores/styles/style.dart';
-
 import 'menu_principal/home_menu.dart';
 
 class SplashScreenPesquisaRespondida extends StatefulWidget {
@@ -27,42 +20,6 @@ class _SplashScreenPesquisaRespondidaState
     openStartPage();
   }
 
-//  void configFCM() {
-//    final fcm = FirebaseMessaging();
-//
-//    if (Platform.isIOS) {
-//      fcm.requestNotificationPermissions(
-//          const IosNotificationSettings(provisional: true));
-//    }
-//
-//    fcm.configure(
-//      onLaunch: (Map<String, dynamic> message) async {
-//        print('onLaunch $message');
-//      },
-//      onResume: (Map<String, dynamic> message) async {
-//        print('onResume $message');
-//      },
-//      onMessage: (Map<String, dynamic> message) async {
-//        showNotification(
-//          message['notification']['title'] as String,
-//          message['notification']['body'] as String,
-//        );
-//      },
-//    );
-//  }
-
-  void showNotification(String title, String message) {
-    Flushbar(
-            title: title,
-            message: message,
-            flushbarPosition: FlushbarPosition.TOP,
-            flushbarStyle: FlushbarStyle.GROUNDED,
-            isDismissible: true,
-            backgroundColor: Theme.of(context).primaryColor,
-            duration: const Duration(seconds: 3),
-            icon: Image.asset("assets/ic_launcher.png"))
-        .show(context);
-  }
 
   openStartPage() async {
     await Future.delayed(Duration(seconds: 3), () => _loadCurrentUser());
@@ -70,12 +27,6 @@ class _SplashScreenPesquisaRespondidaState
 
   String id;
 
-  DocumentReference get firestoreRef =>
-      Firestore.instance.document('ConsumidorFinal/$id');
-
-  CollectionReference get cartReference => firestoreRef.collection('cart');
-
-  CollectionReference get tokensReference => firestoreRef.collection('tokens');
   @override
   Widget build(BuildContext context) {
     return Scaffold(

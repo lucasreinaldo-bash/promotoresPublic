@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_format/date_format.dart' as da;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
@@ -7,7 +10,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 import 'package:versaoPromotores/models/research_manager.dart';
-
+import 'package:path/path.dart' as path;
 import '../../models/user_manager.dart';
 import '../detalhamentoPesquisa.dart';
 import '../home_menu.dart';
@@ -39,6 +42,7 @@ class _PesquisaTileState extends State<PesquisaTile> {
   Widget build(contextHome) {
     return InkWell(
       onLongPress: () {
+        uploadImagemFirestore(data);
         setState(() {
           if (corApertou == true) {
             corApertou = false;
@@ -168,6 +172,17 @@ class _PesquisaTileState extends State<PesquisaTile> {
                                 fontSize: 10,
                                 color: Colors.black54),
                           ),
+                          Container(
+                            height: 10,
+                            width: 10,
+                            decoration: BoxDecoration(
+                                color: (data.imagemUpload != null &&
+                                        data.imagemUpload == true)
+                                    ? Colors.green
+                                    : Colors.red,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          )
                         ],
                       ),
                     ),
@@ -179,5 +194,120 @@ class _PesquisaTileState extends State<PesquisaTile> {
         ),
       ),
     );
+  }
+
+  uploadImagemFirestore(PesquisaData data) async {
+    for (int i = 0; i < data.linhaProduto.length; i++) {
+      DocumentReference imagemAntes = await Firestore.instance
+          .collection("Empresas")
+          .document(data.empresaResponsavel)
+          .collection("pesquisasCriadas")
+          .document(data.id)
+          .collection("imagensLinhas")
+          .document(data.linhaProduto[i])
+          .collection("BeforeAreaDeVenda")
+          .document("fotoAntesReposicao");
+
+      DocumentReference imagemDepois = await Firestore.instance
+          .collection("Empresas")
+          .document(data.empresaResponsavel)
+          .collection("pesquisasCriadas")
+          .document(data.id)
+          .collection("imagensLinhas")
+          .document(data.linhaProduto[i])
+          .collection("AfterAreaDeVenda")
+          .document("fotoDepoisReposicao");
+
+      DocumentReference pontoExtra = await Firestore.instance
+          .collection("Empresas")
+          .document(data.empresaResponsavel)
+          .collection("pesquisasCriadas")
+          .document(data.id)
+          .collection("pontoExtra")
+          .document(data.linhaProduto[i]);
+
+      try {
+        imagemAntes.get().then((doc) => {
+              if (doc.exists)
+                {uploadStorage(imagemAntes, doc.data["imagem"])}
+              else
+                {
+                  print("Nao Existe")
+                  // doc.data() will be undefined in this case
+                }
+            });
+        imagemDepois.get().then((doc) => {
+              if (doc.exists)
+                {uploadStorage(imagemAntes, doc.data["imagem"])}
+              else
+                {
+                  print("Nao Existe")
+                  // doc.data() will be undefined in this case
+                }
+            });
+
+        pontoExtra.get().then((doc) => {
+              if (doc.exists)
+                {
+                  if (doc.data["existe"] == true)
+                    {
+                      uploadPontoExtraBeforeStorage(
+                          imagemAntes, doc.data["imagemAntes"]),
+                      uploadPontoExtraAfterStorage(
+                          imagemAntes, doc.data["imagemDepois"])
+                    }
+                }
+              else
+                {
+                  print("Nao Existe")
+                  // doc.data() will be undefined in this case
+                }
+            });
+
+        await Firestore.instance
+            .collection("Empresas")
+            .document(data.empresaResponsavel)
+            .collection("pesquisasCriadas")
+            .document(data.id)
+            .updateData({"imagemUpload": true});
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  uploadStorage(DocumentReference reference, String imagemPath) async {
+    String filName = path.basename(imagemPath);
+    StorageReference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child(filName);
+    StorageUploadTask uploadTask = firebaseStorageRef.putFile(File(imagemPath));
+
+    String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    reference.updateData({"imagem": docUrl});
+    print(docUrl);
+  }
+
+  uploadPontoExtraBeforeStorage(
+      DocumentReference reference, String imagemPath) async {
+    String filName = path.basename(imagemPath);
+    StorageReference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child(filName);
+    StorageUploadTask uploadTask = firebaseStorageRef.putFile(File(imagemPath));
+
+    String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    reference.updateData({"imagemAntes": docUrl});
+    print(docUrl);
+  }
+
+  uploadPontoExtraAfterStorage(
+      DocumentReference reference, String imagemPath) async {
+    String filName = path.basename(imagemPath);
+    StorageReference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child(filName);
+    StorageUploadTask uploadTask = firebaseStorageRef.putFile(File(imagemPath));
+
+    String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    reference.updateData({"imagemDepois": docUrl});
+    print(docUrl);
   }
 }

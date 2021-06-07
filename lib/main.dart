@@ -8,7 +8,6 @@ import 'Login.dart';
 import 'fcm/config_fcm.dart';
 import 'menu_principal/detalhamentoPesquisa.dart';
 import 'menu_principal/home_menu.dart';
-import 'menu_principal/selecao_perfil.dart';
 import 'models/user_manager.dart';
 
 main() {
@@ -32,8 +31,6 @@ class Home extends StatelessWidget {
           create: (_) => ResearchManager(),
           lazy: false,
         ),
-        
-        
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -46,7 +43,8 @@ class Home extends StatelessWidget {
             case "/detalhamentoPesquisa":
               return MaterialPageRoute(builder: (_) => DetalhamentoPesquisa());
             case "/home":
-              return MaterialPageRoute(builder: (_) => HomeMenu("Todas", "termosBuscaLoja"));
+              return MaterialPageRoute(
+                  builder: (_) => HomeMenu("Todas", "termosBuscaLoja"));
           }
         },
 //      routes: <String, WidgetBuilder>{

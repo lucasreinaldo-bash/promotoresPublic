@@ -16,12 +16,13 @@ class PesquisaData {
       status;
   int dataQuery, data_query_finalizada;
   List tag;
-  bool aceita;
+  bool aceita, imagemUpload;
 
   List linhaProduto = new List();
   PesquisaData.fromDocument(DocumentSnapshot snapshot) {
     id = snapshot.documentID;
     aceita = snapshot.data["aceita"];
+    imagemUpload = snapshot.data["imagemUpload"] ?? false;
     dataCriacao = snapshot.data["dataCriacao"];
     dataFinal = snapshot.data["dataFinal"];
     dataFinalizacao = snapshot.data["dataFinalizacao"];
@@ -55,7 +56,8 @@ class PesquisaData {
       "status": status,
       "tag": tag,
       "nomeRede": nomeRede,
-      "comentarioPromotor": comentarioPromotor
+      "comentarioPromotor": comentarioPromotor,
+      "imagemUpload": imagemUpload
     };
   }
 }

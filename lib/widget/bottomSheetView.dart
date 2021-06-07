@@ -105,8 +105,8 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                                                                   "Aguarde, a sua foto está sendo processada!")
                                                             ],
                                                           ))
-                                                      : Image.network(
-                                                          imagemAntes,
+                                                      : Image.file(
+                                                          File(imagemAntes),
                                                           height: 100,
                                                           width: 300,
                                                         )),
@@ -143,7 +143,8 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                                     DocumentReference documentReference =
                                         Firestore.instance
                                             .collection("Empresas")
-                                            .document(researchManager.data.empresaResponsavel)
+                                            .document(researchManager
+                                                .data.empresaResponsavel)
                                             .collection("pesquisasCriadas")
                                             .document(researchManager.data.id)
                                             .collection("pontoExtra")
@@ -195,7 +196,8 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                                     DocumentReference documentReference =
                                         Firestore.instance
                                             .collection("Empresas")
-                                            .document(researchManager.data.empresaResponsavel)
+                                            .document(researchManager
+                                                .data.empresaResponsavel)
                                             .collection("pesquisasCriadas")
                                             .document(researchManager.data.id)
                                             .collection("pontoExtra")
@@ -403,7 +405,8 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ProductTileValidadeScreen(
-                                                        researchManager.data, nomeCategoria)));
+                                                        researchManager.data,
+                                                        nomeCategoria)));
                                       },
                                       child: Card(
                                         color: textoBtnValidadeProxima == "Sim"
@@ -550,7 +553,8 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ProductTileRupturaScreen(
-                                                        researchManager.data, nomeCategoria)));
+                                                        researchManager.data,
+                                                        nomeCategoria)));
                                       },
                                       child: Card(
                                         color: textoBtnValidadeProxima == "Sim"
@@ -608,7 +612,8 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                               ? () async {
                                   await Firestore.instance
                                       .collection("Empresas")
-                                      .document(researchManager.data.empresaResponsavel)
+                                      .document(researchManager
+                                          .data.empresaResponsavel)
                                       .collection("pesquisasCriadas")
                                       .document(researchManager.data.id)
                                       .collection(
@@ -654,49 +659,27 @@ class _BottomSheetViewState extends State<BottomSheetView> {
       pickedFile =
           await picker.getImage(source: ImageSource.camera, imageQuality: 80);
     }
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-
-        print("tem imagem aqui");
-
-        //_image = File(pickedFile.path); // Use if you only need a single picture
-      } else {
-        print('No image selected.');
-      }
-    });
-
-    Future uploadPic(BuildContext context) async {
-      String filName = path.basename(_image.path);
-      StorageReference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child(filName);
-      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
       setState(() {
         imagemAntes = "carregando";
       });
-      String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-
-      setState(() async {
-        print(docUrl);
-        imagemAntes = docUrl;
-
-        DocumentReference documentReference = await Firestore.instance
-            .collection("Empresas")
-            .document(context.read<ResearchManager>().data.empresaResponsavel)
-            .collection("pesquisasCriadas")
-            .document(context.read<ResearchManager>().data.id)
-            .collection("imagensLinhas")
-            .document(categoria)
-            .collection("BeforeAreaDeVenda")
-            .document("fotoAntesReposicao");
-        documentReference.setData({"imagem": docUrl});
+      DocumentReference documentReference = await Firestore.instance
+          .collection("Empresas")
+          .document(context.read<ResearchManager>().data.empresaResponsavel)
+          .collection("pesquisasCriadas")
+          .document(context.read<ResearchManager>().data.id)
+          .collection("imagensLinhas")
+          .document(categoria)
+          .collection("BeforeAreaDeVenda")
+          .document("fotoAntesReposicao");
+      documentReference.setData({"imagem": _image.path, "upload": false});
+      setState(() {
+        imagemAntes = _image.path;
       });
+    } else {
+      print('No image selected.');
     }
-
-    uploadPic(context);
-
-    uploadPic(context);
   }
 
   Future getImagePontoExtra(bool gallery, String categoria) async {
