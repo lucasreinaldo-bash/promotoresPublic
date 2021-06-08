@@ -123,8 +123,8 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                                                 "Aguarde, a sua foto está sendo processada!")
                                                           ],
                                                         ))
-                                                    : Image.network(
-                                                        imagemAntes,
+                                                    : Image.file(
+                                                        File(imagemAntes),
                                                         height: 100,
                                                         width: 300,
                                                       )),
@@ -242,8 +242,8 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                                                               ],
                                                                             ))
                                                                         : Image
-                                                                            .network(
-                                                                            imagemPontoExtra,
+                                                                            .file(
+                                                                            File(imagemPontoExtra),
                                                                             height:
                                                                                 100,
                                                                             width:
@@ -540,54 +540,33 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
           await picker.getImage(source: ImageSource.camera, imageQuality: 80);
     }
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-
-        print("tem imagem aqui");
-
-        //_image = File(pickedFile.path); // Use if you only need a single picture
-      } else {
-        print('No image selected.');
-      }
-    });
-
-    Future uploadPic(BuildContext context) async {
-      String filName = path.basename(_image.path);
-      StorageReference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child(filName);
-      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
       setState(() {
         imagemAntes = "carregando";
       });
-      String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-
-      setState(() async {
-        print(docUrl);
-        imagemAntes = docUrl;
-
-        DocumentReference documentReference = await Firestore.instance
-            .collection("Empresas")
-            .document(data.empresaResponsavel)
-            .collection("pesquisasCriadas")
-            .document(data.id)
-            .collection("imagensLinhas")
-            .document(categoria)
-            .collection("AfterAreaDeVenda")
-            .document("fotoDepoisReposicao");
-        documentReference.setData({"imagem": docUrl});
+      DocumentReference documentReference = await Firestore.instance
+          .collection("Empresas")
+          .document(data.empresaResponsavel)
+          .collection("pesquisasCriadas")
+          .document(data.id)
+          .collection("imagensLinhas")
+          .document(categoria)
+          .collection("AfterAreaDeVenda")
+          .document("fotoDepoisReposicao");
+      documentReference.setData({"imagem": _image.path, "upload": false});
+      setState(() {
+        imagemAntes = _image.path;
       });
+    } else {
+      print('No image selected.');
     }
-
-    uploadPic(context);
-
-    uploadPic(context);
   }
 
   Future getImagePontoExtra(bool gallery, String nomeCategoria) async {
-    setState(() {
-      imagemPontoExtra = "sem imagem";
-    });
+    // setState(() {
+    //   imagemPontoExtra = "sem imagem";
+    // });
     ImagePicker picker = ImagePicker();
     PickedFile pickedFile;
     // Let user select photo from gallery
@@ -604,38 +583,28 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
     }
 
     setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-
-        print("tem imagem aqui");
-        Future uploadPic(BuildContext context) async {
-          String filName = path.basename(_image.path);
-          StorageReference firebaseStorageRef =
-              FirebaseStorage.instance.ref().child(filName);
-          StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
-          setState(() {
-            imagemPontoExtra = "carregando";
-          });
-          String docUrl =
-              await (await uploadTask.onComplete).ref.getDownloadURL();
-          print(docUrl);
-          imagemPontoExtra = docUrl;
-
-          DocumentReference documentReference = await Firestore.instance
-              .collection("Empresas")
-              .document(data.empresaResponsavel)
-              .collection("pesquisasCriadas")
-              .document(data.id)
-              .collection("pontoExtra")
-              .document(nomeCategoria);
-          documentReference.updateData({"imagemDepois": docUrl});
-        }
-
-        uploadPic(context);
-        //_image = File(pickedFile.path); // Use if you only need a single picture
-      } else {
-        print('No image selected.');
-      }
+      imagemPontoExtra = "carregando";
     });
+
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+
+      DocumentReference documentReference = await Firestore.instance
+          .collection("Empresas")
+          .document(data.empresaResponsavel)
+          .collection("pesquisasCriadas")
+          .document(data.id)
+          .collection("pontoExtra")
+          .document(nomeCategoria);
+      documentReference.updateData({"imagemDepois": _image.path});
+
+      setState(() {
+        imagemPontoExtra = _image.path;
+      });
+
+      //_image = File(pickedFile.path); // Use if you only need a single picture
+    } else {
+      print('No image selected.');
+    }
   }
 }

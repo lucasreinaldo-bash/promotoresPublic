@@ -282,8 +282,9 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                                                                       "Aguarde, a sua foto está sendo processada!")
                                                                 ],
                                                               ))
-                                                          : Image.network(
-                                                              imagemAntesPontoExtra,
+                                                          : Image.file(
+                                                              File(
+                                                                  imagemAntesPontoExtra),
                                                               height: 100,
                                                               width: 300,
                                                             )),
@@ -698,50 +699,29 @@ class _BottomSheetViewState extends State<BottomSheetView> {
     }
 
     setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-
-        print("tem imagem aqui");
-
-        //_image = File(pickedFile.path); // Use if you only need a single picture
-      } else {
-        print('No image selected.');
-      }
+      imagemAntesPontoExtra = "carregando";
     });
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
 
-    Future uploadPic(BuildContext context) async {
-      String filName = path.basename(_image.path);
-      StorageReference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child(filName);
-      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+      print("tem imagem aqui");
+      DocumentReference documentReference = await Firestore.instance
+          .collection("Empresas")
+          .document(context.read<ResearchManager>().data.empresaResponsavel)
+          .collection("pesquisasCriadas")
+          .document(context.read<ResearchManager>().data.id)
+          .collection("pontoExtra")
+          .document(nomeCategoria);
+
+      documentReference.updateData(
+        {"existe": true, "imagemAntes": _image.path, "upload": false},
+      );
       setState(() {
-        imagemAntesPontoExtra = "carregando";
+        imagemAntesPontoExtra = _image.path;
       });
-      String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-
-      setState(() async {
-        print(docUrl);
-        imagemAntesPontoExtra = docUrl;
-
-        DocumentReference documentReference = await Firestore.instance
-            .collection("Empresas")
-            .document(context.read<ResearchManager>().data.empresaResponsavel)
-            .collection("pesquisasCriadas")
-            .document(context.read<ResearchManager>().data.id)
-            .collection("pontoExtra")
-            .document(nomeCategoria);
-
-        documentReference.updateData(
-          {
-            "existe": true,
-            "imagemAntes": docUrl,
-          },
-        );
-      });
+      //_image = File(pickedFile.path); // Use if you only need a single picture
+    } else {
+      print('No image selected.');
     }
-
-    uploadPic(context);
-
-    uploadPic(context);
   }
 }
