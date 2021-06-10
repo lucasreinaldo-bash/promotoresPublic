@@ -22,7 +22,7 @@ class ResearchScreenThree extends StatelessWidget {
           if (!snapInstrucao.hasData) {
             return CircularProgressIndicator();
           } else {
-            _instrucaoController.text = snapInstrucao.data["instrução"];
+            _instrucaoController.text = snapInstrucao.data["instrucao"];
             return Flex(
               direction: Axis.horizontal,
               children: [
@@ -72,7 +72,7 @@ class ResearchScreenThree extends StatelessWidget {
                                     child: TextField(
                                       focusNode: myFocusInstrucao,
                                       enabled: false,
-                                      maxLines: 10,
+                                      maxLines: 20,
                                       controller: _instrucaoController,
                                       keyboardType: TextInputType.text,
                                       style: TextStyle(

@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart' as path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:versaoPromotores/helpers/firebase_errors.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_ruptura_screen.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_validade_screen.dart';
@@ -480,7 +482,8 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                   ? imagemAntesPontoExtra != "sem imagem"
                                   : textoBtnPontoExtra == "Não")
                           ? () async {
-                              await Firestore.instance
+                              try {
+                                 await Firestore.instance
                                   .collection("Empresas")
                                   .document(data.empresaResponsavel)
                                   .collection("pesquisasCriadas")
@@ -495,7 +498,13 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                         ? _observacaoController.text
                                         : "Nenhuma",
                               });
-                              await Firestore.instance
+                              } on PlatformException catch (e) {
+                                debugPrint(getErrorString(e.code));
+                              }
+                             
+
+                             try {
+ await Firestore.instance
                                   .collection("Empresas")
                                   .document(data.empresaResponsavel)
                                   .collection("pesquisasCriadas")
@@ -508,8 +517,14 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                               });
 
                               Navigator.of(context).pop();
+                             }on PlatformException catch(e){
+                               debugPrint(getErrorString(e.code));
+                             }
+                             
                             }
-                          : null,
+                          : () {
+                              debugPrint(imagemAntes);
+                            },
                       child: Text(
                         "Salvar",
                         style: TextStyle(fontSize: 20, color: Colors.black54),

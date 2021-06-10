@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:versaoPromotores/helpers/firebase_errors.dart';
+import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
+import 'package:versaoPromotores/menu_principal/datas/instrucaoData.dart';
 import 'package:versaoPromotores/models/user.dart';
 
 import '../menu_principal/datas/pesquisaData.dart';
@@ -13,6 +15,18 @@ class UserManager extends ChangeNotifier {
   }
 //Carregando Pesquisas
   List<PesquisaData> allResearchs = [];
+
+  //Carregando Instrucoes
+  List<InstrucaoData> _allInstructions = [];
+  List<InstrucaoData> get allInstructions => _allInstructions;
+  //Carregando Produtos
+  List<ProductData> _allProducts = [];
+  List<ProductData> get allProducts => _allProducts;
+
+  set allProducts(List<ProductData> data) {
+    _allProducts = data;
+    print(_allProducts[2].nomeProduto + "Deus no comando , hoje e sempre!");
+  }
 
   final Firestore firestore = Firestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -34,7 +48,7 @@ class UserManager extends ChangeNotifier {
           email: user.email, password: user.senha);
 
       await _loadingCurrentUser(firebaseUser: result.user);
-      onSucess(result.user);
+      onSucess();
     } on PlatformException catch (e) {
       onFail(getErrorString(e.code));
     }
@@ -71,11 +85,17 @@ class UserManager extends ChangeNotifier {
           .map((d) => PesquisaData.fromDocument(d))
           .toList();
 
+      final QuerySnapshot instrucaoReposicao = await firestore
+          .collection("Empresas")
+          .document(user.empresaVinculada)
+          .collection("instrucoes")
+          .getDocuments();
 
-
-      debugPrint(""+allResearchs[1].nomeLoja);
+      _allInstructions = instrucaoReposicao.documents
+          .map((d) => InstrucaoData.fromDocument(d))
+          .toList();
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<void> signUp({User user, Function onFail, Function onSucess}) async {

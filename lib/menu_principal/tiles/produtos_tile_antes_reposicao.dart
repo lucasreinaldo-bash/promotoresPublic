@@ -28,12 +28,12 @@ class _ProdutosTileAntesReposicaoState
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        height: 50,
+        height: 60,
         child: ListTile(
           trailing: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              width: 60,
+              width: 50,
               decoration: new BoxDecoration(
                   border: Border.all(width: 1.0, color: Colors.black38),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -142,8 +142,8 @@ class _ProdutosTileAntesReposicaoState
                                     _quantidadeProdutoController.text),
                                 "qtdMinAreaVenda": qtdMinima,
                                 "qtdAtual": qtdAtual,
-                                "rupturaConfirmada":
-                                    qtdAtual < qtdMinima ? true : false
+                                // "rupturaConfirmada":
+                                //     qtdAtual < qtdMinima ? true : false
                               },
                             );
 
@@ -186,16 +186,17 @@ class _ProdutosTileAntesReposicaoState
           ),
           title: Container(
             width: 300,
-            height: 40,
+            height: 55,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 "" + dataProdutos.nomeProduto,
                 softWrap: false,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     fontFamily: "QuickSand",
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.start,

@@ -61,7 +61,7 @@ class ResearchScreenTwo extends StatelessWidget {
                               return LinearProgressIndicator();
                             } else {
                               return Container(
-                                height: 200,
+                                height: 300,
                                 child: ListView.builder(
                                     shrinkWrap: true,
                                     itemCount:

@@ -248,6 +248,6 @@ class _BottomNavigationPesquisaState extends State<BottomNavigationPesquisa> {
         .updateData({"rejeitada": true});
 
     Navigator.of(context).pop();
-    Navigator.of(context).pop();
+
   }
 }

@@ -178,9 +178,9 @@ class LoginScreen extends StatelessWidget {
                                           if (formKey.currentState.validate()) {
                                             userManager.signIn(
                                                 user: User(
-                                                  email: _emailController.text,
+                                                  email: _emailController.text.trim(),
                                                   senha:
-                                                      _passwordController.text,
+                                                      _passwordController.text.trim(),
                                                 ),
                                                 onFail: (e) {
                                                   scaffoldKey.currentState
@@ -192,7 +192,7 @@ class LoginScreen extends StatelessWidget {
                                                 onSucess: () {
                                                   Navigator.of(context)
                                                       .pushReplacementNamed(
-                                                          "/home"
+                                                          "/splash"
                                                 );
                                                 });
                                           }

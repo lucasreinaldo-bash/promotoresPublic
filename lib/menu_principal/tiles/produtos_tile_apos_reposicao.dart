@@ -26,7 +26,7 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        height: 50,
+        height: 60,
         child: ListTile(
           trailing: Container(
             width: 60,
@@ -141,16 +141,18 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
           ),
           title: Container(
             width: 300,
-            height: 40,
+            height: 50,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 "" + dataProdutos.nomeProduto,
                 softWrap: false,
                 overflow: TextOverflow.ellipsis,
+                maxLines: 2,
                 style: TextStyle(
                     fontFamily: "QuickSand",
-                    fontSize: 14,
+                    fontSize: 12,
+          
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.start,

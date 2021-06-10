@@ -40,11 +40,7 @@ class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
     SingingCharacter _character = SingingCharacter.lafayette;
 
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          valueRadio = !valueRadio;
-        });
-      },
+    
       child: ListTile(
         title: InkWell(
           child: Container(
@@ -58,9 +54,10 @@ class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
                     "" + dataProdutos.nomeProduto,
                     softWrap: false,
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     style: TextStyle(
                         fontFamily: "Helvetica",
-                        fontSize: 16,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
@@ -69,6 +66,7 @@ class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+
                       StreamBuilder(
                         stream: Firestore.instance
                             .collection("Empresas")
@@ -87,6 +85,7 @@ class _ProdutosTileRupturaState extends State<ProdutosTileRuptura> {
                           }
                         },
                       ),
+                      
                       GestureDetector(
                           onTap: () async {
                             setState(() {

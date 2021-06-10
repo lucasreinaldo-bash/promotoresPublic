@@ -59,14 +59,14 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
                           height: 10,
                         ),
                         Container(
-                      width: 50,
-                      height: 50,
-                      child: Center(
-                          child: FlareActor("assets/success_check.flr",
-                              alignment: Alignment.center,
-                              fit: BoxFit.contain,
-                              animation: "Untitled")),
-                    ),
+                          width: 50,
+                          height: 50,
+                          child: Center(
+                              child: FlareActor("assets/success_check.flr",
+                                  alignment: Alignment.center,
+                                  fit: BoxFit.contain,
+                                  animation: "Untitled")),
+                        ),
                       ],
                     ),
             )));
@@ -146,16 +146,13 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
             .collection("pesquisasCriadas")
             .document(data.id)
             .updateData({"imagemUpload": true});
-
-        Future.delayed(Duration(seconds: 10), () {
-          setState(() {
-            carregando = true;
-          });
-        });
       } catch (e) {
         print(e);
       }
     }
+    setState(() {
+      carregando = true;
+    });
   }
 
   Future uploadStorage(DocumentReference reference, String imagemPath) async {

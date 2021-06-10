@@ -8,6 +8,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:versaoPromotores/common/components/background_app.dart';
 import 'package:versaoPromotores/models/user_manager.dart';
 import 'package:versaoPromotores/models/user_model.dart';
+import 'package:versaoPromotores/screens/login_screen.dart';
 import 'package:versaoPromotores/telas_drawer/perfil_empresa/PerfilPromotor.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -167,7 +168,7 @@ Future<Login> _desconectar(BuildContext context) async {
 
   Navigator.pop(context);
   Navigator.of(context)
-      .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
+      .pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
   return Login();
 }
 

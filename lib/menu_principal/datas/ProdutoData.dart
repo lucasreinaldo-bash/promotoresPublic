@@ -6,12 +6,14 @@ class ProductData {
       antesReposicao,
       aposReposicao,
       qtdMinAreaEstoque,
-      qtdMinAreaVenda;
+      qtdMinAreaVenda,
+      qtdAtual;
   bool rupturaInicial;
 
   ProductData.fromDocument(DocumentSnapshot snapshot) {
     id = snapshot.documentID;
     nomeProduto = snapshot.data["nomeProduto"];
+    qtdAtual = snapshot.data["qtdAtual"];
     rupturaInicial = snapshot.data["rupturaInicial"];
     nomeLinha = snapshot.data["nomeLinha"];
     qtdMinAreaEstoque = snapshot.data["qtdMinAreaEstoque"];
@@ -29,6 +31,7 @@ class ProductData {
       "qtdMinAreaEstoque": qtdMinAreaEstoque,
       "qtdMinAreaVenda": qtdMinAreaVenda,
       "antesReposicao": antesReposicao,
+      "qtdAtual": qtdAtual,
     };
   }
 }

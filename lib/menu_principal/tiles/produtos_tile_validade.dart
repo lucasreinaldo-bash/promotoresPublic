@@ -161,16 +161,17 @@ class _ProdutosTileValidadeState extends State<ProdutosTileValidade> {
           ),
           title: Container(
             width: 200,
-            height: 40,
+            height: 50,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 "" + dataProdutos.nomeProduto,
                 softWrap: false,
                 overflow: TextOverflow.ellipsis,
+                maxLines: 2,
                 style: TextStyle(
                     fontFamily: "Helvetica",
-                    fontSize: 16,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.start,
