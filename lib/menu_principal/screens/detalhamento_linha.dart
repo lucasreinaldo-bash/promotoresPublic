@@ -373,6 +373,7 @@ class DetalhamentoLinha extends StatelessWidget {
                       .collection("estoqueDeposito")
                       .where("linha", isEqualTo: nomeLinha)
                       .where("rupturaConfirmada", isEqualTo: true)
+                      .where("rupturaInicial", isEqualTo: true)
                       .getDocuments(),
                   builder: (context, snapDetalhes) {
                     if (!snapDetalhes.hasData) {
@@ -420,8 +421,8 @@ class DetalhamentoLinha extends StatelessWidget {
                                                   ),
                                                   trailing: Text(
                                                       data.qtdAtual
-                                                              .toString() ?? "0" +
-                                                          " UN",
+                                                              .toString() ??
+                                                          "0" + " UN",
                                                       style: TextStyle(
                                                           fontFamily:
                                                               "QuickSandRegular")),
@@ -448,7 +449,6 @@ class DetalhamentoLinha extends StatelessWidget {
                       .document(data.id)
                       .collection("estoqueDeposito")
                       .where("linha", isEqualTo: nomeLinha)
-                      
                       .getDocuments(),
                   builder: (context, snapDetalhes) {
                     if (!snapDetalhes.hasData) {
@@ -495,10 +495,12 @@ class DetalhamentoLinha extends StatelessWidget {
                                                           "QuickSandRegular"),
                                                 ),
                                                 trailing: Text(
-                                                   data.antesReposicao == 9999 ? "Näo Pesquisado" : data.antesReposicao
-                                                            .toString() +
-                                                        " UN",
-                                                        maxLines: 2,
+                                                    data.antesReposicao == 9999
+                                                        ? "Näo Pesquisado"
+                                                        : data.antesReposicao
+                                                                .toString() +
+                                                            " UN",
+                                                    maxLines: 2,
                                                     style: TextStyle(
                                                         fontFamily:
                                                             "QuickSandRegular")),
@@ -550,10 +552,12 @@ class DetalhamentoLinha extends StatelessWidget {
                                                           "QuickSandRegular"),
                                                 ),
                                                 trailing: Text(
-                                                   data.aposReposicao == 9999 ? "Näo Pesquisado" : data.aposReposicao
-                                                            .toString() +
-                                                        " UN",
-                                                        maxLines: 2,
+                                                    data.aposReposicao == 9999
+                                                        ? "Näo Pesquisado"
+                                                        : data.aposReposicao
+                                                                .toString() +
+                                                            " UN",
+                                                    maxLines: 2,
                                                     style: TextStyle(
                                                         fontFamily:
                                                             "QuickSandRegular")),

@@ -32,6 +32,8 @@ class UserManager extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
   User user;
 
+
+
   bool _loading = false;
   bool get loading => _loading;
 

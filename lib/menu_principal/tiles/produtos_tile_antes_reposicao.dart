@@ -5,25 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 
-class ProdutosTileAntesReposicao extends StatefulWidget {
-  ProductData dataProdutos;
-  PesquisaData data;
-
-  ProdutosTileAntesReposicao(this.data, this.dataProdutos);
-  @override
-  _ProdutosTileAntesReposicaoState createState() =>
-      _ProdutosTileAntesReposicaoState(this.data, this.dataProdutos);
-}
-
-class _ProdutosTileAntesReposicaoState
-    extends State<ProdutosTileAntesReposicao> {
+class ProdutosTileAntesReposicao extends StatelessWidget {
   ProductData dataProdutos;
   PesquisaData data;
   final _quantidadeProdutoController = TextEditingController();
   final FocusNode myFocus = FocusNode();
 
   int qtdMinima, qtdAtual = 0;
-  _ProdutosTileAntesReposicaoState(this.data, this.dataProdutos);
+  ProdutosTileAntesReposicao(this.data, this.dataProdutos);
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -80,7 +69,7 @@ class _ProdutosTileAntesReposicaoState
                                 "qtdMinAreaVenda": qtdMinima,
                                 "qtdAtual": qtdAtual,
                                 "rupturaConfirmada":
-                                    qtdAtual < qtdMinima ? true : false
+                                    qtdAtual == 0 ? true : false
                               },
                             );
 
@@ -142,8 +131,11 @@ class _ProdutosTileAntesReposicaoState
                                     _quantidadeProdutoController.text),
                                 "qtdMinAreaVenda": qtdMinima,
                                 "qtdAtual": qtdAtual,
-                                // "rupturaConfirmada":
-                                //     qtdAtual < qtdMinima ? true : false
+                                "rupturaConfirmada":
+                                    _quantidadeProdutoController.text == "0" &&
+                                            dataProdutos.rupturaInicial == true
+                                        ? true
+                                        : false
                               },
                             );
 
