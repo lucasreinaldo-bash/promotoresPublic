@@ -15,29 +15,14 @@ import 'package:versaoPromotores/models/user_manager.dart';
 import '../../splash_screen_pesquisaRespondida.dart';
 import '../datas/pesquisaData.dart';
 
-class ResponderPesquisaData extends StatelessWidget {
+class PreviaPesquisa extends StatelessWidget {
   //Instanciar a classe modelo para recuperar as informações da pesquisa
   PesquisaData data;
-
-  // final int _numPages =
-  //     3; //Numero total de telas para responder a pesquisa antes da reposição
-
-  // final PageController _pageController = PageController(initialPage: 0);
-  // int _currentPage = 0;
-
-  // List<Widget> _buildPageIndicator() {
-  //   List<Widget> list = [];
-  //   for (int i = 0; i < 5; i++) {
-  //     list.add(i == _currentPage ? _indicator(true) : _indicator(false));
-  //   }
-  //   return list;
-  // }
-  //Pesquisa
 
   String title = "Área de Venda";
   String concluido = "não";
   final PageController pageController = PageController();
-  ResponderPesquisaData(this.data);
+  PreviaPesquisa(this.data);
   //Metodo para setar os buttons
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
@@ -67,7 +52,7 @@ class ResponderPesquisaData extends StatelessWidget {
         return Scaffold(
             backgroundColor: Color(0xFFEBEDF5),
             appBar: AppBar(
-             
+              title: Text("Recaptulando Pesquisa..."),
               centerTitle: true,
               backgroundColor: Colors.deepPurple,
             ),
@@ -104,11 +89,13 @@ class ResponderPesquisaData extends StatelessWidget {
                                               NeverScrollableScrollPhysics(),
                                           controller: pageController,
                                           children: [
-                                            ResearchScreenOne(),
-                                            ResearchScreenTwo(),
-                                            ResearchScreenThree(),
-                                            ResearchScreenFour(),
-                                            ResearchScreenFive(),
+                                            ResearchScreenOne(
+                                              previa: true,
+                                            ),
+                                            ResearchScreenTwo(previa: true,),
+                                            ResearchScreenThree(previa: true,),
+                                            ResearchScreenFour(previa: true,),
+                                            ResearchScreenFive(previa: true,),
                                             SplashScreenPesquisaRespondida()
                                           ],
                                         ),

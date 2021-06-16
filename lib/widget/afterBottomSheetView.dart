@@ -285,12 +285,12 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                 setState(() {
                                   novoPedido = false;
                                 });
-                                DocumentReference documentReference =
-                                    await Firestore.instance
-                                        .collection("Empresas")
-                                        .document(data.empresaResponsavel)
-                                        .collection("pesquisasCriadas")
-                                        .document(data.id);
+                                DocumentReference documentReference = Firestore
+                                    .instance
+                                    .collection("Empresas")
+                                    .document(data.empresaResponsavel)
+                                    .collection("pesquisasCriadas")
+                                    .document(data.id);
 
                                 documentReference.updateData(
                                   {
@@ -300,7 +300,7 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                 );
 
                                 DocumentReference documentReferenceLinha =
-                                    await Firestore.instance
+                                    Firestore.instance
                                         .collection("Empresas")
                                         .document(data.empresaResponsavel)
                                         .collection("pesquisasCriadas")
@@ -348,12 +348,12 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                 setState(() {
                                   novoPedido = true;
                                 });
-                                DocumentReference documentReference =
-                                    await Firestore.instance
-                                        .collection("Empresas")
-                                        .document(data.empresaResponsavel)
-                                        .collection("pesquisasCriadas")
-                                        .document(data.id);
+                                DocumentReference documentReference = Firestore
+                                    .instance
+                                    .collection("Empresas")
+                                    .document(data.empresaResponsavel)
+                                    .collection("pesquisasCriadas")
+                                    .document(data.id);
 
                                 documentReference.updateData(
                                   {
@@ -363,7 +363,7 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                 );
 
                                 DocumentReference documentReferenceLinha =
-                                    await Firestore.instance
+                                    Firestore.instance
                                         .collection("Empresas")
                                         .document(data.empresaResponsavel)
                                         .collection("pesquisasCriadas")
@@ -483,44 +483,46 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                   : textoBtnPontoExtra == "Não")
                           ? () async {
                               try {
-                                 await Firestore.instance
-                                  .collection("Empresas")
-                                  .document(data.empresaResponsavel)
-                                  .collection("pesquisasCriadas")
-                                  .document(data.id)
-                                  .collection("linhasProdutosAposReposicao")
-                                  .document(nomeCategoria)
-                                  .updateData({
-                                "concluida": true,
-                                "nomeLinha": nomeCategoria,
-                                "comentario":
-                                    _observacaoController.text.length != 0
-                                        ? _observacaoController.text
-                                        : "Nenhuma",
-                              });
+                                DocumentReference documentReference = Firestore
+                                    .instance
+                                    .collection("Empresas")
+                                    .document(data.empresaResponsavel)
+                                    .collection("pesquisasCriadas")
+                                    .document(data.id)
+                                    .collection("linhasProdutosAposReposicao")
+                                    .document(nomeCategoria);
+
+                                documentReference.updateData({
+                                  "concluida": true,
+                                  "nomeLinha": nomeCategoria,
+                                  "comentario":
+                                      _observacaoController.text.length != 0
+                                          ? _observacaoController.text
+                                          : "Nenhuma",
+                                });
                               } on PlatformException catch (e) {
                                 debugPrint(getErrorString(e.code));
                               }
-                             
 
-                             try {
- await Firestore.instance
-                                  .collection("Empresas")
-                                  .document(data.empresaResponsavel)
-                                  .collection("pesquisasCriadas")
-                                  .document(data.id)
-                                  .collection("linhasProdutosAntesReposicao")
-                                  .document(nomeCategoria)
-                                  .updateData({
-                                "tags":
-                                    FieldValue.arrayRemove(["Nova Pesquisa"])
-                              });
+                              try {
+                                DocumentReference docReference = Firestore
+                                    .instance
+                                    .collection("Empresas")
+                                    .document(data.empresaResponsavel)
+                                    .collection("pesquisasCriadas")
+                                    .document(data.id)
+                                    .collection("linhasProdutosAntesReposicao")
+                                    .document(nomeCategoria);
 
-                              Navigator.of(context).pop();
-                             }on PlatformException catch(e){
-                               debugPrint(getErrorString(e.code));
-                             }
-                             
+                                docReference.updateData({
+                                  "tags":
+                                      FieldValue.arrayRemove(["Nova Pesquisa"])
+                                });
+
+                                Navigator.of(context).pop();
+                              } on PlatformException catch (e) {
+                                debugPrint(getErrorString(e.code));
+                              }
                             }
                           : () {
                               debugPrint(imagemAntes);

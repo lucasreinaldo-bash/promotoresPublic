@@ -37,7 +37,7 @@ class CustomDrawerHeader extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "Olá, ${userManager.user?.nomePromotor.split(" ").first ?? ""}",
+                          "Olá, ${userManager.user?.nomePromotor?.split(" ")?.first ?? ""}",
                           maxLines: 2,
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,

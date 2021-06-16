@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:versaoPromotores/models/research_manager.dart';
 import 'package:versaoPromotores/screens/login_screen.dart';
 import 'package:versaoPromotores/splash_screen.dart';
-import 'Login.dart';
 import 'fcm/config_fcm.dart';
 import 'menu_principal/detalhamentoPesquisa.dart';
 import 'menu_principal/home_menu.dart';
+import 'models/page_manager.dart';
 import 'models/user_manager.dart';
 
 main() {
@@ -18,6 +18,7 @@ main() {
 }
 
 class Home extends StatelessWidget {
+  PageController pageController;
   @override
   Widget build(BuildContext context) {
     configFCM(context);
@@ -31,9 +32,14 @@ class Home extends StatelessWidget {
           create: (_) => ResearchManager(),
           lazy: false,
         ),
+        ChangeNotifierProvider(
+          create: (_) => PageManager(pageController),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+   
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case "/login":

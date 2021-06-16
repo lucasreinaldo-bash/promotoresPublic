@@ -62,8 +62,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   openStartPage() async {
-    await Future.delayed(Duration(seconds: 3), () => _loadCurrentUser());
-  }
+    
+  await Future.delayed(Duration(seconds: 3), () => _loadCurrentUser());}
 
   String id;
 

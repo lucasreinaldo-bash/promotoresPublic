@@ -611,16 +611,18 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                                       ? imagemAntesPontoExtra != "sem imagem"
                                       : textoBtnPontoExtra == "Não")
                               ? () async {
-                                  await Firestore.instance
-                                      .collection("Empresas")
-                                      .document(researchManager
-                                          .data.empresaResponsavel)
-                                      .collection("pesquisasCriadas")
-                                      .document(researchManager.data.id)
-                                      .collection(
-                                          "linhasProdutosAntesReposicao")
-                                      .document(nomeCategoria)
-                                      .updateData({
+                                  DocumentReference documentReference =
+                                      Firestore.instance
+                                          .collection("Empresas")
+                                          .document(researchManager
+                                              .data.empresaResponsavel)
+                                          .collection("pesquisasCriadas")
+                                          .document(researchManager.data.id)
+                                          .collection(
+                                              "linhasProdutosAntesReposicao")
+                                          .document(nomeCategoria);
+
+                                  documentReference.updateData({
                                     "concluida": true,
                                     "nomeLinha": nomeCategoria
                                   });

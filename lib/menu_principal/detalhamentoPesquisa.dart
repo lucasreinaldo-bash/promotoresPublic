@@ -54,6 +54,29 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
   Widget build(BuildContext context) {
     return Consumer<ResearchManager>(
       builder: (_, researchManager, __) {
+        Future<QuerySnapshot> snapshotQuery = Firestore.instance
+            .collection("Empresas")
+            .document(researchManager.data.empresaResponsavel)
+            .collection("pesquisasCriadas")
+            .document(researchManager.data.id)
+            .collection("estoqueDeposito")
+            .getDocuments();
+
+        Future<QuerySnapshot> snapshotQuery2 = Firestore.instance
+            .collection("Empresas")
+            .document(researchManager.data.empresaResponsavel)
+            .collection("pesquisasCriadas")
+            .document(researchManager.data.id)
+            .collection("linhasProdutosAposReposicao")
+            .getDocuments();
+
+        Future<QuerySnapshot> snapshotQuery3 = Firestore.instance
+            .collection("Empresas")
+            .document(researchManager.data.empresaResponsavel)
+            .collection("pesquisasCriadas")
+            .document(researchManager.data.id)
+            .collection("pontoExtra")
+            .getDocuments();
         _observacaoController.text = researchManager.data.observacao;
         return Scaffold(
           bottomNavigationBar: BottomNavigationPesquisa(researchManager.data),

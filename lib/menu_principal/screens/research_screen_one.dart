@@ -3,13 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
+import 'package:versaoPromotores/menu_principal/detalhamentoPesquisa.dart';
+import 'package:versaoPromotores/menu_principal/screens/research_screen_two.dart';
 import 'package:versaoPromotores/models/page_manager.dart';
 import 'package:versaoPromotores/models/research_manager.dart';
 import 'package:versaoPromotores/widget/bottomSheetView.dart';
 import '../../models/user_manager.dart';
-import 'package:flare_flutter/flare_actor.dart';
 
-class ResearchScreenOne extends StatelessWidget {
+class ResearchScreenOne extends StatefulWidget {
+  bool previa = false;
+
+  ResearchScreenOne({this.previa});
+
+  @override
+  _ResearchScreenOneState createState() => _ResearchScreenOneState();
+}
+
+class _ResearchScreenOneState extends State<ResearchScreenOne> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if (widget.previa == true) {
+      Future.delayed(
+          Duration(seconds: 2), () => context.read<PageManager>().nextPage());
+    }
+  }
+
+  previaNextScreen() async {
+    await Future.delayed(
+        Duration(seconds: 3),
+        () => () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ResearchScreenTwo()));
+            });
+  }
+
   @override
   Widget build(BuildContext context) {
     var lista =
@@ -20,7 +50,8 @@ class ResearchScreenOne extends StatelessWidget {
 
       return resultFirstWhere;
     }
-     context.read<ResearchManager>().titleScreen = "Área de Venda";
+
+    context.read<ResearchManager>().titleScreen = "Área de Venda";
 
     return Consumer<UserManager>(
       builder: (_, userManager, __) {
@@ -225,8 +256,10 @@ class ResearchScreenOne extends StatelessWidget {
                               children: [
                                 FlatButton(
                                   onPressed: () {
-                                    
-                                    context.read<PageManager>().previusPage();
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetalhamentoPesquisa()));
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -267,7 +300,7 @@ class ResearchScreenOne extends StatelessWidget {
                                         print(true);
 
                                         context.read<PageManager>().nextPage();
-                                         } else {
+                                      } else {
                                         showDialog(
                                             context: context,
                                             builder: (_) => FlareGiffyDialog(

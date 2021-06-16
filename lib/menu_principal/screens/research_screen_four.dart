@@ -8,7 +8,26 @@ import 'package:giffy_dialog/giffy_dialog.dart';
 
 import 'package:versaoPromotores/models/page_manager.dart';
 
-class ResearchScreenFour extends StatelessWidget {
+class ResearchScreenFour extends StatefulWidget {
+  bool previa = false;
+  ResearchScreenFour({this.previa});
+
+  @override
+  _ResearchScreenFourState createState() => _ResearchScreenFourState();
+}
+
+class _ResearchScreenFourState extends State<ResearchScreenFour> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if (widget.previa == true) {
+      Future.delayed(
+          Duration(seconds: 2), () => context.read<PageManager>().nextPage());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var lista =

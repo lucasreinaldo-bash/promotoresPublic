@@ -4,6 +4,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:date_format/date_format.dart' as da;
 
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
+import 'package:versaoPromotores/menu_principal/previusResearch/previaPesquisa.dart';
 import 'package:versaoPromotores/menu_principal/responder_pesquisa/responder_pesquisa.dart';
 
 class BottomNavigationPesquisa extends StatefulWidget {
@@ -126,7 +127,7 @@ class _BottomNavigationPesquisaState extends State<BottomNavigationPesquisa> {
       print(index);
 
       if (_indiceAtual == 0) {
-        Navigator.pop(context);
+        Navigator.pushNamed(context, "/home");
       } else if (data.status != "A APROVAR") {
         bottomDialogPesquisa();
       } else {}
@@ -175,6 +176,7 @@ class _BottomNavigationPesquisaState extends State<BottomNavigationPesquisa> {
                                   switch (_indiceAtual) {
                                     case 1:
                                       print(data.aceita);
+
                                       aceitarPesquisa();
                                       break;
                                     case 2:
@@ -228,8 +230,8 @@ class _BottomNavigationPesquisaState extends State<BottomNavigationPesquisa> {
         .collection("pesquisasCriadas")
         .document(data.id)
         .updateData({"aceita": true});
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => ResponderPesquisaData(data)));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => PreviaPesquisa(data)));
   }
 
   void recusarPesquisa() async {
@@ -248,6 +250,13 @@ class _BottomNavigationPesquisaState extends State<BottomNavigationPesquisa> {
         .updateData({"rejeitada": true});
 
     Navigator.of(context).pop();
+  }
 
+  @override
+  void setState(fn) {
+    // TODO: implement setState
+    super.setState(fn);
+
+    data.aceita = true;
   }
 }

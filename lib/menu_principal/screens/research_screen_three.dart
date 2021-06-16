@@ -5,9 +5,28 @@ import 'package:versaoPromotores/models/research_manager.dart';
 import 'package:versaoPromotores/models/page_manager.dart';
 import '../../models/user_manager.dart';
 
-class ResearchScreenThree extends StatelessWidget {
+class ResearchScreenThree extends StatefulWidget {
+  bool previa = false;
+  ResearchScreenThree({this.previa});
+
+  @override
+  _ResearchScreenThreeState createState() => _ResearchScreenThreeState();
+}
+
+class _ResearchScreenThreeState extends State<ResearchScreenThree> {
   final _instrucaoController = TextEditingController();
+
   final FocusNode myFocusInstrucao = FocusNode();
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.previa == true) {
+      Future.delayed(
+          Duration(seconds: 2), () => context.read<PageManager>().nextPage());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     context.read<ResearchManager>().titleScreen = ("Intruções de Reposição");

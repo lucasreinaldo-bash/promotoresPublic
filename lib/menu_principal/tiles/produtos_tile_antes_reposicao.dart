@@ -5,14 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 
-class ProdutosTileAntesReposicao extends StatelessWidget {
+class ProdutosTileAntesReposicao extends StatefulWidget {
   ProductData dataProdutos;
   PesquisaData data;
+
+  ProdutosTileAntesReposicao(this.data, this.dataProdutos);
+
+  @override
+  _ProdutosTileAntesReposicaoState createState() => _ProdutosTileAntesReposicaoState();
+}
+
+class _ProdutosTileAntesReposicaoState extends State<ProdutosTileAntesReposicao> {
   final _quantidadeProdutoController = TextEditingController();
+
   final FocusNode myFocus = FocusNode();
 
   int qtdMinima, qtdAtual = 0;
-  ProdutosTileAntesReposicao(this.data, this.dataProdutos);
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -31,11 +40,11 @@ class ProdutosTileAntesReposicao extends StatelessWidget {
                   child: StreamBuilder(
                     stream: Firestore.instance
                         .collection("Empresas")
-                        .document(data.empresaResponsavel)
+                        .document(widget.data.empresaResponsavel)
                         .collection("pesquisasCriadas")
-                        .document(data.id)
+                        .document(widget.data.id)
                         .collection("estoqueDeposito")
-                        .document(dataProdutos.nomeProduto)
+                        .document(widget.dataProdutos.nomeProduto)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
@@ -49,21 +58,21 @@ class ProdutosTileAntesReposicao extends StatelessWidget {
                           onEditingComplete: () async {
                             qtdAtual =
                                 int.parse(_quantidadeProdutoController.text);
-                            qtdMinima = dataProdutos.qtdMinAreaVenda;
+                            qtdMinima = widget.dataProdutos.qtdMinAreaVenda;
 
                             DocumentReference documentReference =
-                                await Firestore.instance
+                                 Firestore.instance
                                     .collection("Empresas")
-                                    .document(data.empresaResponsavel)
+                                    .document(widget.data.empresaResponsavel)
                                     .collection("pesquisasCriadas")
-                                    .document(data.id)
+                                    .document(widget.data.id)
                                     .collection("estoqueDeposito")
-                                    .document(dataProdutos.nomeProduto);
+                                    .document(widget.dataProdutos.nomeProduto);
 
                             documentReference.updateData(
                               {
-                                "nomeLinha": dataProdutos.nomeLinha,
-                                "nomeProduto": dataProdutos.nomeProduto,
+                                "nomeLinha": widget.dataProdutos.nomeLinha,
+                                "nomeProduto": widget.dataProdutos.nomeProduto,
                                 "antesReposicao": int.parse(
                                     _quantidadeProdutoController.text),
                                 "qtdMinAreaVenda": qtdMinima,
@@ -78,7 +87,7 @@ class ProdutosTileAntesReposicao extends StatelessWidget {
                               title: "Informação respondida com sucesso.",
                               message:
                                   "A quantidade anterior de ${_quantidadeProdutoController.text} "
-                                  "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                                  "${widget.dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
                               backgroundGradient: LinearGradient(
                                   colors: [Colors.blue, Colors.teal]),
                               backgroundColor: Colors.red,
@@ -112,28 +121,28 @@ class ProdutosTileAntesReposicao extends StatelessWidget {
                           onEditingComplete: () async {
                             qtdAtual =
                                 int.parse(_quantidadeProdutoController.text);
-                            qtdMinima = dataProdutos.qtdMinAreaVenda;
+                            qtdMinima = widget.dataProdutos.qtdMinAreaVenda;
 
                             DocumentReference documentReference =
-                                await Firestore.instance
+                                 Firestore.instance
                                     .collection("Empresas")
-                                    .document(data.empresaResponsavel)
+                                    .document(widget.data.empresaResponsavel)
                                     .collection("pesquisasCriadas")
-                                    .document(data.id)
+                                    .document(widget.data.id)
                                     .collection("estoqueDeposito")
-                                    .document(dataProdutos.nomeProduto);
+                                    .document(widget.dataProdutos.nomeProduto);
 
                             documentReference.updateData(
                               {
-                                "nomeLinha": dataProdutos.nomeLinha,
-                                "nomeProduto": dataProdutos.nomeProduto,
+                                "nomeLinha": widget.dataProdutos.nomeLinha,
+                                "nomeProduto": widget.dataProdutos.nomeProduto,
                                 "antesReposicao": int.parse(
                                     _quantidadeProdutoController.text),
                                 "qtdMinAreaVenda": qtdMinima,
                                 "qtdAtual": qtdAtual,
                                 "rupturaConfirmada":
                                     _quantidadeProdutoController.text == "0" &&
-                                            dataProdutos.rupturaInicial == true
+                                            widget.dataProdutos.rupturaInicial == true
                                         ? true
                                         : false
                               },
@@ -144,7 +153,7 @@ class ProdutosTileAntesReposicao extends StatelessWidget {
                               title: "Informação respondida com sucesso.",
                               message:
                                   "A quantidade anterior de ${_quantidadeProdutoController.text} "
-                                  "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                                  "${widget.dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
                               backgroundGradient: LinearGradient(
                                   colors: [Colors.blue, Colors.teal]),
                               backgroundColor: Colors.red,
@@ -182,7 +191,7 @@ class ProdutosTileAntesReposicao extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "" + dataProdutos.nomeProduto,
+                "" + widget.dataProdutos.nomeProduto,
                 softWrap: false,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

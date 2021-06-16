@@ -61,14 +61,16 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
 
                           return TextField(
                             onEditingComplete: () async {
-                              await Firestore.instance
+                              DocumentReference documentReference = Firestore
+                                  .instance
                                   .collection("Empresas")
                                   .document(data.empresaResponsavel)
                                   .collection("pesquisasCriadas")
                                   .document(data.id)
                                   .collection("estoqueDeposito")
-                                  .document(dataProdutos.nomeProduto)
-                                  .updateData(
+                                  .document(dataProdutos.nomeProduto);
+
+                              documentReference.updateData(
                                 {
                                   "linha": dataProdutos.nomeLinha,
                                   "produto": dataProdutos.nomeProduto,
@@ -78,31 +80,10 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
                                   "qtdReposto": int.tryParse(
                                           _quantidadeProdutoController.text) ??
                                       0 - dataProdutos.antesReposicao,
-                                  "ruptura": dataProdutos.rupturaInicial == true
-                                      ? true
-                                      : false
                                 },
                               );
-                              await Firestore.instance
-                                  .collection("Empresas")
-                                  .document(data.empresaResponsavel)
-                                  .collection("pesquisasCriadas")
-                                  .document(data.id)
-                                  .updateData({
-                                "tags": FieldValue.arrayUnion(["Ruptura"])
-                              });
 
-                              await Firestore.instance
-                                  .collection("Empresas")
-                                  .document(data.empresaResponsavel)
-                                  .collection("pesquisasCriadas")
-                                  .document(data.id)
-                                  .collection("linhasProdutosAntesReposicao")
-                                  .document(dataProdutos.nomeProduto)
-                                  .updateData({
-                                "tags": FieldValue.arrayUnion(["Ruptura"])
-                              });
-                              FocusScope.of(context).unfocus();
+                              // FocusScope.of(context).unfocus();
                               Flushbar(
                                 title: "Informação respondida com sucesso.",
                                 message:
@@ -152,7 +133,6 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
                 style: TextStyle(
                     fontFamily: "QuickSand",
                     fontSize: 12,
-          
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.start,

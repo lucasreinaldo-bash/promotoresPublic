@@ -114,7 +114,8 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
             });
         imagemDepois.get().then((doc) => {
               if (doc.exists)
-                {uploadStorage(imagemAntes, doc.data["imagem"])}
+                {
+                  uploadStorage(imagemDepois, doc.data["imagem"])}
               else
                 {
                   print("Nao Existe")

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:versaoPromotores/menu_principal/detalhamentoPesquisa.dart';
 import 'package:versaoPromotores/models/research_manager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_apos_reposicao.dart';
@@ -11,7 +12,27 @@ import 'package:flutter/widgets.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/splash_screen_pesquisaRespondida.dart';
 
-class ResearchScreenFive extends StatelessWidget {
+class ResearchScreenFive extends StatefulWidget {
+  bool previa = false;
+  ResearchScreenFive({this.previa});
+
+  @override
+  _ResearchScreenFiveState createState() => _ResearchScreenFiveState();
+}
+
+class _ResearchScreenFiveState extends State<ResearchScreenFive> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.previa == true) {
+      Future.delayed(
+          Duration(seconds: 2),
+          () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => DetalhamentoPesquisa())));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ResearchManager>(

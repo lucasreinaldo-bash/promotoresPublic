@@ -5,12 +5,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:versaoPromotores/models/page_manager.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_antes_reposicao.dart';
 
-class ResearchScreenTwo extends StatelessWidget {
+class ResearchScreenTwo extends StatefulWidget {
+  bool previa = false;
+  ResearchScreenTwo({this.previa});
+  @override
+  _ResearchScreenTwoState createState() => _ResearchScreenTwoState();
+}
+
+class _ResearchScreenTwoState extends State<ResearchScreenTwo> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.previa == true) {
+      Future.delayed(
+          Duration(seconds: 2), () => context.read<PageManager>().nextPage());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     context.read<ResearchManager>().titleScreen = "Estoque Depósito";
@@ -71,7 +87,6 @@ class ResearchScreenTwo extends StatelessWidget {
                                           ProductData.fromDocument(
                                               snapshotProdutos
                                                   .data.documents[index]);
-                                      bool nomeCategoriaBool = false;
 
                                       return ProdutosTileAntesReposicao(
                                           researchManager.data, dataProduto);
@@ -90,8 +105,6 @@ class ResearchScreenTwo extends StatelessWidget {
                                 FlatButton(
                                   onPressed: () {
                                     context.read<PageManager>().previusPage();
-                                    
-                                    
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -117,8 +130,6 @@ class ResearchScreenTwo extends StatelessWidget {
                                 FlatButton(
                                   onPressed: () async {
                                     context.read<PageManager>().nextPage();
-                          
-                                  
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
