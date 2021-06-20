@@ -52,10 +52,26 @@ class PreviaPesquisa extends StatelessWidget {
         return Scaffold(
             backgroundColor: Color(0xFFEBEDF5),
             appBar: AppBar(
-              title: Text("Recaptulando Pesquisa..."),
+              leading: Column(
+                children: [
+                  Text(""),
+                ],
+              ),
+              title: Column(
+                children: [
+                  SizedBox(height: 2,),
+                  CircularProgressIndicator(backgroundColor: Colors.white,),
+                                    SizedBox(height: 2,),
+
+                                    Text("Preparando pesquisa", style: TextStyle(fontSize: 10),)
+
+                ],
+              ),
+             
               centerTitle: true,
               backgroundColor: Colors.deepPurple,
             ),
+            
             body: Container(
               height: MediaQuery.of(context).size.height,
               child: Stack(

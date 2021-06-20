@@ -12,11 +12,15 @@ class ProdutosTileAntesReposicao extends StatefulWidget {
   ProdutosTileAntesReposicao(this.data, this.dataProdutos);
 
   @override
-  _ProdutosTileAntesReposicaoState createState() => _ProdutosTileAntesReposicaoState();
+  _ProdutosTileAntesReposicaoState createState() =>
+      _ProdutosTileAntesReposicaoState();
 }
 
-class _ProdutosTileAntesReposicaoState extends State<ProdutosTileAntesReposicao> {
+class _ProdutosTileAntesReposicaoState
+    extends State<ProdutosTileAntesReposicao> {
   final _quantidadeProdutoController = TextEditingController();
+  final _formKey =
+      GlobalKey<FormState>(); //create global key with FormState type
 
   final FocusNode myFocus = FocusNode();
 
@@ -31,7 +35,7 @@ class _ProdutosTileAntesReposicaoState extends State<ProdutosTileAntesReposicao>
           trailing: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              width: 50,
+              width: 60,
               decoration: new BoxDecoration(
                   border: Border.all(width: 1.0, color: Colors.black38),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -54,14 +58,16 @@ class _ProdutosTileAntesReposicaoState extends State<ProdutosTileAntesReposicao>
                         valorAnterior = snapshot.data["antesReposicao"];
                         _quantidadeProdutoController.text =
                             valorAnterior.toString();
-                        return TextField(
-                          onEditingComplete: () async {
-                            qtdAtual =
-                                int.parse(_quantidadeProdutoController.text);
-                            qtdMinima = widget.dataProdutos.qtdMinAreaVenda;
+                        return FocusScope(
+                            onFocusChange: (value) {
+                              if (!value) {
+                                //here checkAndUpdate();
+                                qtdAtual = int.parse(
+                                    _quantidadeProdutoController.text);
+                                qtdMinima = widget.dataProdutos.qtdMinAreaVenda;
 
-                            DocumentReference documentReference =
-                                 Firestore.instance
+                                DocumentReference documentReference = Firestore
+                                    .instance
                                     .collection("Empresas")
                                     .document(widget.data.empresaResponsavel)
                                     .collection("pesquisasCriadas")
@@ -69,62 +75,50 @@ class _ProdutosTileAntesReposicaoState extends State<ProdutosTileAntesReposicao>
                                     .collection("estoqueDeposito")
                                     .document(widget.dataProdutos.nomeProduto);
 
-                            documentReference.updateData(
-                              {
-                                "nomeLinha": widget.dataProdutos.nomeLinha,
-                                "nomeProduto": widget.dataProdutos.nomeProduto,
-                                "antesReposicao": int.parse(
-                                    _quantidadeProdutoController.text),
-                                "qtdMinAreaVenda": qtdMinima,
-                                "qtdAtual": qtdAtual,
-                                "rupturaConfirmada":
-                                    qtdAtual == 0 ? true : false
-                              },
-                            );
+                                documentReference.updateData(
+                                  {
+                                    "nomeLinha": widget.dataProdutos.nomeLinha,
+                                    "nomeProduto":
+                                        widget.dataProdutos.nomeProduto,
+                                    "antesReposicao": int.parse(
+                                        _quantidadeProdutoController.text),
+                                    "qtdMinAreaVenda": qtdMinima,
+                                    "qtdAtual": qtdAtual,
+                                    "rupturaConfirmada":
+                                        qtdAtual == 0 ? true : false
+                                  },
+                                );
 
 //                    FocusScope.of(context).unfocus();
-                            Flushbar(
-                              title: "Informação respondida com sucesso.",
-                              message:
-                                  "A quantidade anterior de ${_quantidadeProdutoController.text} "
-                                  "${widget.dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
-                              backgroundGradient: LinearGradient(
-                                  colors: [Colors.blue, Colors.teal]),
-                              backgroundColor: Colors.red,
-                              duration: Duration(seconds: 3),
-                              boxShadows: [
-                                BoxShadow(
-                                  color: Colors.blue[800],
-                                  offset: Offset(0.0, 2.0),
-                                  blurRadius: 5.0,
-                                )
-                              ],
-                            )..show(context);
-                            print("Aew");
-                          },
-                          controller: _quantidadeProdutoController,
-                          keyboardType: TextInputType.number,
-                          style: TextStyle(
-                              fontFamily: "WorkSansSemiBold",
-                              fontSize: 12,
-                              color: Colors.black),
-                          focusNode: myFocus,
-                          decoration: InputDecoration(
-                            hintText: "0",
-                            border: InputBorder.none,
-                          ),
-                        );
-                      } else {
-                        int valorAnterior = 0;
-                        _quantidadeProdutoController.text = "0";
-                        return TextField(
-                          onEditingComplete: () async {
-                            qtdAtual =
-                                int.parse(_quantidadeProdutoController.text);
-                            qtdMinima = widget.dataProdutos.qtdMinAreaVenda;
+                                // Flushbar(
+                                //   title: "Informação respondida com sucesso.",
+                                //   message:
+                                //       "A quantidade anterior de ${_quantidadeProdutoController.text} "
+                                //       "${widget.dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                                //   backgroundGradient: LinearGradient(
+                                //       colors: [Colors.blue, Colors.teal]),
+                                //   backgroundColor: Colors.red,
+                                //   duration: Duration(seconds: 3),
+                                //   boxShadows: [
+                                //     BoxShadow(
+                                //       color: Colors.blue[800],
+                                //       offset: Offset(0.0, 2.0),
+                                //       blurRadius: 5.0,
+                                //     )
+                                //   ],
+                                // )..show(context);
+                                print("Aew");
+                                print("sem foco");
+                              }
+                            },
+                            child: TextFormField(
+                              onSaved: (String value) {
+                                qtdAtual = int.parse(
+                                    _quantidadeProdutoController.text);
+                                qtdMinima = widget.dataProdutos.qtdMinAreaVenda;
 
-                            DocumentReference documentReference =
-                                 Firestore.instance
+                                DocumentReference documentReference = Firestore
+                                    .instance
                                     .collection("Empresas")
                                     .document(widget.data.empresaResponsavel)
                                     .collection("pesquisasCriadas")
@@ -132,8 +126,72 @@ class _ProdutosTileAntesReposicaoState extends State<ProdutosTileAntesReposicao>
                                     .collection("estoqueDeposito")
                                     .document(widget.dataProdutos.nomeProduto);
 
-                            documentReference.updateData(
-                              {
+                                documentReference.updateData(
+                                  {
+                                    "nomeLinha": widget.dataProdutos.nomeLinha,
+                                    "nomeProduto":
+                                        widget.dataProdutos.nomeProduto,
+                                    "antesReposicao": int.parse(
+                                        _quantidadeProdutoController.text),
+                                    "qtdMinAreaVenda": qtdMinima,
+                                    "qtdAtual": qtdAtual,
+                                    "rupturaConfirmada":
+                                        qtdAtual == 0 ? true : false
+                                  },
+                                );
+
+//                    FocusScope.of(context).unfocus();
+                                // Flushbar(
+                                //   title: "Informação respondida com sucesso.",
+                                //   message:
+                                //       "A quantidade anterior de ${_quantidadeProdutoController.text} "
+                                //       "${widget.dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                                //   backgroundGradient: LinearGradient(
+                                //       colors: [Colors.blue, Colors.teal]),
+                                //   backgroundColor: Colors.red,
+                                //   duration: Duration(seconds: 3),
+                                //   boxShadows: [
+                                //     BoxShadow(
+                                //       color: Colors.blue[800],
+                                //       offset: Offset(0.0, 2.0),
+                                //       blurRadius: 5.0,
+                                //     )
+                                //   ],
+                                // )..show(context);
+                                print("Aew");
+                              },
+                              onChanged: (String value) {},
+                              controller: _quantidadeProdutoController,
+                              keyboardType: TextInputType.number,
+                              style: TextStyle(
+                                  fontFamily: "WorkSansSemiBold",
+                                  fontSize: 12,
+                                  color: Colors.black),
+                              focusNode: myFocus,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                            ));
+                      } else {
+                        int valorAnterior = 0;
+                        _quantidadeProdutoController.text = "";
+                        return FocusScope(
+                          onFocusChange: (value) {
+                            if (!value) {
+                              qtdAtual =
+                                  int.parse(_quantidadeProdutoController.text);
+                              qtdMinima = widget.dataProdutos.qtdMinAreaVenda;
+
+                              DocumentReference documentReference = Firestore
+                                  .instance
+                                  .collection("Empresas")
+                                  .document(widget.data.empresaResponsavel)
+                                  .collection("pesquisasCriadas")
+                                  .document(widget.data.id)
+                                  .collection("estoqueDeposito")
+                                  .document(widget.dataProdutos.nomeProduto);
+
+                              documentReference.updateData({
                                 "nomeLinha": widget.dataProdutos.nomeLinha,
                                 "nomeProduto": widget.dataProdutos.nomeProduto,
                                 "antesReposicao": int.parse(
@@ -142,42 +200,79 @@ class _ProdutosTileAntesReposicaoState extends State<ProdutosTileAntesReposicao>
                                 "qtdAtual": qtdAtual,
                                 "rupturaConfirmada":
                                     _quantidadeProdutoController.text == "0" &&
-                                            widget.dataProdutos.rupturaInicial == true
+                                            widget.dataProdutos
+                                                    .rupturaInicial ==
+                                                true
                                         ? true
                                         : false
-                              },
-                            );
+                              });
+                            }
+                          },
+                          child: TextField(
+                            onEditingComplete: () async {
+                              qtdAtual =
+                                  int.parse(_quantidadeProdutoController.text);
+                              qtdMinima = widget.dataProdutos.qtdMinAreaVenda;
+
+                              DocumentReference documentReference = Firestore
+                                  .instance
+                                  .collection("Empresas")
+                                  .document(widget.data.empresaResponsavel)
+                                  .collection("pesquisasCriadas")
+                                  .document(widget.data.id)
+                                  .collection("estoqueDeposito")
+                                  .document(widget.dataProdutos.nomeProduto);
+
+                              documentReference.updateData(
+                                {
+                                  "nomeLinha": widget.dataProdutos.nomeLinha,
+                                  "nomeProduto":
+                                      widget.dataProdutos.nomeProduto,
+                                  "antesReposicao": int.parse(
+                                      _quantidadeProdutoController.text),
+                                  "qtdMinAreaVenda": qtdMinima,
+                                  "qtdAtual": qtdAtual,
+                                  "rupturaConfirmada":
+                                      _quantidadeProdutoController.text ==
+                                                  "0" &&
+                                              widget.dataProdutos
+                                                      .rupturaInicial ==
+                                                  true
+                                          ? true
+                                          : false
+                                },
+                              );
 
 //                    FocusScope.of(context).unfocus();
-                            Flushbar(
-                              title: "Informação respondida com sucesso.",
-                              message:
-                                  "A quantidade anterior de ${_quantidadeProdutoController.text} "
-                                  "${widget.dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
-                              backgroundGradient: LinearGradient(
-                                  colors: [Colors.blue, Colors.teal]),
-                              backgroundColor: Colors.red,
-                              duration: Duration(seconds: 3),
-                              boxShadows: [
-                                BoxShadow(
-                                  color: Colors.blue[800],
-                                  offset: Offset(0.0, 2.0),
-                                  blurRadius: 5.0,
-                                )
-                              ],
-                            )..show(context);
-                            print("Aew");
-                          },
-                          controller: _quantidadeProdutoController,
-                          keyboardType: TextInputType.number,
-                          style: TextStyle(
-                              fontFamily: "WorkSansSemiBold",
-                              fontSize: 12,
-                              color: Colors.black),
-                          focusNode: myFocus,
-                          decoration: InputDecoration(
-                            hintText: "0",
-                            border: InputBorder.none,
+                              // Flushbar(
+                              //   title: "Informação respondida com sucesso.",
+                              //   message:
+                              //       "A quantidade anterior de ${_quantidadeProdutoController.text} "
+                              //       "${widget.dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                              //   backgroundGradient: LinearGradient(
+                              //       colors: [Colors.blue, Colors.teal]),
+                              //   backgroundColor: Colors.red,
+                              //   duration: Duration(seconds: 3),
+                              //   boxShadows: [
+                              //     BoxShadow(
+                              //       color: Colors.blue[800],
+                              //       offset: Offset(0.0, 2.0),
+                              //       blurRadius: 5.0,
+                              //     )
+                              //   ],
+                              // )..show(context);
+                              print("Aew");
+                            },
+                            controller: _quantidadeProdutoController,
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(
+                                fontFamily: "WorkSansSemiBold",
+                                fontSize: 12,
+                                color: Colors.black),
+                            focusNode: myFocus,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                            ),
                           ),
                         );
                       }

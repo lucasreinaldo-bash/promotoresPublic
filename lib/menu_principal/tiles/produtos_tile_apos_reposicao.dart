@@ -56,62 +56,111 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
                           _quantidadeProdutoController.text =
                               snapshot.data["aposReposicao"].toString() ==
                                       "9999"
-                                  ? "0"
+                                  ? ""
                                   : snapshot.data["aposReposicao"].toString();
 
-                          return TextField(
-                            onEditingComplete: () async {
-                              DocumentReference documentReference = Firestore
-                                  .instance
-                                  .collection("Empresas")
-                                  .document(data.empresaResponsavel)
-                                  .collection("pesquisasCriadas")
-                                  .document(data.id)
-                                  .collection("estoqueDeposito")
-                                  .document(dataProdutos.nomeProduto);
+                          return FocusScope(
+                            onFocusChange: (value) {
+                              if (!value) {
+                                  DocumentReference documentReference = Firestore
+                                    .instance
+                                    .collection("Empresas")
+                                    .document(data.empresaResponsavel)
+                                    .collection("pesquisasCriadas")
+                                    .document(data.id)
+                                    .collection("estoqueDeposito")
+                                    .document(dataProdutos.nomeProduto);
 
-                              documentReference.updateData(
-                                {
-                                  "linha": dataProdutos.nomeLinha,
-                                  "produto": dataProdutos.nomeProduto,
-                                  "aposReposicao": int.tryParse(
-                                          _quantidadeProdutoController.text) ??
-                                      0,
-                                  "qtdReposto": int.tryParse(
-                                          _quantidadeProdutoController.text) ??
-                                      0 - dataProdutos.antesReposicao,
-                                },
-                              );
+                                documentReference.updateData(
+                                  {
+                                    "linha": dataProdutos.nomeLinha,
+                                    "produto": dataProdutos.nomeProduto,
+                                    "aposReposicao": int.tryParse(
+                                            _quantidadeProdutoController
+                                                .text) ??
+                                        0,
+                                    "qtdReposto": int.tryParse(
+                                            _quantidadeProdutoController
+                                                .text) ??
+                                        0 - dataProdutos.antesReposicao,
+                                  },
+                                );
 
-                              // FocusScope.of(context).unfocus();
-                              Flushbar(
-                                title: "Informação respondida com sucesso.",
-                                message:
-                                    "A quantidade atual de ${_quantidadeProdutoController.text} "
-                                    "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
-                                backgroundGradient: LinearGradient(
-                                    colors: [Colors.blue, Colors.teal]),
-                                backgroundColor: Colors.red,
-                                duration: Duration(seconds: 3),
-                                boxShadows: [
-                                  BoxShadow(
-                                    color: Colors.blue[800],
-                                    offset: Offset(0.0, 2.0),
-                                    blurRadius: 5.0,
-                                  )
-                                ],
-                              )..show(context);
+                                // FocusScope.of(context).unfocus();
+                                // Flushbar(
+                                //   title: "Informação respondida com sucesso.",
+                                //   message:
+                                //       "A quantidade atual de ${_quantidadeProdutoController.text} "
+                                //       "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                                //   backgroundGradient: LinearGradient(
+                                //       colors: [Colors.blue, Colors.teal]),
+                                //   backgroundColor: Colors.red,
+                                //   duration: Duration(seconds: 3),
+                                //   boxShadows: [
+                                //     BoxShadow(
+                                //       color: Colors.blue[800],
+                                //       offset: Offset(0.0, 2.0),
+                                //       blurRadius: 5.0,
+                                //     )
+                                //   ],
+                                // )..show(context);
+                              }
                             },
-                            controller: _quantidadeProdutoController,
-                            keyboardType: TextInputType.number,
-                            focusNode: myFocus,
-                            style: TextStyle(
-                                fontFamily: "WorkSansSemiBold",
-                                fontSize: 12,
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                              hintText: "0",
-                              border: InputBorder.none,
+                            child: TextField(
+                              onEditingComplete: () async {
+                                DocumentReference documentReference = Firestore
+                                    .instance
+                                    .collection("Empresas")
+                                    .document(data.empresaResponsavel)
+                                    .collection("pesquisasCriadas")
+                                    .document(data.id)
+                                    .collection("estoqueDeposito")
+                                    .document(dataProdutos.nomeProduto);
+
+                                documentReference.updateData(
+                                  {
+                                    "linha": dataProdutos.nomeLinha,
+                                    "produto": dataProdutos.nomeProduto,
+                                    "aposReposicao": int.tryParse(
+                                            _quantidadeProdutoController
+                                                .text) ??
+                                        0,
+                                    "qtdReposto": int.tryParse(
+                                            _quantidadeProdutoController
+                                                .text) ??
+                                        0 - dataProdutos.antesReposicao,
+                                  },
+                                );
+
+                                // FocusScope.of(context).unfocus();
+                                // Flushbar(
+                                //   title: "Informação respondida com sucesso.",
+                                //   message:
+                                //       "A quantidade atual de ${_quantidadeProdutoController.text} "
+                                //       "${dataProdutos.nomeProduto} foi adicionada a Pesquisa.",
+                                //   backgroundGradient: LinearGradient(
+                                //       colors: [Colors.blue, Colors.teal]),
+                                //   backgroundColor: Colors.red,
+                                //   duration: Duration(seconds: 3),
+                                //   boxShadows: [
+                                //     BoxShadow(
+                                //       color: Colors.blue[800],
+                                //       offset: Offset(0.0, 2.0),
+                                //       blurRadius: 5.0,
+                                //     )
+                                //   ],
+                                // )..show(context);
+                              },
+                              controller: _quantidadeProdutoController,
+                              keyboardType: TextInputType.number,
+                              focusNode: myFocus,
+                              style: TextStyle(
+                                  fontFamily: "WorkSansSemiBold",
+                                  fontSize: 12,
+                                  color: Colors.black),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
                             ),
                           );
                         }

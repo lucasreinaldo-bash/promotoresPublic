@@ -12,10 +12,11 @@ import 'package:versaoPromotores/menu_principal/screens/research_screen_three.da
 import 'package:versaoPromotores/menu_principal/screens/research_screen_two.dart';
 import 'package:versaoPromotores/models/page_manager.dart';
 import 'package:versaoPromotores/models/user_manager.dart';
+import 'package:versaoPromotores/widget/widgets_componentizados.dart';
 import '../../splash_screen_pesquisaRespondida.dart';
 import '../datas/pesquisaData.dart';
 
-class ResponderPesquisaData extends StatelessWidget {
+class ResponderPesquisaData extends StatefulWidget {
   //Instanciar a classe modelo para recuperar as informações da pesquisa
   PesquisaData data;
 
@@ -34,11 +35,21 @@ class ResponderPesquisaData extends StatelessWidget {
   // }
   //Pesquisa
 
-  String title = "Área de Venda";
-  String concluido = "não";
-  final PageController pageController = PageController();
   ResponderPesquisaData(this.data);
-  //Metodo para setar os buttons
+
+  @override
+  _ResponderPesquisaDataState createState() => _ResponderPesquisaDataState();
+}
+
+class _ResponderPesquisaDataState extends State<ResponderPesquisaData> {
+  String title = "Área de Venda";
+
+  String concluido = "não";
+
+  String pageActualy = "Aréa de Venda";
+
+  final PageController pageController = PageController();
+
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 150),
@@ -54,20 +65,23 @@ class ResponderPesquisaData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var lista = new List<int>(data.linhaProduto.length);
-
-    bool pesquisaCompleta() {
+    var lista = new List<int>(widget.data.linhaProduto.length);
+    bool pesquisaCompleta() 
+    {
       var resultFirstWhere = lista.every((el) => el == 0);
-
       return resultFirstWhere;
     }
-
     return Consumer<UserManager>(
       builder: (_, userManager, __) {
         return Scaffold(
             backgroundColor: Color(0xFFEBEDF5),
             appBar: AppBar(
-             
+              leading: Column(
+                children: [
+                  Text(""),
+                ],
+              ),
+              title: Text(pageActualy, style: TextStyle(fontFamily: "Helvetica"),),
               centerTitle: true,
               backgroundColor: Colors.deepPurple,
             ),
@@ -103,6 +117,43 @@ class ResponderPesquisaData extends StatelessWidget {
                                           physics:
                                               NeverScrollableScrollPhysics(),
                                           controller: pageController,
+                                          onPageChanged: (int page) {
+                                            switch (page) {
+                                              case 0:
+                                                setState(() {
+                                                  pageActualy = "Área de Venda";
+                                                });
+                                                break;
+                                              case 1:
+                                                setState(() {
+                                                  pageActualy =
+                                                      "Estoque Depósito";
+                                                });
+
+                                                break;
+                                              case 2:
+                                                setState(() {
+                                                  pageActualy =
+                                                      "Instruções de Reposição";
+                                                });
+
+                                                break;
+                                              case 3:
+                                                setState(() {
+                                                  pageActualy = "Área de Venda";
+                                                });
+
+                                                break;
+                                              case 4:
+                                                setState(() {
+                                                  pageActualy =
+                                                      "Estoque Depósito";
+                                                });
+
+                                                break;
+                                              default:
+                                            }
+                                          },
                                           children: [
                                             ResearchScreenOne(),
                                             ResearchScreenTwo(),
@@ -134,11 +185,11 @@ class ResponderPesquisaData extends StatelessWidget {
                                                   documentReference1 =
                                                   await Firestore.instance
                                                       .collection("Empresas")
-                                                      .document(data
+                                                      .document(widget.data
                                                           .empresaResponsavel)
                                                       .collection(
                                                           "pesquisasCriadas")
-                                                      .document(data.id)
+                                                      .document(widget.data.id)
                                                       .collection(
                                                           "imagensLinhas")
                                                       .getDocuments()
@@ -151,11 +202,11 @@ class ResponderPesquisaData extends StatelessWidget {
 
                                               await Firestore.instance
                                                   .collection("Empresas")
-                                                  .document(
-                                                      data.empresaResponsavel)
+                                                  .document(widget
+                                                      .data.empresaResponsavel)
                                                   .collection(
                                                       "pesquisasCriadas")
-                                                  .document(data.id)
+                                                  .document(widget.data.id)
                                                   .collection("antesReposicao")
                                                   .getDocuments()
                                                   .then((snapshot) {
@@ -168,11 +219,11 @@ class ResponderPesquisaData extends StatelessWidget {
 
                                               await Firestore.instance
                                                   .collection("Empresas")
-                                                  .document(
-                                                      data.empresaResponsavel)
+                                                  .document(widget
+                                                      .data.empresaResponsavel)
                                                   .collection(
                                                       "pesquisasCriadas")
-                                                  .document(data.id)
+                                                  .document(widget.data.id)
                                                   .collection("estoqueDeposito")
                                                   .getDocuments()
                                                   .then((snapshot) {
@@ -185,11 +236,11 @@ class ResponderPesquisaData extends StatelessWidget {
 
                                               await Firestore.instance
                                                 ..collection("Empresas")
-                                                    .document(
-                                                        data.empresaResponsavel)
+                                                    .document(widget.data
+                                                        .empresaResponsavel)
                                                     .collection(
                                                         "pesquisasCriadas")
-                                                    .document(data.id)
+                                                    .document(widget.data.id)
                                                     .collection("pontoExtra")
                                                     .getDocuments()
                                                     .then((snapshot) {
@@ -206,11 +257,11 @@ class ResponderPesquisaData extends StatelessWidget {
 
                                               await Firestore.instance
                                                   .collection("Empresas")
-                                                  .document(
-                                                      data.empresaResponsavel)
+                                                  .document(widget
+                                                      .data.empresaResponsavel)
                                                   .collection(
                                                       "pesquisasCriadas")
-                                                  .document(data.id)
+                                                  .document(widget.data.id)
                                                   .collection("linhasProdutos")
                                                   .getDocuments()
                                                   .then((snapshot) {
@@ -224,11 +275,11 @@ class ResponderPesquisaData extends StatelessWidget {
 
                                               await Firestore.instance
                                                 ..collection("Empresas")
-                                                    .document(
-                                                        data.empresaResponsavel)
+                                                    .document(widget.data
+                                                        .empresaResponsavel)
                                                     .collection(
                                                         "pesquisasCriadas")
-                                                    .document(data.id)
+                                                    .document(widget.data.id)
                                                     .collection(
                                                         "linhasProdutosAntesReposicao")
                                                     .getDocuments()
@@ -243,11 +294,11 @@ class ResponderPesquisaData extends StatelessWidget {
 
                                               await Firestore.instance
                                                 ..collection("Empresas")
-                                                    .document(
-                                                        data.empresaResponsavel)
+                                                    .document(widget.data
+                                                        .empresaResponsavel)
                                                     .collection(
                                                         "pesquisasCriadas")
-                                                    .document(data.id)
+                                                    .document(widget.data.id)
                                                     .collection(
                                                         "linhasProdutosAposReposicao")
                                                     .getDocuments()
