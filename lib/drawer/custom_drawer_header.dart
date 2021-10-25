@@ -8,13 +8,13 @@ class CustomDrawerHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(32, 24, 16, 8),
-      height: 160,
+      height: 250,
       child: Consumer<UserManager>(
         builder: (_, userManager, __) {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
+              Column(
                 children: [
                   Card(
                     elevation: 10,

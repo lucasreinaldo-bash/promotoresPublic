@@ -79,7 +79,7 @@ class _ResearchScreenOneState extends State<ResearchScreenOne> {
                               color: Color(0xFF000000)),
                         ),
                         Container(
-                          height: 200,
+                          height: 300,
                           child: ListView.builder(
                               shrinkWrap: true,
                               itemCount: context

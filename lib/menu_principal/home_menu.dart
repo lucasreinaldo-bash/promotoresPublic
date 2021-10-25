@@ -745,63 +745,21 @@ class _HomeMenuState extends State<HomeMenu> {
                         flex: 2,
                         child: Container(
                           height: MediaQuery.of(context).size.width * 0.3,
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                child: Card(
-                                  color: filtro == "Todas"
-                                      ? colorCardFiltro
-                                      : Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.2,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.2,
-                                      child: Center(
-                                        child: Text(
-                                          "Todas",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              fontSize: 10,
-                                              color: filtro == "Todas"
-                                                  ? Colors.white
-                                                  : Colors.grey),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    termoBusca = "nenhum";
-                                    filtro = "Todas";
-                                    _termoBuscaController.text = "Todas";
-                                  });
-                                  Navigator.pushReplacement(
-                                      context,
-                                      PageTransition(
-                                          type: PageTransitionType.fade,
-                                          child:
-                                              HomeMenu(filtro, tipoDeBusca)));
-                                },
-                              ),
-                              InkWell(
-                                child: Card(
-                                  color: filtro == "ABERTA"
-                                      ? colorCardFiltro
-                                      : Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Expanded(
-                                    flex: 25,
-                                    child: Container(
+                          child: ListView(children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: InkWell(
+                                    child: Card(
+                                      color: filtro == "Todas"
+                                          ? colorCardFiltro
+                                          : Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Container(
                                         height:
                                             MediaQuery.of(context).size.width *
                                                 0.2,
@@ -809,118 +767,172 @@ class _HomeMenuState extends State<HomeMenu> {
                                             MediaQuery.of(context).size.width *
                                                 0.2,
                                         child: Center(
-                                            child: Text(
-                                          "Abertas",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              fontSize: 10,
-                                              color: filtro == "ABERTA"
-                                                  ? Colors.white
-                                                  : Colors.grey),
-                                        ))),
-                                  ),
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    filtro = "ABERTA";
-                                    _termoBuscaController.text = "ABERTA";
-                                    Navigator.pushReplacement(
-                                        context,
-                                        PageTransition(
-                                            type: PageTransitionType.fade,
-                                            child:
-                                                HomeMenu(filtro, tipoDeBusca)));
-                                  });
-                                },
-                              ),
-                              InkWell(
-                                child: Card(
-                                  color: filtro == "A APROVAR"
-                                      ? colorCardFiltro
-                                      : Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Expanded(
-                                    flex: 25,
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.2,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.2,
-                                      child: Center(
-                                        child: Text(
-                                          "A Aprovar",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              fontSize: 10,
-                                              color: filtro == "A APROVAR"
-                                                  ? Colors.white
-                                                  : Colors.grey),
+                                          child: Text(
+                                            "Todas",
+                                            style: TextStyle(
+                                                fontFamily: "QuickSand",
+                                                fontSize: 10,
+                                                color: filtro == "Todas"
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                          ),
                                         ),
                                       ),
                                     ),
+                                    onTap: () {
+                                      setState(() {
+                                        termoBusca = "nenhum";
+                                        filtro = "Todas";
+                                        _termoBuscaController.text = "Todas";
+                                      });
+                                      Navigator.pushReplacement(
+                                          context,
+                                          PageTransition(
+                                              type: PageTransitionType.fade,
+                                              child: HomeMenu(
+                                                  filtro, tipoDeBusca)));
+                                    },
                                   ),
                                 ),
-                                onTap: () {
-                                  setState(() {
-                                    termoBusca = "nenhum";
-                                    filtro = "A APROVAR";
-                                    _termoBuscaController.text = "A APROVAR";
-                                  });
-                                  Navigator.pushReplacement(
-                                      context,
-                                      PageTransition(
-                                          type: PageTransitionType.fade,
-                                          child:
-                                              HomeMenu(filtro, tipoDeBusca)));
-                                },
-                              ),
-                              InkWell(
-                                child: Card(
-                                  color: filtro == "CONCLUÍDA"
-                                      ? colorCardFiltro
-                                      : Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Expanded(
-                                    flex: 25,
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.width *
+                                Expanded(
+                                  flex: 1,
+                                  child: InkWell(
+                                    child: Card(
+                                      color: filtro == "ABERTA"
+                                          ? colorCardFiltro
+                                          : Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
                                               0.2,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.2,
-                                      child: Center(
-                                        child: Text(
-                                          "Concluídas",
-                                          style: TextStyle(
-                                              fontFamily: "QuickSand",
-                                              fontSize: 10,
-                                              color: filtro == "CONCLUÍDA"
-                                                  ? Colors.white
-                                                  : Colors.grey),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.2,
+                                          child: Center(
+                                              child: Text(
+                                            "Abertas",
+                                            style: TextStyle(
+                                                fontFamily: "QuickSand",
+                                                fontSize: 10,
+                                                color: filtro == "ABERTA"
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                          ))),
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        filtro = "ABERTA";
+                                        _termoBuscaController.text = "ABERTA";
+                                        Navigator.pushReplacement(
+                                            context,
+                                            PageTransition(
+                                                type: PageTransitionType.fade,
+                                                child: HomeMenu(
+                                                    filtro, tipoDeBusca)));
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: InkWell(
+                                    child: Card(
+                                      color: filtro == "A APROVAR"
+                                          ? colorCardFiltro
+                                          : Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        child: Center(
+                                          child: Text(
+                                            "A Aprovar",
+                                            style: TextStyle(
+                                                fontFamily: "QuickSand",
+                                                fontSize: 10,
+                                                color: filtro == "A APROVAR"
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                          ),
                                         ),
                                       ),
                                     ),
+                                    onTap: () {
+                                      setState(() {
+                                        termoBusca = "nenhum";
+                                        filtro = "A APROVAR";
+                                        _termoBuscaController.text =
+                                            "A APROVAR";
+                                      });
+                                      Navigator.pushReplacement(
+                                          context,
+                                          PageTransition(
+                                              type: PageTransitionType.fade,
+                                              child: HomeMenu(
+                                                  filtro, tipoDeBusca)));
+                                    },
                                   ),
                                 ),
-                                onTap: () {
-                                  setState(() {
-                                    termoBusca = "nenhum";
-                                    filtro = "CONCLUÍDA";
-                                    _termoBuscaController.text = "CONCLUÍDA";
-                                  });
-                                  Navigator.pushReplacement(
-                                      context,
-                                      PageTransition(
-                                          type: PageTransitionType.fade,
-                                          child:
-                                              HomeMenu(filtro, tipoDeBusca)));
-                                },
-                              )
-                            ],
-                          ),
+                                Expanded(
+                                  flex: 1,
+                                  child: InkWell(
+                                    child: Card(
+                                      color: filtro == "CONCLUÍDA"
+                                          ? colorCardFiltro
+                                          : Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        child: Center(
+                                          child: Text(
+                                            "Concluídas",
+                                            style: TextStyle(
+                                                fontFamily: "QuickSand",
+                                                fontSize: 10,
+                                                color: filtro == "CONCLUÍDA"
+                                                    ? Colors.white
+                                                    : Colors.grey),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        termoBusca = "nenhum";
+                                        filtro = "CONCLUÍDA";
+                                        _termoBuscaController.text =
+                                            "CONCLUÍDA";
+                                      });
+                                      Navigator.pushReplacement(
+                                          context,
+                                          PageTransition(
+                                              type: PageTransitionType.fade,
+                                              child: HomeMenu(
+                                                  filtro, tipoDeBusca)));
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                          ]),
                         ),
                       ),
                     ],

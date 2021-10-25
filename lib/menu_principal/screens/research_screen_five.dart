@@ -146,7 +146,7 @@ class _ResearchScreenFiveState extends State<ResearchScreenFive> {
                                     documentReference3.updateData({
                                       "status": "A APROVAR",
                                       "tag": FieldValue.arrayRemove(
-                                          ["Nova Pesquisa"]),
+                                          ["NOVA PESQUISA"]),
                                       "imagemUpload": false,
                                       "dataFinalizacao": da.formatDate(
                                               DateTime.now(), [

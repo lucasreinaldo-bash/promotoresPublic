@@ -62,8 +62,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   openStartPage() async {
-    
-  await Future.delayed(Duration(seconds: 3), () => _loadCurrentUser());}
+    await Future.delayed(Duration(seconds: 3), () => _loadCurrentUser());
+  }
 
   String id;
 
@@ -107,6 +107,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<Null> _loadCurrentUser() async {
+    final fcm = FirebaseMessaging();
     FirebaseAuth _auth = FirebaseAuth.instance;
     FirebaseUser firebaseUser;
     firebaseUser = await _auth.currentUser();
@@ -125,7 +126,8 @@ class _SplashScreenState extends State<SplashScreen> {
 //        'updateAt': FieldValue.serverTimestamp(),
 //        'platform': Platform.operatingSystem,
 //      });
-      print(firebaseUser.uid);
+      fcm.subscribeToTopic(firebaseUser.uid);
+
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(

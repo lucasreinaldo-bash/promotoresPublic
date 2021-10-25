@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:device_preview/device_preview.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +19,10 @@ main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       systemNavigationBarColor: Colors.black));
-  return runApp(Home());
+  return runApp(DevicePreview(
+    enabled: false,
+    builder: (context) => Home(),
+  ));
 }
 
 class Home extends StatelessWidget {
@@ -39,7 +47,7 @@ class Home extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-   
+
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case "/login":
@@ -66,5 +74,59 @@ class Home extends StatelessWidget {
             primaryColor: Color.fromARGB(255, 20, 125, 141)),
       ),
     );
+  }
+
+  void configFCM(BuildContext context) {
+    final fcm = FirebaseMessaging();
+
+    if (Platform.isIOS) {
+      fcm.subscribeToTopic("topic");
+
+      fcm.requestNotificationPermissions(
+          const IosNotificationSettings(provisional: true));
+
+      fcm.configure(
+        onLaunch: (Map<String, dynamic> message) async {
+          print('onLaunch $message');
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print('onResume $message');
+          showNotification(message['notification']['title'] as String,
+              message['notification']['body'] as String, context);
+        },
+        onMessage: (Map<String, dynamic> message) async {
+          showNotification(message['notification']['title'] as String,
+              message['notification']['body'] as String, context);
+        },
+      );
+    } else {
+      final fcm = FirebaseMessaging();
+
+      fcm.configure(
+        onLaunch: (Map<String, dynamic> message) async {
+          print('onLaunch $message');
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print('onResume $message');
+        },
+        onMessage: (Map<String, dynamic> message) async {
+          showNotification(message['notification']['title'] as String,
+              message['notification']['body'] as String, context);
+        },
+      );
+    }
+  }
+
+  void showNotification(String title, String message, BuildContext context) {
+    Flushbar(
+            title: title,
+            message: message,
+            flushbarPosition: FlushbarPosition.TOP,
+            flushbarStyle: FlushbarStyle.GROUNDED,
+            isDismissible: true,
+            backgroundColor: Theme.of(context).primaryColor,
+            duration: const Duration(seconds: 3),
+            icon: Image.asset("assets/logo.png"))
+        .show(context);
   }
 }

@@ -38,6 +38,7 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
   String imagemPontoExtra = "sem imagem";
   String nomeCategoria;
 
+  bool clickInicialNovoPedido = false;
   _AfterBottomSheetViewState(this.nomeCategoria, this.data);
   @override
   Widget build(BuildContext context) {
@@ -282,6 +283,7 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                           children: [
                             InkWell(
                               onTap: () async {
+                                clickInicialNovoPedido = true;
                                 setState(() {
                                   novoPedido = false;
                                 });
@@ -321,8 +323,10 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                 });
                               },
                               child: Card(
-                                color: novoPedido == false
-                                    ? Color(0xFFF26768)
+                                color: clickInicialNovoPedido == true
+                                    ? novoPedido == false
+                                        ? Color(0xFFF26768)
+                                        : Color(0xFFFFFFFF)
                                     : Color(0xFFFFFFFF),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
@@ -335,8 +339,10 @@ class _AfterBottomSheetViewState extends State<AfterBottomSheetView> {
                                     child: Text(
                                       "Não",
                                       style: TextStyle(
-                                          color: novoPedido == false
-                                              ? Color(0xFFFFFFFF)
+                                          color: clickInicialNovoPedido == true
+                                              ? novoPedido == false
+                                                  ? Color(0xFFFFFFFF)
+                                                  : Color(0xFF707070)
                                               : Color(0xFF707070)),
                                     ),
                                   )),

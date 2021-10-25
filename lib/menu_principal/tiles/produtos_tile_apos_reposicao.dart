@@ -29,7 +29,7 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
         height: 60,
         child: ListTile(
           trailing: Container(
-            width: 60,
+            width: 70,
             decoration: new BoxDecoration(
                 border: Border.all(width: 1.0, color: Colors.black38),
                 borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -38,8 +38,6 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5),
                   child: Container(
-                    width: 70,
-                    height: 30,
                     child: StreamBuilder(
                       stream: Firestore.instance
                           .collection("Empresas")
@@ -58,11 +56,15 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
                                       "9999"
                                   ? ""
                                   : snapshot.data["aposReposicao"].toString();
-
+                          var ruptura = false;
+                          print(snapshot.data["aposReposicao"]);
+                          print(dataProdutos.rupturaInicial);
+                          ruptura = (snapshot.data["aposReposicao"] <
+                              dataProdutos.qtdMinAreaVenda);
                           return FocusScope(
                             onFocusChange: (value) {
                               if (!value) {
-                                  DocumentReference documentReference = Firestore
+                                DocumentReference documentReference = Firestore
                                     .instance
                                     .collection("Empresas")
                                     .document(data.empresaResponsavel)
@@ -83,6 +85,10 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
                                             _quantidadeProdutoController
                                                 .text) ??
                                         0 - dataProdutos.antesReposicao,
+                                    // "rupturaConfirmada":
+                                    //     dataProdutos.rupturaInicial
+                                    //         ? ruptura
+                                    //         : false
                                   },
                                 );
 
@@ -129,6 +135,10 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
                                             _quantidadeProdutoController
                                                 .text) ??
                                         0 - dataProdutos.antesReposicao,
+                                    "rupturaConfirmada":
+                                        dataProdutos.rupturaInicial
+                                            ? ruptura
+                                            : false
                                   },
                                 );
 
@@ -153,6 +163,7 @@ class _ProdutosTileAposReposicaoState extends State<ProdutosTileAposReposicao> {
                               },
                               controller: _quantidadeProdutoController,
                               keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
                               focusNode: myFocus,
                               style: TextStyle(
                                   fontFamily: "WorkSansSemiBold",

@@ -93,316 +93,311 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
                   ),
                 ],
               )),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Card(
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            child: ListView(children: [
+              Column(
+                children: [
+                  Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
-                    child: Expanded(
-                      child: Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Detalhes da Pesquisa",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: "QuickSand",
-                                        color: Colors.black54),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Divider(),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        researchManager.data.nomeLoja,
-                                        style: TextStyle(
-                                            fontFamily: "QuickSand",
-                                            color: Colors.black87),
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Detalhes da Pesquisa",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "QuickSand",
+                                      color: Colors.black54),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Divider(),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      researchManager.data.nomeLoja,
+                                      style: TextStyle(
+                                          fontFamily: "QuickSand",
+                                          color: Colors.black87),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Rede: " + researchManager.data.nomeRede,
+                                      style: TextStyle(
+                                          fontFamily: "QuickSand",
+                                          color: Colors.black38),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Promotor: " +
+                                          researchManager.data.nomePromotor,
+                                      style: TextStyle(
+                                          fontFamily: "QuickSand",
+                                          color: Colors.black38),
+                                    ),
+                                    Text(
+                                      "Agendada: " +
+                                          researchManager.data.dataInicial,
+                                      style: TextStyle(
+                                          fontFamily: "QuickSand",
+                                          color: Colors.black38),
+                                    ),
+                                    Text(
+                                      researchManager.data.dataFinalizacao !=
+                                              "pesquisa não respondida"
+                                          ? "Finalizada: ${researchManager.data.dataFinalizacao}"
+                                          : "Não finalizada",
+                                      style: TextStyle(
+                                          fontFamily: "QuickSand",
+                                          color: Colors.black38),
+                                    ),
+                                    Text(
+                                      "Observação:",
+                                      style: TextStyle(
+                                          fontFamily: "QuickSand",
+                                          color: Colors.black38),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color:
+                                                Colors.grey, // set border color
+                                            width: 1.0), // set border width
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(
+                                                14.0)), // set rounded corner radius
                                       ),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Rede: " +
-                                            researchManager.data.nomeRede,
-                                        style: TextStyle(
-                                            fontFamily: "QuickSand",
-                                            color: Colors.black38),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Promotor: " +
-                                            researchManager.data.nomePromotor,
-                                        style: TextStyle(
-                                            fontFamily: "QuickSand",
-                                            color: Colors.black38),
-                                      ),
-                                      Text(
-                                        "Agendada: " +
-                                            researchManager.data.dataInicial,
-                                        style: TextStyle(
-                                            fontFamily: "QuickSand",
-                                            color: Colors.black38),
-                                      ),
-                                      Text(
-                                        researchManager.data.dataFinalizacao !=
-                                                "pesquisa não respondida"
-                                            ? "Finalizada: ${researchManager.data.dataFinalizacao}"
-                                            : "Não finalizada",
-                                        style: TextStyle(
-                                            fontFamily: "QuickSand",
-                                            color: Colors.black38),
-                                      ),
-                                      Text(
-                                        "Observação:",
-                                        style: TextStyle(
-                                            fontFamily: "QuickSand",
-                                            color: Colors.black38),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: Colors
-                                                  .grey, // set border color
-                                              width: 1.0), // set border width
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(
-                                                  14.0)), // set rounded corner radius
+                                      height: 150,
+                                      child: TextField(
+                                        enabled: false,
+                                        maxLines: 20,
+                                        controller: _observacaoController,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
                                         ),
-                                        height: 150,
-                                        child: TextField(
-                                          enabled: false,
-                                          maxLines: 20,
-                                          controller: _observacaoController,
-                                          keyboardType: TextInputType.text,
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                          ),
-                                          style: TextStyle(
-                                              fontFamily: "WorkSansSemiBold",
-                                              fontSize: 13.0,
-                                              color: Colors.black),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Linha de Produtos Pesquisadas:",
                                         style: TextStyle(
-                                            fontFamily: "QuickSand",
-                                            color: Colors.black54),
+                                            fontFamily: "WorkSansSemiBold",
+                                            fontSize: 13.0,
+                                            color: Colors.black),
                                       ),
-                                      Divider(),
-                                      researchManager.data.status != "ABERTA"
-                                          ? Text(
-                                              "Clique no cartão para vizualizar",
-                                              style: TextStyle(
-                                                  fontFamily: "Helvetica",
-                                                  fontSize: 12))
-                                          : Container(),
-                                      Container(
-                                        height: 300,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: researchManager
-                                              .data.linhaProduto.length,
-                                          itemBuilder: (_, index) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: GestureDetector(
-                                                onTap: researchManager
-                                                            .data.status ==
-                                                        "ABERTA"
-                                                    ? null
-                                                    : () {
-                                                        Navigator.of(context).push(MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                DetalhamentoLinha(
-                                                                    researchManager
-                                                                            .data
-                                                                            .linhaProduto[
-                                                                        index],
-                                                                    researchManager
-                                                                        .data)));
-                                                      },
-                                                child: Container(
-                                                  decoration: new BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                        colors: [
-                                                          Color(0xFF796DEA),
-                                                          Color(0xFFCC73FF)
-                                                        ],
-                                                        begin:
-                                                            Alignment.topCenter,
-                                                        end: Alignment
-                                                            .bottomCenter,
-                                                      ),
-                                                      color: Colors.blue,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              14)),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          " " +
-                                                              researchManager
-                                                                      .data
-                                                                      .linhaProduto[
-                                                                  index],
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "QuickSand",
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                        StreamBuilder(
-                                                          stream: Firestore
-                                                              .instance
-                                                              .collection(
-                                                                  "Empresas")
-                                                              .document(
-                                                                  researchManager
-                                                                      .data
-                                                                      .empresaResponsavel)
-                                                              .collection(
-                                                                  "pesquisasCriadas")
-                                                              .document(
-                                                                  researchManager
-                                                                      .data.id)
-                                                              .collection(
-                                                                  "linhasProdutosAntesReposicao")
-                                                              .document(
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Linha de Produtos Pesquisadas:",
+                                      style: TextStyle(
+                                          fontFamily: "QuickSand",
+                                          color: Colors.black54),
+                                    ),
+                                    Divider(),
+                                    researchManager.data.status != "ABERTA"
+                                        ? Text(
+                                            "Clique no cartão para vizualizar",
+                                            style: TextStyle(
+                                                fontFamily: "Helvetica",
+                                                fontSize: 12))
+                                        : Container(),
+                                    Container(
+                                      height: 300,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: researchManager
+                                            .data.linhaProduto.length,
+                                        itemBuilder: (_, index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: GestureDetector(
+                                              onTap:
+                                                  researchManager.data.status ==
+                                                          "ABERTA"
+                                                      ? null
+                                                      : () {
+                                                          Navigator.of(context).push(MaterialPageRoute(
+                                                              builder: (context) => DetalhamentoLinha(
                                                                   researchManager
                                                                           .data
                                                                           .linhaProduto[
-                                                                      index])
-                                                              .snapshots(),
-                                                          builder: (context,
-                                                              snapTags) {
-                                                            if (!snapTags
-                                                                .hasData) {
-                                                              return LinearProgressIndicator();
-                                                            } else {
-                                                              TagsLinhaData
-                                                                  dataTags =
-                                                                  TagsLinhaData
-                                                                      .fromDocument(
-                                                                          snapTags
-                                                                              .data);
-                                                              return Container(
-                                                                height: 30,
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    8,
-                                                                child: ListView
-                                                                    .builder(
-                                                                  scrollDirection:
-                                                                      Axis.horizontal,
-                                                                  itemCount:
-                                                                      dataTags
-                                                                          .tags
-                                                                          .length,
-                                                                  itemBuilder:
-                                                                      (_, index) {
-                                                                    return Card(
-                                                                      color: dataTags.tags[index] == "Vencimento" ||
-                                                                              dataTags.tags[index] ==
-                                                                                  "Ruptura" ||
-                                                                              dataTags.tags[index] ==
-                                                                                  "Novo Pedido" ||
-                                                                              dataTags.tags[index] ==
-                                                                                  "Nova Pesquisa"
-                                                                          ? Color(
-                                                                              0xFF4FCEB6)
-                                                                          : Colors
-                                                                              .red,
-                                                                      elevation:
-                                                                          4,
-                                                                      child:
-                                                                          Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(5.0),
-                                                                        child:
-                                                                            Text(
-                                                                          dataTags
-                                                                              .tags[index],
-                                                                          style: TextStyle(
-                                                                              fontFamily: "QuickSand",
-                                                                              fontSize: 10,
-                                                                              color: Colors.white),
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                ),
-                                                              );
-                                                            }
-                                                          },
-                                                        )
+                                                                      index],
+                                                                  researchManager
+                                                                      .data)));
+                                                        },
+                                              child: Container(
+                                                decoration: new BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        Color(0xFF796DEA),
+                                                        Color(0xFFCC73FF)
                                                       ],
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
                                                     ),
+                                                    color: Colors.blue,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            14)),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        " " +
+                                                            researchManager.data
+                                                                    .linhaProduto[
+                                                                index],
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "QuickSand",
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      StreamBuilder(
+                                                        stream: Firestore
+                                                            .instance
+                                                            .collection(
+                                                                "Empresas")
+                                                            .document(researchManager
+                                                                .data
+                                                                .empresaResponsavel)
+                                                            .collection(
+                                                                "pesquisasCriadas")
+                                                            .document(
+                                                                researchManager
+                                                                    .data.id)
+                                                            .collection(
+                                                                "linhasProdutosAntesReposicao")
+                                                            .document(
+                                                                researchManager
+                                                                        .data
+                                                                        .linhaProduto[
+                                                                    index])
+                                                            .snapshots(),
+                                                        builder: (context,
+                                                            snapTags) {
+                                                          if (!snapTags
+                                                              .hasData) {
+                                                            return LinearProgressIndicator();
+                                                          } else {
+                                                            TagsLinhaData
+                                                                dataTags =
+                                                                TagsLinhaData
+                                                                    .fromDocument(
+                                                                        snapTags
+                                                                            .data);
+                                                            return Container(
+                                                              height: 30,
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  8,
+                                                              child: ListView
+                                                                  .builder(
+                                                                scrollDirection:
+                                                                    Axis.horizontal,
+                                                                itemCount:
+                                                                    dataTags
+                                                                        .tags
+                                                                        .length,
+                                                                itemBuilder:
+                                                                    (_, index) {
+                                                                  return Card(
+                                                                    color: dataTags.tags[index] == "Vencimento" ||
+                                                                            dataTags.tags[index] ==
+                                                                                "Ruptura" ||
+                                                                            dataTags.tags[index] ==
+                                                                                "Novo Pedido" ||
+                                                                            dataTags.tags[index] ==
+                                                                                "Nova Pesquisa"
+                                                                        ? Color(
+                                                                            0xFF4FCEB6)
+                                                                        : Colors
+                                                                            .red,
+                                                                    elevation:
+                                                                        4,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              5.0),
+                                                                      child:
+                                                                          Text(
+                                                                        dataTags
+                                                                            .tags[index],
+                                                                        style: TextStyle(
+                                                                            fontFamily:
+                                                                                "QuickSand",
+                                                                            fontSize:
+                                                                                10,
+                                                                            color:
+                                                                                Colors.white),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            );
+                                                          }
+                                                        },
+                                                      )
+                                                    ],
                                                   ),
                                                 ),
                                               ),
-                                            );
-                                          },
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    )),
-              ],
-            ),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
           ),
         );
       },
