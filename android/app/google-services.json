@@ -8,6 +8,50 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1074944506945:android:58e8a4cb308e96f40fdac0",
+        "android_client_info": {
+          "package_name": "com.vostore.repor.promotores"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074944506945-v37u37m4b225pi2sbptaajq0ms15sn19.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vostore.repor.promotores",
+            "certificate_hash": "e981ca20554958850cbe23b149eeb7077d41ee19"
+          }
+        },
+        {
+          "client_id": "1074944506945-no8047kmr14rmna4lo8ehv8lhb05m41c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFldIwyxPjSXegsvIwkHBgRe4efGmllpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074944506945-no8047kmr14rmna4lo8ehv8lhb05m41c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1074944506945-0vvnt37da6ss96tken50e7v21ctkrhtl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vostore.unionteam"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1074944506945:android:b0a23712f93397490fdac0",
         "android_client_info": {
           "package_name": "com.vostore.unionteam"

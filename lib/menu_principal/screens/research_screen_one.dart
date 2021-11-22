@@ -80,172 +80,174 @@ class _ResearchScreenOneState extends State<ResearchScreenOne> {
                         ),
                         Container(
                           height: 300,
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: context
-                                  .read<ResearchManager>()
-                                  .data
-                                  .linhaProduto
-                                  .length,
-                              itemBuilder: (_, index) {
-                                String nomeCategoria = context
+                          child: Scrollbar(
+                                                      child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: context
                                     .read<ResearchManager>()
                                     .data
-                                    .linhaProduto[index];
-                                bool nomeCategoriaBool = false;
+                                    .linhaProduto
+                                    .length,
+                                itemBuilder: (_, index) {
+                                  String nomeCategoria = context
+                                      .read<ResearchManager>()
+                                      .data
+                                      .linhaProduto[index];
+                                  bool nomeCategoriaBool = false;
 
-                                return InkWell(
-                                  onTap: () {
-                                    showBarModalBottomSheet(
-                                        expand: false,
-                                        isDismissible: false,
-                                        context: context,
-                                        builder: (context) => Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                8,
-                                            child: BottomSheetView(
-                                                nomeCategoria)));
-                                  },
-                                  child: Card(
-                                      elevation: 2,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.0),
-                                      ),
-                                      child: StreamBuilder(
-                                        stream: Firestore.instance
-                                            .collection("Empresas")
-                                            .document(context
-                                                .read<ResearchManager>()
-                                                .data
-                                                .empresaResponsavel)
-                                            .collection("pesquisasCriadas")
-                                            .document(context
-                                                .read<ResearchManager>()
-                                                .data
-                                                .id)
-                                            .collection(
-                                                "linhasProdutosAntesReposicao")
-                                            .document(nomeCategoria)
-                                            .snapshots(),
-                                        builder: (context, snapshotLinhas) {
-                                          if (!snapshotLinhas.hasData) {
-                                            return Container();
-                                          } else {
-                                            if (snapshotLinhas
-                                                    .data["concluida"] ==
-                                                false) {
-                                              lista[index] = 1;
+                                  return InkWell(
+                                    onTap: () {
+                                      showBarModalBottomSheet(
+                                          expand: false,
+                                          isDismissible: false,
+                                          context: context,
+                                          builder: (context) => Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  8,
+                                              child: BottomSheetView(
+                                                  nomeCategoria)));
+                                    },
+                                    child: Card(
+                                        elevation: 2,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: StreamBuilder(
+                                          stream: Firestore.instance
+                                              .collection("Empresas")
+                                              .document(context
+                                                  .read<ResearchManager>()
+                                                  .data
+                                                  .empresaResponsavel)
+                                              .collection("pesquisasCriadas")
+                                              .document(context
+                                                  .read<ResearchManager>()
+                                                  .data
+                                                  .id)
+                                              .collection(
+                                                  "linhasProdutosAntesReposicao")
+                                              .document(nomeCategoria)
+                                              .snapshots(),
+                                          builder: (context, snapshotLinhas) {
+                                            if (!snapshotLinhas.hasData) {
+                                              return Container();
                                             } else {
-                                              lista[index] = 0;
-                                            }
+                                              if (snapshotLinhas
+                                                      .data["concluida"] ==
+                                                  false) {
+                                                lista[index] = 1;
+                                              } else {
+                                                lista[index] = 0;
+                                              }
 
-                                            return snapshotLinhas
-                                                        .data["concluida"] ==
-                                                    true
-                                                ? ListTile(
-                                                    trailing: Card(
-                                                      color: Color(0xFF4FCEB6),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.all(10),
-                                                        child: Text(
-                                                          "Concluída",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  "QuickSandRegular"),
+                                              return snapshotLinhas
+                                                          .data["concluida"] ==
+                                                      true
+                                                  ? ListTile(
+                                                      trailing: Card(
+                                                        color: Color(0xFF4FCEB6),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.all(10),
+                                                          child: Text(
+                                                            "Concluída",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontFamily:
+                                                                    "QuickSandRegular"),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    title: Text(
-                                                      "" + nomeCategoria,
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "QuickSand",
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black),
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                    ),
-                                                    subtitle: Text(
-                                                      "Toque para editar a pesquisa",
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "QuickSandRegular",
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color:
-                                                              Colors.black54),
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                    ),
-                                                  )
-                                                : ListTile(
-                                                    trailing: Card(
-                                                      color: Color(0xFFF26868),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.all(10),
-                                                        child: Text(
-                                                          "A Iniciar",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  "QuickSandRegular"),
+                                                      title: Text(
+                                                        "" + nomeCategoria,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "QuickSand",
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.black),
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                      ),
+                                                      subtitle: Text(
+                                                        "Toque para editar a pesquisa",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "QuickSandRegular",
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black54),
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                      ),
+                                                    )
+                                                  : ListTile(
+                                                      trailing: Card(
+                                                        color: Color(0xFFF26868),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10)),
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.all(10),
+                                                          child: Text(
+                                                            "A Iniciar",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontFamily:
+                                                                    "QuickSandRegular"),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    title: Text(
-                                                      "" + nomeCategoria,
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "QuickSand",
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black),
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                    ),
-                                                    subtitle: Text(
-                                                      "Toque para editar a pesquisa",
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "QuickSandRegular",
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color:
-                                                              Colors.black54),
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                    ),
-                                                  );
-                                          }
-                                        },
-                                      )),
-                                );
-                              }),
+                                                      title: Text(
+                                                        "" + nomeCategoria,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "QuickSand",
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.black),
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                      ),
+                                                      subtitle: Text(
+                                                        "Toque para editar a pesquisa",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "QuickSandRegular",
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black54),
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                      ),
+                                                    );
+                                            }
+                                          },
+                                        )),
+                                  );
+                                }),
+                          ),
                         ),
                         SizedBox(height: 15.0),
                         Expanded(

@@ -413,6 +413,7 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                                   ),
                                   InkWell(
                                     onTap: () {
+                                      print(nomeCategoria);
                                       Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (context) =>

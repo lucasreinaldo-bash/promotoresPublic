@@ -26,6 +26,7 @@ class _ResearchScreenTwoState extends State<ResearchScreenTwo> {
           Duration(seconds: 2), () => context.read<PageManager>().nextPage());
     }
   }
+  final ScrollController _scroolController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -78,19 +79,24 @@ class _ResearchScreenTwoState extends State<ResearchScreenTwo> {
                             } else {
                               return Container(
                                 height: 300,
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        snapshotProdutos.data.documents.length,
-                                    itemBuilder: (_, index) {
-                                      ProductData dataProduto =
-                                          ProductData.fromDocument(
-                                              snapshotProdutos
-                                                  .data.documents[index]);
+                                child: Scrollbar(
+                                  controller: _scroolController,
+                                  isAlwaysShown: true,
+                                                                  child: ListView.builder(
+                                                                    controller: _scroolController,
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          snapshotProdutos.data.documents.length,
+                                      itemBuilder: (_, index) {
+                                        ProductData dataProduto =
+                                            ProductData.fromDocument(
+                                                snapshotProdutos
+                                                    .data.documents[index]);
 
-                                      return ProdutosTileAntesReposicao(
-                                          researchManager.data, dataProduto);
-                                    }),
+                                        return ProdutosTileAntesReposicao(
+                                            researchManager.data, dataProduto);
+                                      }),
+                                ),
                               );
                             }
                           },
