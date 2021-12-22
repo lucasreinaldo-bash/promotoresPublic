@@ -15,6 +15,7 @@ import 'package:versaoPromotores/menu_principal/datas/ProdutoData_ruptura_valida
 import 'package:versaoPromotores/menu_principal/datas/estoqueDeposito_data.dart';
 import 'package:versaoPromotores/menu_principal/screens/detalhamento_linha.dart';
 import 'package:versaoPromotores/menu_principal/screens/exibirImagem.dart';
+import 'package:versaoPromotores/models/estoque_manager.dart';
 import 'package:versaoPromotores/models/research_manager.dart';
 import 'package:versaoPromotores/models/user.dart';
 import 'package:versaoPromotores/models/user_manager.dart';
@@ -47,7 +48,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _allProducts(loja: context.read<ResearchManager>().data.nomeLoja);
+    _allProducts(loja: context.read<ResearchManager>().data.nomeLoja, data: context.read<ResearchManager>().data);
   }
 
   @override
@@ -404,7 +405,7 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
     );
   }
 
-  Future<void> _allProducts({FirebaseUser firebaseUser, String loja}) async {
+  Future<void> _allProducts({FirebaseUser firebaseUser, String loja , PesquisaData data}) async {
     FirebaseUser currentUser = firebaseUser ?? await auth.currentUser();
     if (currentUser != null) {
       final DocumentSnapshot docUser = await firestore
@@ -426,6 +427,11 @@ class _DetalhamentoPesquisaState extends State<DetalhamentoPesquisa> {
           .toList();
 
       context.read<UserManager>().allProducts = allProducts;
+    
+
+      context.read<EstoqueManager>().data = data;
+       context.read<EstoqueManager>().idEmpresa = user.empresaVinculada;
+      await context.read<EstoqueManager>().estoqueFilter();
     }
   }
 }

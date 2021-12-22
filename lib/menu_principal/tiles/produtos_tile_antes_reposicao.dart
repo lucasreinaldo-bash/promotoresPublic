@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
-
+import 'package:provider/provider.dart';
 class ProdutosTileAntesReposicao extends StatefulWidget {
   ProductData dataProdutos;
   PesquisaData data;

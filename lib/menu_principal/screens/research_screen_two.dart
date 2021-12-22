@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:versaoPromotores/models/estoque_manager.dart';
 import 'package:versaoPromotores/models/research_manager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:ui';
@@ -65,42 +66,30 @@ class _ResearchScreenTwoState extends State<ResearchScreenTwo> {
                           height: 2,
                           width: MediaQuery.of(context).size.width,
                         ),
-                        FutureBuilder(
-                          future: Firestore.instance
-                              .collection("Empresas")
-                              .document(researchManager.data.empresaResponsavel)
-                              .collection("Lojas")
-                              .document(researchManager.data.nomeLoja)
-                              .collection("Produtos")
-                              .getDocuments(),
-                          builder: (context, snapshotProdutos) {
-                            if (!snapshotProdutos.hasData) {
-                              return LinearProgressIndicator();
-                            } else {
-                              return Container(
+                     
+                        Container(
                                 height: 300,
                                 child: Scrollbar(
                                   controller: _scroolController,
                                   isAlwaysShown: true,
-                                                                  child: ListView.builder(
+                                                                  child:   ListView.builder(
                                                                     controller: _scroolController,
                                       shrinkWrap: true,
                                       itemCount:
-                                          snapshotProdutos.data.documents.length,
+                                          context
+                                      .read<EstoqueManager>().estoqueProdutos.length
+                                    
+                                      ,
                                       itemBuilder: (_, index) {
                                         ProductData dataProduto =
-                                            ProductData.fromDocument(
-                                                snapshotProdutos
-                                                    .data.documents[index]);
+                                           context
+                                      .read<EstoqueManager>().estoqueProdutos[index];
 
                                         return ProdutosTileAntesReposicao(
                                             researchManager.data, dataProduto);
                                       }),
                                 ),
-                              );
-                            }
-                          },
-                        ),
+                              ),
                         SizedBox(height: 15.0),
                         Expanded(
                           child: Align(
@@ -135,7 +124,8 @@ class _ResearchScreenTwoState extends State<ResearchScreenTwo> {
                                 ),
                                 FlatButton(
                                   onPressed: () async {
-                                    context.read<PageManager>().nextPage();
+                                    // context.read<PageManager>().nextPage();
+                                    await context.read<EstoqueManager>().verifyEstoqueAfter();
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,

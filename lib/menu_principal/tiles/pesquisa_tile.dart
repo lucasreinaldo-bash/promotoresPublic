@@ -42,23 +42,34 @@ class _PesquisaTileState extends State<PesquisaTile> {
   _PesquisaTileState(this.data, this.contextHome);
   @override
   Widget build(contextHome) {
-    return InkWell(
-        onLongPress: () async {
-          setState(() {
+    return Consumer<ResearchManager>(builder: (_, researchManager, __){
+      var selectedResearch = researchManager.selectedResearch;
+
+      return InkWell(
+        onLongPress: data.status == "A APROVAR" ? () async {
+          researchManager.selectedResearch = !researchManager.selectedResearch;
+           setState(() {
+            
+            
             if (corApertou == true) {
               corApertou = false;
             } else {
-              corApertou = true;
+             
 
-              if (data.status == "A APROVAR") {
+          if (researchManager.selectedResearch == false){
+                   corApertou = true;
                 _settingModalBottomSheet(context);
-              }
+                 }
+            
 
-              setState(() {});
+              
             }
           });
-        },
+          
+        
+        }: null,
         onTap: () async {
+          
           context.read<ResearchManager>().setResearch(data);
 
           Navigator.pushNamed(context, "/detalhamentoPesquisa");
@@ -196,13 +207,22 @@ class _PesquisaTileState extends State<PesquisaTile> {
                 ),
               ))),
         ));
-  }
-
-  void _settingModalBottomSheet(context) {
+  
+    },);}
+void _settingModalBottomSheet(contextModal) {
     showModalBottomSheet(
-        context: context,
+        context: contextModal,
+        
         builder: (BuildContext bc) {
           return BottomSheetUpload(data);
+        }).whenComplete(()  {
+          context.read<ResearchManager>().selectedResearch = false;
+          setState(() {
+            corApertou = false;
+          });
+
+          print(corApertou);
         });
   }
+  
 }

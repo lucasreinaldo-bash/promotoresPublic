@@ -11,6 +11,14 @@ class ResearchManager extends ChangeNotifier {
   ResearchManager({this.data});
 
   String _titleScreen = "Área de Venda";
+  bool _selectedResearch = false;
+  get selectedResearch => _selectedResearch;
+
+  set selectedResearch(bool value){
+    _selectedResearch = value;
+    notifyListeners();
+  }
+
   set titleScreen(String title) {
     _titleScreen = title;
     print(_titleScreen);

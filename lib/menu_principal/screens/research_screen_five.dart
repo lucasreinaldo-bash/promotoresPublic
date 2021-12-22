@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:versaoPromotores/menu_principal/detalhamentoPesquisa.dart';
+import 'package:versaoPromotores/models/estoque_manager.dart';
 import 'package:versaoPromotores/models/research_manager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:versaoPromotores/menu_principal/tiles/produtos_tile_apos_reposicao.dart';
@@ -21,6 +22,8 @@ class ResearchScreenFive extends StatefulWidget {
 }
 
 class _ResearchScreenFiveState extends State<ResearchScreenFive> {
+    final ScrollController _scroolController = ScrollController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -69,38 +72,29 @@ class _ResearchScreenFiveState extends State<ResearchScreenFive> {
                           height: 2,
                           width: MediaQuery.of(context).size.width,
                         ),
-                        FutureBuilder(
-                          future: Firestore.instance
-                              .collection("Empresas")
-                              .document(researchManager.data.empresaResponsavel)
-                              .collection("Lojas")
-                              .document(researchManager.data.nomeLoja)
-                              .collection("Produtos")
-                              .getDocuments(),
-                          builder: (context, snapshotProdutos) {
-                            if (!snapshotProdutos.hasData) {
-                              return LinearProgressIndicator();
-                            } else {
-                              return Container(
+                        Container(
                                 height: 300,
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        snapshotProdutos.data.documents.length,
-                                    itemBuilder: (_, index) {
-                                      ProductData dataProduto =
-                                          ProductData.fromDocument(
-                                              snapshotProdutos
-                                                  .data.documents[index]);
-                                      bool nomeCategoriaBool = false;
+                                child: Scrollbar(
+                                  controller: _scroolController,
+                                  isAlwaysShown: true,
+                                                                  child:   ListView.builder(
+                                                                    controller: _scroolController,
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          context
+                                      .read<EstoqueManager>().estoqueProdutos.length
+                                    
+                                      ,
+                                      itemBuilder: (_, index) {
+                                        ProductData dataProduto =
+                                           context
+                                      .read<EstoqueManager>().estoqueProdutos[index];
 
-                                      return ProdutosTileAposReposicao(
-                                          researchManager.data, dataProduto);
-                                    }),
-                              );
-                            }
-                          },
-                        ),
+                                        return ProdutosTileAposReposicao(
+                                            researchManager.data, dataProduto);
+                                      }),
+                                ),
+                              ),
                         SizedBox(height: 15.0),
                         Expanded(
                           child: Align(

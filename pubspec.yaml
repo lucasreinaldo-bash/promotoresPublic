@@ -44,7 +44,7 @@ dependencies:
   cloud_functions: ^0.1.0
   esys_flutter_share: ^1.0.2
 
-  location: ^2.3.5
+  
   carousel_pro: ^1.0.0
   carousel_slider: ^2.0.0
   date_format:

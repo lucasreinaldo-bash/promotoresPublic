@@ -10,7 +10,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_ruptura_screen.dart';
 import 'package:versaoPromotores/menu_principal/product_tile_validade_screen.dart';
+import 'package:versaoPromotores/models/research_manager.dart';
 import 'package:versaoPromotores/styles/colors.dart';
+import 'package:provider/provider.dart';
+
 
 class BottomSheetUpload extends StatefulWidget {
   PesquisaData data;
@@ -33,6 +36,7 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
     uploadImagemFirestore(data);
   }
 
+  String status = "Realizando o Envio da Pesquisa";
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,7 +47,7 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
               child: carregando == false
                   ? Column(
                       children: [
-                        Text("Realizando o Envio da Pesquisa"),
+                        Text(status),
                         SizedBox(
                           height: 10,
                         ),
@@ -73,6 +77,7 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
   }
 
   Future uploadImagemFirestore(PesquisaData data) async {
+    var problem = false;
     for (int i = 0; i < data.linhaProduto.length; i++) {
       DocumentReference imagemAntes = await Firestore.instance
           .collection("Empresas")
@@ -108,6 +113,7 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
                 {uploadStorage(imagemAntes, doc.data["imagem"])}
               else
                 {
+                  problem = true,
                   print("Nao Existe")
                   // doc.data() will be undefined in this case
                 }
@@ -118,6 +124,7 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
                   uploadStorage(imagemDepois, doc.data["imagem"])}
               else
                 {
+                   problem = true,
                   print("Nao Existe")
                   // doc.data() will be undefined in this case
                 }
@@ -141,19 +148,27 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
                 }
             });
 
+        
+
+            context.read<ResearchManager>().selectedResearch = false;
+      } catch (e) {
+        print(e);
+      }
+    }
+
+   if (!problem){
         await Firestore.instance
             .collection("Empresas")
             .document(data.empresaResponsavel)
             .collection("pesquisasCriadas")
             .document(data.id)
             .updateData({"imagemUpload": true});
-      } catch (e) {
-        print(e);
-      }
-    }
-    setState(() {
-      carregando = true;
-    });
+   }else{
+     setState(() {
+       
+     });
+   }
+    
   }
 
   Future uploadStorage(DocumentReference reference, String imagemPath) async {
@@ -163,7 +178,13 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
     StorageUploadTask uploadTask = firebaseStorageRef.putFile(File(imagemPath));
 
     String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-    reference.updateData({"imagem": docUrl});
+    await reference.updateData({"imagem": docUrl}).then((value) => {
+    
+
+    setState(() {
+      carregando = true;
+    })
+    });
     print(docUrl);
   }
 
@@ -189,5 +210,6 @@ class _BottomSheetUploadState extends State<BottomSheetUpload> {
     String docUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
     reference.updateData({"imagemDepois": docUrl});
     print(docUrl);
+    
   }
 }

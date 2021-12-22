@@ -6,6 +6,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:versaoPromotores/models/estoque_manager.dart';
 import 'package:versaoPromotores/models/research_manager.dart';
 import 'package:versaoPromotores/screens/login_screen.dart';
 import 'package:versaoPromotores/splash_screen.dart';
@@ -38,6 +39,10 @@ class Home extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => ResearchManager(),
+          lazy: false,
+        ),
+         ChangeNotifierProvider(
+          create: (_) => EstoqueManager(),
           lazy: false,
         ),
         ChangeNotifierProvider(

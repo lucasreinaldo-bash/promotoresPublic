@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:versaoPromotores/menu_principal/datas/ProdutoData.dart';
+import 'package:versaoPromotores/menu_principal/datas/ProdutoData_ruptura_validade.dart';
 import 'package:versaoPromotores/menu_principal/datas/pesquisaData.dart';
 
 class EstoqueManager extends ChangeNotifier {
@@ -18,12 +19,24 @@ class EstoqueManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  int _validationEstoqueAfter;
+  set validationEstoqueAfter(int n){
+    _validationEstoqueAfter = _validationEstoqueAfter + n;
+    notifyListeners();
+  }
+
+  int _validationEstoqueBefore;
+  set validationEstoqueBefore(int n){
+    _validationEstoqueBefore = _validationEstoqueBefore + n;
+    notifyListeners();
+  }
 
   List<ProductData> estoqueProdutos = [];
+  List<ProductDataRupturaValidade> estoqueAfter = [];
   final Firestore firestore = Firestore.instance;
 
 
-  Future<void> estoqueAntes({String linha, String idLinha}) async {
+  Future<void> estoqueFilter({String linha, String idLinha}) async {
 
     estoqueProdutos.clear();
 
@@ -40,17 +53,47 @@ class EstoqueManager extends ChangeNotifier {
           .map((d) => ProductData.fromDocument(d)).where((element) => element.nomeLinha == line)
           .toList());
     }
+
+    print(estoqueProdutos.length);
+    notifyListeners();
+
+  
   }
 
+  Future<bool> verifyEstoqueAfter() async{
+    estoqueAfter.clear();
 
-  Future<void> removerLinha(String idLinha) async {
-    await firestore
+   final QuerySnapshot snapshotAntes = await firestore
         .collection("Empresas")
-        .document(id)
-        .collection("linhasProdutos")
-        .document(idLinha)
-        .delete();
+        .document(_idEmpresa)
+        .collection("pesquisasCriadas")
+        .document(data.id)
+        .collection("estoqueDeposito")
+        .getDocuments();
 
-    allLinhas();
+     estoqueAfter.addAll(snapshotAntes.documents
+          .map((d) => ProductDataRupturaValidade.fromDocument(d)).where((element) => element.antesReposicao == 9999)
+          .toList());
+          
+    notifyListeners();
+
+    if(estoqueProdutos.length == estoqueAfter.length){
+      print("igual");
+    }
+    else{
+      print("Diferente");
+
+      print(estoqueAfter.length);
+    
+     
+  
+    }
+
+    
+
+
+
   }
+
+
 }
